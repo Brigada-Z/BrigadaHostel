@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resumen</title>
+    <link rel="stylesheet" href="../../style/dashboard.css">
+</head>
+<body>
+
+    <!-- NAVEGACION: Sidebar de accesos rápidos -->
+
+    <aside>
+
+        <div class="sidebar-brand">
+            <h2>Panel Dashboard</h2>
+            <p>BrigadaHostel</p>
+        </div>
+
+        <nav>
+            <ul>
+                <li><a href="../dashboard.html">Volver al Dashboard</a></li>
+                <li><a href="resumen.html" class="active">Resumen</a></li>
+                <li><a href="reservas.html">Reservas</a></li>
+                <li><a href="habitaciones.html">Habitaciones</a></li>
+                <li><a href="huespedes.html">Huéspedes</a></li>
+                <li><a href="configuracion.html">Configuración</a></li>
+            </ul>
+        </nav>
+
+        <div class="sidebar-footer">
+            <a href="../../index.html">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                Volver al sitio web
+            </a>
+        </div>
+
+    </aside>
+
+
+    <!-- ENCABEZADO: Barra superior -->
+
+    <header>
+
+        <div class="header-title">
+            <h1>Panel Dashboard</h1>
+            <p class="header-subtitle">BrigadaHostel</p>
+        </div>
+
+        <div class="user-info">
+            <span>Administrador</span>
+        </div>
+
+    </header>
+
+
+    <!-- DASHBOARD: Analíticas detalladas del sitio -->
+
+    <main>
+
+        <!-- Bloque de métricas destacadas -->
+
+        <div class="stats-container">
+
+            <div class="card centered">
+                <h3>Ocupación Semanal</h3>
+                <div class="progress-circle" style="--percentage: 85%" data-inner="85%"></div>
+                <p class="card-subtitle mt-10">+5% respecto a la semana pasada</p>
+            </div>
+
+            <div class="card">
+                <h3>Ingresos Proyectados</h3>
+                <div class="value">$1,240.00</div>
+                <div class="progress-linear">
+                    <div class="progress-fill" style="width: 70%;"></div>
+                </div>
+                <p class="card-subtitle-sm mt-10">70% de la meta mensual</p>
+            </div>
+
+            <div class="card">
+                <h3>Satisfacción</h3>
+                <div class="value">4.8 / 5</div>
+                <div class="star-rating">★★★★☆</div>
+            </div>
+
+            <div class="card">
+                <h3>Reservas Activas</h3>
+                <div class="value">42</div>
+                <p class="card-subtitle">8 check-ins hoy</p>
+            </div>
+
+        </div>
+
+
+        <!-- Gráfico de ocupación diaria -->
+        <section class="content-section mb-24">
+
+            <div class="section-header">
+                <h2>Ocupación Diaria (Últimos 14 días)</h2>
+                <div class="card-subtitle">Promedio: 78.4%</div>
+            </div>
+
+            <div class="chart-container-lg chart-container">
+                <div class="bar" style="height: 40%;" data-label="24 Abr"></div>
+                <div class="bar" style="height: 55%;" data-label="25 Abr"></div>
+                <div class="bar" style="height: 65%;" data-label="26 Abr"></div>
+                <div class="bar" style="height: 80%;" data-label="27 Abr"></div>
+                <div class="bar" style="height: 95%;" data-label="28 Abr"></div>
+                <div class="bar" style="height: 100%;" data-label="29 Abr"></div>
+                <div class="bar" style="height: 85%;" data-label="30 Abr"></div>
+                <div class="bar" style="height: 50%;" data-label="01 May"></div>
+                <div class="bar" style="height: 45%;" data-label="02 May"></div>
+                <div class="bar" style="height: 60%;" data-label="03 May"></div>
+                <div class="bar" style="height: 75%;" data-label="04 May"></div>
+                <div class="bar" style="height: 90%;" data-label="05 May"></div>
+                <div class="bar" style="height: 95%;" data-label="06 May"></div>
+                <div class="bar" style="height: 85%;" data-label="Hoy"></div>
+            </div>
+
+        </section>
+
+
+        <!-- Grid de analíticas secundarias -->
+        <div class="grid-2 gap-24 mb-24">
+
+            <!-- Distribución por nacionalidad -->
+            <section class="content-section">
+                <h2>Distribución de Huéspedes</h2>
+                <div class="flex-column gap-15 mt-20">
+                    <div>
+                        <div class="progress-label-group">
+                            <span>Nacionales</span>
+                            <span>45%</span>
+                        </div>
+                        <div class="progress-linear"><div class="progress-fill" style="width: 45%;"></div></div>
+                    </div>
+                    <div>
+                        <div class="progress-label-group">
+                            <span>Internacionales (Latam)</span>
+                            <span>30%</span>
+                        </div>
+                        <div class="progress-linear"><div class="progress-fill" style="width: 30%;"></div></div>
+                    </div>
+                    <div>
+                        <div class="progress-label-group">
+                            <span>Internacionales (Resto)</span>
+                            <span>25%</span>
+                        </div>
+                        <div class="progress-linear"><div class="progress-fill" style="width: 25%;"></div></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Origen de las reservas -->
+            <section class="content-section">
+                <h2>Origen de Reservas</h2>
+                <div class="origin-chart">
+                    <div class="origin-item">
+                        <div class="origin-bar bg-high" style="height: 80%;"></div>
+                        <span class="origin-label">Directo</span>
+                    </div>
+                    <div class="origin-item">
+                        <div class="origin-bar bg-very-high" style="height: 60%;"></div>
+                        <span class="origin-label">Booking</span>
+                    </div>
+                    <div class="origin-item">
+                        <div class="origin-bar bg-medium" style="height: 40%;"></div>
+                        <span class="origin-label">Airbnb</span>
+                    </div>
+                    <div class="origin-item">
+                        <div class="origin-bar bg-low" style="height: 20%;"></div>
+                        <span class="origin-label">Otros</span>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+
+
+        <!-- Gráfico de ingresos mensuales -->
+        <section class="content-section">
+
+            <div class="section-header">
+                <h2>Ingresos Mensuales Estimados</h2>
+                <div class="header-subtitle" style="margin-top: 0; font-weight: 600;">Total: $14,500.00</div>
+            </div>
+
+            <div class="revenue-chart-bg">
+                <svg class="revenue-svg" width="100%" height="100%" preserveAspectRatio="none" viewBox="0 0 1000 100">
+                    <path d="M0,100 L0,80 C100,70 200,90 300,60 C400,30 500,40 600,20 C700,10 800,30 900,15 L1000,10 L1000,100 Z" fill="rgba(26, 29, 32, 0.05)"></path>
+                    <path d="M0,80 C100,70 200,90 300,60 C400,30 500,40 600,20 C700,10 800,30 900,15 L1000,10" fill="none" stroke="#1a1d20" stroke-width="3"></path>
+                </svg>
+                <div class="revenue-labels">
+                    <span class="revenue-label">Ene</span>
+                    <span class="revenue-label">Feb</span>
+                    <span class="revenue-label">Mar</span>
+                    <span class="revenue-label">Abr</span>
+                    <span class="revenue-label">May</span>
+                    <span class="revenue-label">Jun</span>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+</body>
+</html>
