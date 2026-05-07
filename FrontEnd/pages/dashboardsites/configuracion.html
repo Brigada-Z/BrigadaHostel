@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuración</title>
+    <link rel="stylesheet" href="../../style/dashboard.css">
+</head>
+<body>
+
+    <!-- MENU: Navegación lateral -->
+
+    <aside>
+        <div class="sidebar-brand">
+            <h2>Panel Dashboard</h2>
+            <p>BrigadaHostel</p>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="../dashboard.html">Volver al Dashboard</a></li>
+                <li><a href="resumen.html">Resumen</a></li>
+                <li><a href="reservas.html">Reservas</a></li>
+                <li><a href="habitaciones.html">Habitaciones</a></li>
+                <li><a href="huespedes.html">Huéspedes</a></li>
+                <li><a href="configuracion.html" class="active">Configuración</a></li>
+            </ul>
+        </nav>
+        <div class="sidebar-footer">
+            <a href="../../index.html">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                Volver al sitio web
+            </a>
+        </div>
+    </aside>
+
+    <!-- Header -->
+    <header>
+        <div class="header-title">
+            <h1>Panel Dashboard</h1>
+            <p class="header-subtitle">BrigadaHostel</p>
+        </div>
+    </header>
+
+    <!-- AJUSTES: Configuración global del sistema -->
+
+    <main>
+
+        <div class="grid-2 gap-24">
+            
+            <!-- Datos generales del negocio -->
+
+            <section class="content-section">
+                <h2>Ajustes Generales del Hostal</h2>
+                <div class="form-group">
+                    <label>Nombre Comercial</label>
+                    <input type="text" value="Brigada Hostel & Suites">
+                </div>
+                <div class="form-group">
+                    <label>Razón Social / NIT</label>
+                    <input type="text" value="900.123.456-7">
+                </div>
+                <div class="form-group">
+                    <label>Email Corporativo</label>
+                    <input type="email" value="administracion@brigadahostel.com">
+                </div>
+                <div class="form-group">
+                    <label>Teléfono Principal</label>
+                    <input type="text" value="+54 11 4567-8900">
+                </div>
+                <div class="form-group">
+                    <label>Dirección Física</label>
+                    <input type="text" value="Av. Siempre Viva 742, Ciudad Autónoma de Buenos Aires">
+                </div>
+            </section>
+
+            <!-- Localization & Finance -->
+            <section class="content-section">
+                <h2>Localización y Finanzas</h2>
+                <div class="form-group">
+                    <label>Moneda Base del Sistema</label>
+                    <select>
+                        <option>USD - Dólar Estadounidense</option>
+                        <option selected>ARS - Peso Argentino</option>
+                        <option>EUR - Euro</option>
+                        <option>BRL - Real Brasileño</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Zona Horaria</label>
+                    <select>
+                        <option>(GMT-03:00) Buenos Aires</option>
+                        <option>(GMT-05:00) Bogotá, Lima, Quito</option>
+                        <option>(GMT+01:00) Madrid, París</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Impuesto Local (IVA %)</label>
+                    <input type="text" value="21%">
+                </div>
+                <div class="form-group">
+                    <label>Formas de Pago Aceptadas</label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-label"><input type="checkbox" checked> Efectivo</label>
+                        <label class="checkbox-label"><input type="checkbox" checked> Tarjeta Crédito</label>
+                        <label class="checkbox-label"><input type="checkbox" checked> Transferencia</label>
+                        <label class="checkbox-label"><input type="checkbox"> Criptomonedas</label>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Check-in / Check-out Rules -->
+            <section class="content-section">
+                <h2>Políticas de Estancia</h2>
+                <div class="grid-2 gap-20">
+                    <div class="form-group">
+                        <label>Hora Check-in</label>
+                        <input type="text" value="14:00">
+                    </div>
+                    <div class="form-group">
+                        <label>Hora Check-out</label>
+                        <input type="text" value="11:00">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Días de Antelación Cancelación Gratuita</label>
+                    <input type="text" value="2 días">
+                </div>
+                <div class="form-group">
+                    <label>Política de Menores</label>
+                    <select>
+                        <option>Permitido todas las edades</option>
+                        <option selected>Solo mayores de 18 años</option>
+                        <option>Mayores de 12 años</option>
+                    </select>
+                </div>
+            </section>
+
+            <!-- Notifications & Security -->
+            <section class="content-section">
+                <h2>Notificaciones y Seguridad</h2>
+                <div class="flex-column gap-12 mt-10">
+                    <label class="checkbox-label-bold">
+                        <input type="checkbox" checked> Notificar nuevas reservas por Email
+                    </label>
+                    <label class="checkbox-label-bold">
+                        <input type="checkbox" checked> Notificar cancelaciones al administrador
+                    </label>
+                    <label class="checkbox-label-bold">
+                        <input type="checkbox"> Generar backup automático semanal
+                    </label>
+                    <label class="checkbox-label-bold">
+                        <input type="checkbox" checked> Autenticación en dos pasos (2FA)
+                    </label>
+                </div>
+                <div class="form-group mt-20">
+                    <label>Nivel de Acceso API</label>
+                    <input type="text" readonly value="REST_AK_9928374829374..." class="api-input">
+                </div>
+            </section>
+        </div>
+
+        <!-- System Actions Footer -->
+        <div class="action-footer">
+            <button class="btn btn-secondary btn-medium">Restablecer</button>
+            <button class="btn btn-primary btn-large">Guardar Todos los Cambios</button>
+        </div>
+    </main>
+
+</body>
+</html>
