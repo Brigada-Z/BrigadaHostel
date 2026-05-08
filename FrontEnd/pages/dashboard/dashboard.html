@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Inicio</title>
+    <link rel="stylesheet" href="../../style/dashboard.css">
+</head>
+<body>
+
+    <!-- CONTROL DE MENÚ MÓVIL (SÓLO CSS) -->
+    <input type="checkbox" id="menu-cb" hidden>
+
+    <!-- OVERLAY PARA MÓVIL -->
+    <label for="menu-cb" class="sidebar-overlay"></label>
+
+    <!-- BARRA LATERAL (SIDEBAR) -->
+    <aside>
+        <div class="sidebar-brand">
+            <div class="flex-center gap-12" style="justify-content: flex-start;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                <div>
+                    <h2 style="font-size: 1.1rem; font-weight: 800; text-transform: uppercase; margin-bottom: 2px; letter-spacing: -0.5px;">Panel Dashboard</h2>
+                    <p style="font-size: 0.75rem; color: #94a3b8; font-weight: 500;">BrigadaHostel</p>
+                </div>
+            </div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="dashboard.html" class="active"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg> Resumen</a></li>
+                <li><a href="dashboardpages/reservas.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> Reservas</a></li>
+                <li><a href="dashboardpages/recepcion.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg> Recepción</a></li>
+                <li><a href="dashboardpages/configuracion.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg> Configuración</a></li>
+            </ul>
+        </nav>
+        <div class="sidebar-footer">
+            <a href="dashboardauth/loginDashboard.html" class="btn-logout">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                Cerrar Sesión
+            </a>
+            <a href="../../index.html">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                Volver al sitio web
+            </a>
+        </div>
+    </aside>
+
+    <!-- ENCABEZADO (HEADER) -->
+    <header>
+        <label for="menu-cb" class="menu-toggle">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+        </label>
+        <div class="header-title">
+            <h1>Dashboard de Reservas</h1>
+            <p class="header-subtitle">Enfoque en el Usuario y Rentabilidad</p>
+        </div>
+        <div class="user-info">
+            <span>Admin</span>
+            <div class="user-avatar-small">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            </div>
+        </div>
+    </header>
+
+    <!-- SECCIÓN DE MÉTRICAS RÁPIDAS -->
+    <main>
+        <!-- MÉTRICAS CLAVE -->
+        <div class="dashboard-grid">
+            <!-- Anticipación de Reserva Promedio -->
+            <div class="metric-card">
+                <div class="flex-between">
+                    <h3 style="font-size: 0.7rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 0; text-transform: uppercase;">Anticipación Promedio</h3>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                </div>
+                <div class="metric-value">12.4 Días</div>
+                <div class="metric-trend trend-up">▲ 2.1 vs mes pasado</div>
+            </div>
+            <!-- Tasa de Abandono en Checkout -->
+            <div class="metric-card">
+                <div class="flex-between">
+                    <h3 style="font-size: 0.7rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 0; text-transform: uppercase;">Abandono Checkout</h3>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path><line x1="12" y1="2" x2="12" y2="12"></line></svg>
+                </div>
+                <div class="metric-value">24.8%</div>
+                <div class="metric-trend trend-down">▼ 5% mejora</div>
+            </div>
+            <!-- Ratio de Cancelación Post-Reserva -->
+            <div class="metric-card">
+                <div class="flex-between">
+                    <h3 style="font-size: 0.7rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 0; text-transform: uppercase;">Ratio Cancelación</h3>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+                </div>
+                <div class="metric-value">4.2%</div>
+                <div class="metric-trend trend-up">▲ 0.8% riesgo</div>
+            </div>
+            <!-- Duración Promedio de Estadía (LOS) -->
+            <div class="metric-card">
+                <div class="flex-between">
+                    <h3 style="font-size: 0.7rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 0; text-transform: uppercase;">Estadía Promedio (LOS)</h3>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                </div>
+                <div class="metric-value">3.2 Noches</div>
+                <div class="metric-trend trend-up">▲ 0.5 noches</div>
+            </div>
+        </div>
+
+        <!-- GRÁFICOS Y ESTADÍSTICAS DETALLADAS -->
+        <div class="chart-grid">
+            <!-- Embudo de Conversión de Venta -->
+            <section class="content-section">
+                <div class="flex-between mb-20">
+                    <h2 style="font-size: 1.125rem; font-weight: 700; margin-bottom: 0; color: #0f172a;">Embudo de Conversión</h2>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1e293b" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
+                </div>
+                <div class="funnel-container">
+                    <div class="funnel-step funnel-1">Búsquedas (100%) - 4.2k</div>
+                    <div class="funnel-step funnel-2">Ver Disponibilidad (65%) - 2.7k</div>
+                    <div class="funnel-step funnel-3">Calcular Costo (30%) - 1.2k</div>
+                    <div class="funnel-step funnel-4">Registrar Reserva (12%) - 504</div>
+                </div>
+            </section>
+
+            <!-- Top Servicios Adicionales -->
+            <section class="content-section">
+                <div class="flex-between mb-20">
+                    <h2 style="font-size: 1.125rem; font-weight: 700; margin-bottom: 0; color: #0f172a;">Top Servicios Extras</h2>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1e293b" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                </div>
+                <div class="h-bar-group">
+                    <div class="h-bar-item"><div class="h-bar-label"><span>Desayuno Buffet</span><span>$4.2k</span></div><div class="h-bar-bg"><div class="h-bar-fill w-85p"></div></div></div>
+                    <div class="h-bar-item"><div class="h-bar-label"><span>Cochera Privada</span><span>$2.8k</span></div><div class="h-bar-bg"><div class="h-bar-fill w-70p"></div></div></div>
+                    <div class="h-bar-item"><div class="h-bar-label"><span>Masajes Spa</span><span>$1.5k</span></div><div class="h-bar-bg"><div class="h-bar-fill w-45p"></div></div></div>
+                    <div class="h-bar-item"><div class="h-bar-label"><span>Traslados</span><span>$1.2k</span></div><div class="h-bar-bg"><div class="h-bar-fill w-30p"></div></div></div>
+                    <div class="h-bar-item"><div class="h-bar-label"><span>Lavandería</span><span>$0.8k</span></div><div class="h-bar-bg"><div class="h-bar-fill w-15p"></div></div></div>
+                </div>
+            </section>
+
+            <!-- Distribución de Costos por Habitación -->
+            <section class="content-section">
+                <div class="flex-between mb-20">
+                    <h2 style="font-size: 1.125rem; font-weight: 700; margin-bottom: 0; color: #0f172a;">Distribución de Ingresos</h2>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1e293b" stroke-width="2"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path><path d="M22 12A10 10 0 0 0 12 2v10z"></path></svg>
+                </div>
+                <div class="flex-center mt-20 gap-24">
+                    <div class="pie-chart" style="background: conic-gradient(#1e293b 0% 45%, #475569 45% 75%, #94a3b8 75% 100%);"></div>
+                    <div class="pie-legend">
+                        <div class="legend-item"><div class="legend-color color-1"></div> Suites (45%)</div>
+                        <div class="legend-item"><div class="legend-color color-3"></div> Dobles (30%)</div>
+                        <div class="legend-item"><div class="legend-color color-4"></div> Simples (25%)</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Gráfico de Estacionalidad de Búsqueda -->
+            <section class="content-section">
+                <div class="flex-between mb-20">
+                    <h2 style="font-size: 1.125rem; font-weight: 700; margin-bottom: 0; color: #0f172a;">Estacionalidad de Consultas</h2>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1e293b" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                </div>
+                <div class="chart-container h-200">
+                    <div class="bar" style="height: 40%;" data-label="Ene"></div>
+                    <div class="bar" style="height: 55%;" data-label="Feb"></div>
+                    <div class="bar" style="height: 85%;" data-label="Mar"></div>
+                    <div class="bar" style="height: 95%;" data-label="Abr"></div>
+                    <div class="bar" style="height: 70%;" data-label="May"></div>
+                    <div class="bar" style="height: 60%;" data-label="Jun"></div>
+                </div>
+            </section>
+
+            <!-- Ingreso por Canal de Origen -->
+            <section class="content-section">
+                <div class="flex-between mb-20">
+                    <h2 style="font-size: 1.125rem; font-weight: 700; margin-bottom: 0; color: #0f172a;">Canales de Venta</h2>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1e293b" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                </div>
+                <div class="flex-column gap-20">
+                    <div class="flex-between">
+                        <div class="flex-center gap-8">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                            <span>Web Site</span>
+                        </div>
+                        <div class="comp-bar-container w-full" style="max-width: 250px;">
+                            <div class="comp-bar color-1 w-70p">70%</div>
+                            <span class="font-semibold">$8.4k</span>
+                        </div>
+                    </div>
+                    <div class="flex-between">
+                        <div class="flex-center gap-8">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+                            <span>Mobile App</span>
+                        </div>
+                        <div class="comp-bar-container w-full" style="max-width: 250px;">
+                            <div class="comp-bar color-3 w-30p">30%</div>
+                            <span class="font-semibold">$3.6k</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Impacto de Extras en el Ticket -->
+            <section class="content-section">
+                <div class="flex-between mb-20">
+                    <h2 style="font-size: 1.125rem; font-weight: 700; margin-bottom: 0; color: #0f172a;">Impacto de Extras</h2>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1e293b" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+                </div>
+                <div class="flex-column gap-20">
+                    <div class="h-bar-item">
+                        <div class="h-bar-label"><span>Ticket Base (Promedio)</span><span>$145.00</span></div>
+                        <div class="h-bar-bg"><div class="h-bar-fill w-70p" style="background: #94a3b8;"></div></div>
+                    </div>
+                    <div class="h-bar-item">
+                        <div class="h-bar-label"><span>Ticket Final (+ Extras)</span><span>$192.50</span></div>
+                        <div class="h-bar-bg"><div class="h-bar-fill w-85p"></div></div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+</body>
+</html>
