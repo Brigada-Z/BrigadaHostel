@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Configuracion</title>
+    <link rel="stylesheet" href="../../../style/dashboard.css">
+</head>
+<body>
+
+    <!-- CONTROL DE MENÚ MÓVIL (SÓLO CSS) -->
+    <input type="checkbox" id="menu-cb" hidden>
+
+    <!-- OVERLAY PARA MÓVIL -->
+    <label for="menu-cb" class="sidebar-overlay"></label>
+
+    <!-- BARRA LATERAL (SIDEBAR) -->
+    <aside>
+        <div class="sidebar-brand">
+            <div class="flex-center gap-12" style="justify-content: flex-start;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                <div>
+                    <h2 style="font-size: 1.1rem; font-weight: 800; text-transform: uppercase; margin-bottom: 2px; letter-spacing: -0.5px;">Panel Dashboard</h2>
+                    <p style="font-size: 0.75rem; color: #94a3b8; font-weight: 500;">BrigadaHostel</p>
+                </div>
+            </div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="../dashboard.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg> Resumen</a></li>
+                <li><a href="reservas.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> Reservas</a></li>
+                <li><a href="recepcion.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg> Recepción</a></li>
+                <li><a href="configuracion.html" class="active"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg> Configuración</a></li>
+            </ul>
+        </nav>
+        <div class="sidebar-footer">
+            <a href="../dashboardauth/loginDashboard.html" class="btn-logout">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                Cerrar Sesión
+            </a>
+            <a href="../../../index.html">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                Volver al sitio web
+            </a>
+        </div>
+    </aside>
+
+    <!-- ENCABEZADO (HEADER) -->
+    <header>
+        <label for="menu-cb" class="menu-toggle">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+        </label>
+        <div class="header-title">
+            <h1>Ajustes del Sistema</h1>
+            <p class="header-subtitle">Personaliza tu experiencia administrativa</p>
+        </div>
+        <div class="user-info">
+            <span>Admin</span>
+            <div class="user-avatar-small">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            </div>
+        </div>
+    </header>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main>
+        <!-- RESUMEN DE ESTADO DE CUENTA -->
+        <div class="dashboard-grid">
+            <div class="metric-card">
+                <div class="flex-between">
+                    <h3 style="font-size: 0.7rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 0; text-transform: uppercase;">Estado de Cuenta</h3>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                </div>
+                <div class="metric-value" style="font-size: 1.5rem;">Verificada</div>
+                <div class="metric-trend text-success">Nivel de Seguridad: Alto</div>
+            </div>
+            <div class="metric-card">
+                <div class="flex-between">
+                    <h3 style="font-size: 0.7rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 0; text-transform: uppercase;">Rol de Usuario</h3>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><polyline points="17 11 19 13 23 9"></polyline></svg>
+                </div>
+                <div class="metric-value" style="font-size: 1.5rem;">Super Admin</div>
+                <div class="metric-trend">Acceso Total al Sistema</div>
+            </div>
+            <div class="metric-card">
+                <div class="flex-between">
+                    <h3 style="font-size: 0.7rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 0; text-transform: uppercase;">Último Cambio Pass</h3>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                </div>
+                <div class="metric-value" style="font-size: 1.5rem;">Hace 12 días</div>
+                <div class="metric-trend">Próximo: en 78 días</div>
+            </div>
+            <div class="metric-card">
+                <div class="flex-between">
+                    <h3 style="font-size: 0.7rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 0; text-transform: uppercase;">Versión Sistema</h3>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                </div>
+                <div class="metric-value" style="font-size: 1.5rem;">v2.4.8-stable</div>
+                <div class="metric-trend text-success">Sistema Actualizado</div>
+            </div>
+        </div>
+
+        <div class="chart-grid">
+            <!-- PERFIL DE USUARIO -->
+            <section class="content-section">
+                <div class="flex-between mb-20">
+                    <h2 style="margin-bottom: 0;">Perfil de Administrador</h2>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                </div>
+                <div class="flex-column gap-20">
+                    <!-- AVATAR CENTRADO -->
+                    <div class="flex-column flex-center gap-15" style="text-align: center; padding: 10px 0;">
+                        <div style="width: 100px; height: 100px; background: #f1f5f9; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #64748b; border: 3px solid var(--bg-sidebar); box-shadow: var(--shadow-md); margin-bottom: 10px;">
+                            <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                        </div>
+                        <div class="flex-column flex-center gap-8">
+                            <button class="btn-outline btn-small">Cambiar Foto de Perfil</button>
+                            <p class="card-subtitle-sm">Formatos JPG o PNG. Tamaño máximo de 800K.</p>
+                        </div>
+                    </div>
+                    <form class="flex-column gap-15">
+                        <div class="form-group">
+                            <label class="auth-label">Nombre Completo</label>
+                            <input type="text" class="input-field" value="Administrador Principal">
+                        </div>
+                        <div class="form-group">
+                            <label class="auth-label">Email de Contacto</label>
+                            <input type="email" class="input-field" value="admin@brigadahostel.com">
+                        </div>
+                        <button type="submit" class="btn-premium w-full mt-10">Actualizar Perfil</button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- PREFERENCIAS DEL SISTEMA -->
+            <section class="content-section">
+                <div class="flex-between mb-20">
+                    <h2 style="margin-bottom: 0;">Preferencias Visuales</h2>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2.13l1.9 3.86 4.26.62-3.08 3 0.73 4.25-3.81-2-3.81 2 0.73-4.25-3.08-3 4.26-.62z"></path></svg>
+                </div>
+                <div class="flex-column gap-20">
+                    <div class="form-group">
+                        <label class="auth-label">Idioma del Panel</label>
+                        <select class="input-field">
+                            <option selected>Español (Latinoamérica)</option>
+                            <option>English (US)</option>
+                            <option>Português (Brasil)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="auth-label">Tema de Color</label>
+                        <div class="flex-center gap-15 mt-10">
+                            <div style="flex: 1; padding: 15px; border: 2px solid var(--bg-sidebar); border-radius: 12px; text-align: center; cursor: pointer; background: #f8fafc;">
+                                <div style="width: 20px; height: 20px; background: white; border: 1px solid #e2e8f0; border-radius: 50%; margin: 0 auto 8px;"></div>
+                                <span class="font-semibold" style="font-size: 0.8rem;">Claro</span>
+                            </div>
+                            <div style="flex: 1; padding: 15px; border: 1px solid var(--border-color); border-radius: 12px; text-align: center; cursor: pointer; background: #1a1d20; color: white;">
+                                <div style="width: 20px; height: 20px; background: #1a1d20; border: 1px solid #334155; border-radius: 50%; margin: 0 auto 8px;"></div>
+                                <span class="font-semibold" style="font-size: 0.8rem;">Oscuro</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="checkbox-label-bold">
+                            <input type="checkbox" checked>
+                            <div>
+                                <span>Modo Compacto</span>
+                                <p class="card-subtitle-sm">Reduce el espaciado para ver más datos.</p>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+            </section>
+
+            <!-- NOTIFICACIONES -->
+            <section class="content-section">
+                <div class="flex-between mb-20">
+                    <h2 style="margin-bottom: 0;">Alertas y Notificaciones</h2>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                </div>
+                <div class="flex-column gap-20">
+                    <div class="flex-column gap-15">
+                        <label class="checkbox-label-bold">
+                            <input type="checkbox" checked>
+                            <div>
+                                <span>Nuevas Reservas</span>
+                                <p class="card-subtitle-sm">Recibir email por cada reserva confirmada.</p>
+                            </div>
+                        </label>
+                        <label class="checkbox-label-bold">
+                            <input type="checkbox" checked>
+                            <div>
+                                <span>Reporte de Turno</span>
+                                <p class="card-subtitle-sm">Notificar al cierre de caja diario.</p>
+                            </div>
+                        </label>
+                        <label class="checkbox-label-bold">
+                            <input type="checkbox">
+                            <div>
+                                <span>Alertas SMS</span>
+                                <p class="card-subtitle-sm">Mensajes directos para emergencias (Costo extra).</p>
+                            </div>
+                        </label>
+                    </div>
+                    <button class="btn-premium w-full">Guardar Configuración</button>
+                </div>
+            </section>
+
+            <!-- SEGURIDAD AVANZADA -->
+            <section class="content-section">
+                <div class="flex-between mb-20">
+                    <h2 style="margin-bottom: 0;">Seguridad y Acceso</h2>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                </div>
+                <div class="flex-column gap-20">
+                    <div class="metric-card" style="box-shadow: none; border-style: dashed; background: #fffcf0; border-color: #f59e0b;">
+                        <div class="flex-center gap-12">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                            <span class="font-semibold" style="color: #92400e; font-size: 0.85rem;">Doble factor (2FA) desactivado</span>
+                        </div>
+                    </div>
+                    <form class="flex-column gap-15">
+                        <div class="form-group">
+                            <label class="auth-label">Contraseña Actual</label>
+                            <input type="password" class="input-field" placeholder="••••••••">
+                        </div>
+                        <div class="form-group">
+                            <label class="auth-label">Nueva Contraseña</label>
+                            <input type="password" class="input-field" placeholder="••••••••">
+                        </div>
+                        <button type="submit" class="btn-outline w-full" style="color: #ef4444; border-color: #fecaca;">Cambiar Contraseña</button>
+                    </form>
+                    <div class="mt-10 pt-15 border-top" style="border-top: 1px solid var(--border-color);">
+                        <p class="font-semibold mb-10" style="font-size: 0.85rem;">Últimas Sesiones</p>
+                        <div class="flex-between card-subtitle-sm">
+                            <span>Chrome en Windows (Este)</span>
+                            <span class="text-success">Activo</span>
+                        </div>
+                        <div class="flex-between card-subtitle-sm mt-5">
+                            <span>App en iPhone 13</span>
+                            <span>Ayer, 14:20</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+</body>
+</html>

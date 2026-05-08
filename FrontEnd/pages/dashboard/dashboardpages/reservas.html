@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Reservas</title>
+    <link rel="stylesheet" href="../../../style/dashboard.css">
+</head>
+<body>
+
+    <!-- CONTROL DE MENÚ MÓVIL (SÓLO CSS) -->
+    <input type="checkbox" id="menu-cb" hidden>
+
+    <!-- OVERLAY PARA MÓVIL -->
+    <label for="menu-cb" class="sidebar-overlay"></label>
+
+    <!-- BARRA LATERAL (SIDEBAR) -->
+    <aside>
+        <div class="sidebar-brand">
+            <div class="flex-center gap-12" style="justify-content: flex-start;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                <div>
+                    <h2 style="font-size: 1.1rem; font-weight: 800; text-transform: uppercase; margin-bottom: 2px; letter-spacing: -0.5px;">Panel Dashboard</h2>
+                    <p style="font-size: 0.75rem; color: #94a3b8; font-weight: 500;">BrigadaHostel</p>
+                </div>
+            </div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="../dashboard.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg> Resumen</a></li>
+                <li><a href="reservas.html" class="active"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> Reservas</a></li>
+                <li><a href="recepcion.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg> Recepción</a></li>
+                <li><a href="configuracion.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg> Configuración</a></li>
+            </ul>
+        </nav>
+        <div class="sidebar-footer">
+            <a href="../dashboardauth/loginDashboard.html" class="btn-logout">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                Cerrar Sesión
+            </a>
+            <a href="../../../index.html">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                Volver al sitio web
+            </a>
+        </div>
+    </aside>
+
+    <!-- ENCABEZADO (HEADER) -->
+    <header>
+        <label for="menu-cb" class="menu-toggle">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+        </label>
+        <div class="header-title">
+            <h1>Nueva Reserva</h1>
+            <p class="header-subtitle">Gestión integral de estadías</p>
+        </div>
+        <div class="user-info">
+            <span>Admin</span>
+            <div class="user-avatar-small">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            </div>
+        </div>
+    </header>
+
+    <!-- FLUJO DE RESERVA -->
+    <main>
+        <!-- INDICADOR DE PASOS -->
+        <div class="stepper">
+            <div class="step active"></div>
+            <div class="step"></div>
+            <div class="step"></div>
+            <div class="step"></div>
+        </div>
+
+        <!-- SELECCIÓN DE FECHAS -->
+        <section id="paso1" class="booking-flow">
+            <div class="content-section">
+                <h2>Selección de Fechas</h2>
+                <p class="mb-20 color-secondary">Elige el periodo de estancia para verificar disponibilidad en tiempo real.</p>
+                <form action="#paso2">
+                    <div class="form-grid-2">
+                        <div class="form-group">
+                            <label class="auth-label">Fecha de Entrada</label>
+                            <input type="date" required class="input-field">
+                        </div>
+                        <div class="form-group">
+                            <label class="auth-label">Fecha de Salida</label>
+                            <input type="date" required class="input-field">
+                        </div>
+                    </div>
+                    <div class="action-footer mt-20">
+                        <button type="submit" class="btn-premium">Ver Disponibilidad <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- SELECCIÓN DE CATEGORÍA -->
+        <section id="paso2" class="booking-flow">
+            <div class="flex-between mb-20">
+                <h2 style="margin-bottom: 0;">Tipos de Habitaciones</h2>
+                <a href="#paso1" class="btn-outline">Volver a fechas</a>
+            </div>
+            <div class="room-selection-grid">
+                <!-- Habitación Compartida -->
+                <div class="room-option-card">
+                    <div class="room-img-placeholder">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7h18v10H3z"></path><path d="M16 21v-4"></path><path d="M8 21v-4"></path><path d="M3 12h18"></path></svg>
+                        <div class="room-price-tag">$20 / noche</div>
+                    </div>
+                    <div class="room-details">
+                        <h3>Dormitorio Compartido</h3>
+                        <div class="room-features">
+                            <span class="feature-tag">8 Camas</span>
+                            <span class="feature-tag">Wifi Gratis</span>
+                            <span class="feature-tag">Locker Privado</span>
+                        </div>
+                        <p class="card-subtitle-sm mb-20">Ideal para viajeros solitarios y grupos que buscan socializar al mejor precio.</p>
+                        <a href="#paso3" class="btn-premium w-full">Seleccionar Habitación</a>
+                    </div>
+                </div>
+
+                <!-- Habitación Privada -->
+                <div class="room-option-card">
+                    <div class="room-img-placeholder">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 20h20"></path><path d="M7 20v-5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v5"></path><path d="M4 11V9a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v2"></path><circle cx="12" cy="5" r="2"></circle></svg>
+                        <div class="room-price-tag">$55 / noche</div>
+                    </div>
+                    <div class="room-details">
+                        <h3>Habitación Privada Deluxe</h3>
+                        <div class="room-features">
+                            <span class="feature-tag">Cama King</span>
+                            <span class="feature-tag">Baño Suite</span>
+                            <span class="feature-tag">Aire Acond.</span>
+                        </div>
+                        <p class="card-subtitle-sm mb-20">Máximo confort y privacidad con servicios exclusivos para tu descanso.</p>
+                        <a href="#paso3" class="btn-premium w-full">Seleccionar Habitación</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SERVICIOS Y RESUMEN -->
+        <section id="paso3" class="booking-flow">
+            <div class="grid-2 gap-24">
+                <div class="content-section">
+                    <h2>Servicios Adicionales</h2>
+                    <p class="mb-20 color-secondary">Personaliza tu estancia con nuestros servicios premium.</p>
+                    <div class="flex-column gap-15 mt-15">
+                        <label class="checkbox-label-bold">
+                            <input type="checkbox"> 
+                            <div>
+                                <span>Desayuno Buffet</span>
+                                <p class="card-subtitle-sm">Variedad local e internacional todas las mañanas (+$12/día)</p>
+                            </div>
+                        </label>
+                        <label class="checkbox-label-bold">
+                            <input type="checkbox"> 
+                            <div>
+                                <span>Traslado al Aeropuerto</span>
+                                <p class="card-subtitle-sm">Servicio puerta a puerta seguro y confiable (+$25)</p>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="action-footer mt-32">
+                        <a href="#paso2" class="btn-outline">Atrás</a>
+                    </div>
+                </div>
+
+                <div class="summary-card">
+                    <h2 class="mb-20">Resumen de Reserva</h2>
+                    <div class="summary-item">
+                        <span>Estancia (3 noches)</span>
+                        <span class="font-semibold">$165.00</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>Servicios seleccionados</span>
+                        <span class="font-semibold">$0.00</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>Impuestos (10%)</span>
+                        <span class="font-semibold">$16.50</span>
+                    </div>
+                    <div class="summary-item total-row font-semibold">
+                        <span>Total a Pagar</span>
+                        <span>$181.50</span>
+                    </div>
+                    <div class="mt-24">
+                        <a href="#final" class="btn-premium w-full">Confirmar y Finalizar</a>
+                        <a href="../dashboard.html" class="btn-block mt-15 text-danger font-semibold" style="font-size: 0.85rem;">Cancelar proceso</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONFIRMACIÓN FINAL -->
+        <section id="final" class="booking-flow">
+            <div class="content-section success-container">
+                <div class="brand-logo mb-24" style="margin-left: auto; margin-right: auto; width: 80px; height: 80px; background: #10b981;">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+                <h1 style="font-size: 2rem; margin-bottom: 10px;">¡Reserva Confirmada!</h1>
+                <p class="mb-32 color-secondary">Se ha enviado un correo de confirmación con los detalles de tu estancia y el código de reserva #BH-9921.</p>
+                <div class="flex-center gap-15">
+                    <a href="../dashboard.html" class="btn-premium">Ir al Dashboard</a>
+                    <button class="btn-outline">Descargar PDF</button>
+                </div>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

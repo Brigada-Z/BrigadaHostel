@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Recepcion</title>
+    <link rel="stylesheet" href="../../../style/dashboard.css">
+</head>
+<body>
+
+    <!-- CONTROL DE MENÚ MÓVIL (SÓLO CSS) -->
+    <input type="checkbox" id="menu-cb" hidden>
+
+    <!-- OVERLAY PARA MÓVIL -->
+    <label for="menu-cb" class="sidebar-overlay"></label>
+
+    <!-- BARRA LATERAL (SIDEBAR) -->
+    <aside>
+        <div class="sidebar-brand">
+            <div class="flex-center gap-12" style="justify-content: flex-start;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                <div>
+                    <h2 style="font-size: 1.1rem; font-weight: 800; text-transform: uppercase; margin-bottom: 2px; letter-spacing: -0.5px;">Panel Dashboard</h2>
+                    <p style="font-size: 0.75rem; color: #94a3b8; font-weight: 500;">BrigadaHostel</p>
+                </div>
+            </div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="../dashboard.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg> Resumen</a></li>
+                <li><a href="reservas.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> Reservas</a></li>
+                <li><a href="recepcion.html" class="active"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg> Recepción</a></li>
+                <li><a href="configuracion.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg> Configuración</a></li>
+            </ul>
+        </nav>
+        <div class="sidebar-footer">
+            <a href="../dashboardauth/loginDashboard.html" class="btn-logout">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                Cerrar Sesión
+            </a>
+            <a href="../../../index.html">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                Volver al sitio web
+            </a>
+        </div>
+    </aside>
+
+    <!-- ENCABEZADO (HEADER) -->
+    <header>
+        <label for="menu-cb" class="menu-toggle">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+        </label>
+        <div class="header-title">
+            <h1>Gestión de Recepción</h1>
+            <p class="header-subtitle">Enfoque Administrativo y Eficiencia Operativa</p>
+        </div>
+        <div class="user-info">
+            <span>Admin</span>
+            <div class="user-avatar-small">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            </div>
+        </div>
+    </header>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main>
+        <!-- MÉTRICAS OPERATIVAS -->
+        <div class="dashboard-grid">
+            <!-- Productividad de Recepción -->
+            <div class="metric-card">
+                <div class="flex-between">
+                    <h3 style="font-size: 0.7rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 0; text-transform: uppercase;">Productividad Staff</h3>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg>
+                </div>
+                <div class="metric-value">142</div>
+                <div class="metric-trend trend-up">▲ 12 gestiones/hoy</div>
+            </div>
+            <!-- No-Show Rate (Incomparecencia) -->
+            <div class="metric-card">
+                <div class="flex-between">
+                    <h3 style="font-size: 0.7rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 0; text-transform: uppercase;">No-Show Rate</h3>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+                </div>
+                <div class="metric-value">2.1%</div>
+                <div class="metric-trend trend-down">▼ 0.5% mejora</div>
+            </div>
+            <!-- Tiempo Promedio de Check-in -->
+            <div class="metric-card">
+                <div class="flex-between">
+                    <h3 style="font-size: 0.7rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 0; text-transform: uppercase;">T. Promedio Check-in</h3>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                </div>
+                <div class="metric-value">4.5 min</div>
+                <div class="metric-trend trend-down">▼ 1.2 min agilidad</div>
+            </div>
+            <!-- Ingresos por Gestión en Mostrador -->
+            <div class="metric-card">
+                <div class="flex-between">
+                    <h3 style="font-size: 0.7rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 0; text-transform: uppercase;">Ingresos Mostrador</h3>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                </div>
+                <div class="metric-value">$1,240</div>
+                <div class="metric-trend trend-up">▲ 15% venta directa</div>
+            </div>
+        </div>
+
+        <!-- ESTADO Y EFICIENCIA -->
+        <div class="chart-grid">
+            <!-- Tasa de Ocupación Diaria -->
+            <section class="content-section">
+                <div class="flex-between mb-20">
+                    <h2 style="font-size: 1.125rem; font-weight: 700; margin-bottom: 0; color: #0f172a;">Ocupación Real Diaria</h2>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1e293b" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+                </div>
+                <div class="flex-center mt-20">
+                    <div class="progress-circle" data-inner="85%" style="--percentage: 85%;"></div>
+                    <div class="ml-20">
+                        <p class="font-semibold">18 de 24 hab.</p>
+                        <p class="card-subtitle-sm">Ocupación optimizada</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Estado de Habitaciones -->
+            <section class="content-section">
+                <div class="flex-between mb-20">
+                    <h2 style="font-size: 1.125rem; font-weight: 700; margin-bottom: 0; color: #0f172a;">Estado de Inventario</h2>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1e293b" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+                </div>
+                <div class="dist-bar mt-20">
+                    <div class="dist-segment bg-occ w-70p"></div>
+                    <div class="dist-segment bg-clean w-15p"></div>
+                    <div class="dist-segment bg-dirty w-10p"></div>
+                    <div class="dist-segment bg-maint w-15p"></div>
+                </div>
+                <div class="pie-legend" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <div class="legend-item"><div class="legend-color bg-occ"></div> Ocupadas (18)</div>
+                    <div class="legend-item"><div class="legend-color bg-clean"></div> Limpias (4)</div>
+                    <div class="legend-item"><div class="legend-color bg-dirty"></div> Sucias (2)</div>
+                    <div class="legend-item"><div class="legend-color bg-maint"></div> Mantenim. (0)</div>
+                </div>
+            </section>
+
+            <!-- Volumen de Modificaciones Manuales -->
+            <section class="content-section">
+                <div class="flex-between mb-20">
+                    <h2 style="font-size: 1.125rem; font-weight: 700; margin-bottom: 0; color: #0f172a;">Modificaciones Manuales</h2>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1e293b" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                </div>
+                <div class="chart-container h-150 mt-20">
+                    <div class="bar color-3" style="height: 30%;" data-label="Lun"></div>
+                    <div class="bar color-3" style="height: 85%;" data-label="Mar"></div>
+                    <div class="bar color-3" style="height: 45%;" data-label="Mie"></div>
+                    <div class="bar color-3" style="height: 60%;" data-label="Jue"></div>
+                    <div class="bar color-3" style="height: 20%;" data-label="Vie"></div>
+                </div>
+            </section>
+
+            <!-- Efectividad de Cancelaciones -->
+            <section class="content-section">
+                <div class="flex-between mb-20">
+                    <h2 style="font-size: 1.125rem; font-weight: 700; margin-bottom: 0; color: #0f172a;">Origen de Cancelaciones</h2>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1e293b" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+                </div>
+                <div class="flex-column gap-20 mt-20">
+                    <div class="flex-between">
+                        <span>Admin/Recepc.</span>
+                        <div class="comp-bar-container w-full" style="max-width: 250px;">
+                            <div class="comp-bar bg-dirty w-45p">45%</div>
+                        </div>
+                    </div>
+                    <div class="flex-between">
+                        <span>Autogestión Usu.</span>
+                        <div class="comp-bar-container w-full" style="max-width: 250px;">
+                            <div class="comp-bar bg-occ w-85p">55%</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Previsión de Salidas (Check-outs) -->
+            <section class="content-section">
+                <div class="flex-between mb-20">
+                    <h2 style="font-size: 1.125rem; font-weight: 700; margin-bottom: 0; color: #0f172a;">Previsión Check-outs</h2>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1e293b" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                </div>
+                <div class="h-bar-group mt-20">
+                    <div class="h-bar-item"><div class="h-bar-label"><span>Mañana (08 May)</span><span>12 Salidas</span></div><div class="h-bar-bg"><div class="h-bar-fill w-85p" style="background:#ef4444;"></div></div></div>
+                    <div class="h-bar-item"><div class="h-bar-label"><span>Pasado (09 May)</span><span>5 Salidas</span></div><div class="h-bar-bg"><div class="h-bar-fill w-30p" style="background:#ef4444;"></div></div></div>
+                </div>
+            </section>
+
+            <!-- Reporte de Discrepancias de Costos -->
+            <section class="content-section">
+                <div class="flex-between mb-20">
+                    <h2 style="font-size: 1.125rem; font-weight: 700; margin-bottom: 0; color: #0f172a;">Discrepancia de Montos</h2>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1e293b" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                </div>
+                <div class="metric-card mt-20" style="box-shadow: none; border-color: #fecaca; background: #fff1f2;">
+                    <div class="flex-between">
+                        <span class="font-semibold">Calculado vs Cobrado</span>
+                        <span class="text-danger font-semibold">+$245.00</span>
+                    </div>
+                    <p class="card-subtitle-sm mt-8">Ajustes manuales en mostrador vs presupuesto original.</p>
+                </div>
+            </section>
+        </div>
+
+        <!-- SECCIÓN DE GESTIÓN DE RESERVAS -->
+        <section class="content-section mt-32">
+            <h2>Gestionar Reservas Activas</h2>
+            <table class="mt-20">
+                <thead><tr><th>Huésped</th><th>Hab.</th><th>Estado</th><th>Gestión</th><th>Acciones</th></tr></thead>
+                <tbody>
+                    <tr>
+                        <td data-label="Huésped">Juan Pérez</td>
+                        <td data-label="Hab.">Suite 201</td>
+                        <td data-label="Estado"><span class="status hosted">Hospedado</span></td>
+                        <td data-label="Gestión"><button class="btn btn-secondary btn-small">Actualizar</button></td>
+                        <td data-label="Acciones">
+                            <div class="flex-center gap-8">
+                                <button class="btn btn-primary btn-small">Check-out</button>
+                                <button class="btn btn-secondary btn-small text-danger">Reportar</button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </main>
+</body>
+</html>
