@@ -626,6 +626,20 @@ table tr:hover td {
     margin-bottom: 4px;
 }
 
+.forgot-password {
+    display: block;
+    text-align: right;
+    font-size: 0.8rem;
+    margin-top: 8px;
+    color: var(--bg-sidebar);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.forgot-password:hover {
+    text-decoration: underline;
+}
+
 .input-field {
     width: 100%;
     padding: 16px 22px;
@@ -805,6 +819,30 @@ select.input-field {
     margin-left: 4px;
 }
 
+.back-home {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: var(--bg-sidebar);
+    color: white;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    box-shadow: var(--shadow-md);
+    transition: var(--transition);
+    z-index: 1000;
+}
+
+.back-home:hover {
+    transform: scale(1.1);
+    filter: brightness(1.2);
+    box-shadow: var(--shadow-lg);
+}
+
 /* --- BOOKING FLOW & REDESIGN --- */
 .booking-flow { display: none; }
 .booking-flow:target { display: block; animation: fadeIn 0.4s ease-out; }
@@ -931,35 +969,37 @@ select.input-field {
 
 /* Polished Buttons */
 .btn-premium {
-    background: linear-gradient(135deg, var(--bg-sidebar) 0%, #334155 100%);
+    background: var(--accent-color);
     color: white;
     border: none;
-    padding: 14px 28px;
-    border-radius: 12px;
-    font-weight: 700;
+    padding: 10px 22px;
+    border-radius: 10px;
+    font-weight: 500;
+    font-size: 0.9rem;
     text-decoration: none;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 8px;
     transition: var(--transition);
     cursor: pointer;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 2px 4px rgba(0, 113, 227, 0.2);
 }
 
 .btn-premium:hover {
-    filter: brightness(1.2);
-    transform: translateY(-2px);
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    background: var(--hover-color);
+    transform: none;
+    box-shadow: 0 4px 8px rgba(0, 113, 227, 0.3);
 }
 
 .btn-outline {
     background: white;
-    border: 2px solid var(--border-color);
+    border: 1px solid var(--border-color);
     color: var(--text-primary);
-    padding: 12px 24px;
-    border-radius: 12px;
-    font-weight: 700;
+    padding: 9px 21px;
+    border-radius: 10px;
+    font-weight: 500;
+    font-size: 0.9rem;
     text-decoration: none;
     transition: var(--transition);
     box-shadow: var(--shadow-sm);
@@ -997,6 +1037,50 @@ select.input-field {
     border-top: 2px dashed var(--border-color);
     font-size: 1.2rem;
     color: var(--bg-sidebar);
+}
+
+/* --- WIZARD LOGIC (CSS ONLY) --- */
+.step-content {
+    display: none;
+    animation: fadeIn 0.4s ease-out;
+}
+
+#step1:checked ~ .wizard-container #content-step1 { display: block; }
+#step2:checked ~ .wizard-container #content-step2 { display: block; }
+#step3:checked ~ .wizard-container #content-step3 { display: block; }
+#step-success:checked ~ .wizard-container #content-step-success { display: block; }
+
+/* Wizard Indicators */
+#step1:checked ~ .wizard-container .dot:nth-child(1),
+#step2:checked ~ .wizard-container .dot:nth-child(1),
+#step2:checked ~ .wizard-container .dot:nth-child(2),
+#step3:checked ~ .wizard-container .dot:nth-child(1),
+#step3:checked ~ .wizard-container .dot:nth-child(2),
+#step3:checked ~ .wizard-container .dot:nth-child(3) {
+    background: var(--accent-color);
+}
+
+.wizard-steps-indicator {
+    display: flex;
+    gap: 8px;
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #e2e8f0;
+    transition: var(--transition);
+}
+
+.wizard-container {
+    transition: var(--transition);
+}
+
+/* Animations for step transition */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 /* --- RECEPTION CHARTS --- */
@@ -1381,6 +1465,221 @@ select.input-field {
 
     .mt-32 { margin-top: 48px !important; }
 
+/* --- SEARCH BAR --- */
+.search-container {
+    background-color: var(--bg-card);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    padding: 12px 20px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 32px;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+}
+
+.search-container:focus-within {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.1);
+}
+
+.search-input {
+    background: transparent;
+    border: none;
+    outline: none;
+    flex: 1;
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    letter-spacing: -0.01em;
+}
+
+/* --- MODAL CSS ONLY --- */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+}
+
+.modal-overlay:target {
+    display: flex;
+}
+
+.modal-content {
+    background: white;
+    padding: 48px;
+    border-radius: 24px;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: var(--shadow-lg);
+    text-align: center;
+    border: 1px solid var(--border-color);
+}
+
+.modal-actions {
+    display: flex;
+    gap: 16px;
+    margin-top: 32px;
+    justify-content: center;
+}
+
+.modal-actions .btn-premium, 
+.modal-actions .btn-outline {
+    min-width: 140px;
+    padding: 12px 24px;
+}
+
+/* --- REFINED LAYOUT & SPACING --- */
+main {
+    padding: 60px 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.content-section {
+    background-color: var(--bg-card);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    padding: 48px;
+    border-radius: 20px;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-md);
+    margin-bottom: 56px;
+}
+
+/* --- INTEGRATED SEARCH --- */
+.search-container {
+    background-color: rgba(0, 0, 0, 0.03);
+    border: 1px solid transparent;
+    padding: 12px 20px;
+    border-radius: 12px;
+    margin-bottom: 48px;
+    width: 100%;
+    max-width: 440px;
+    transition: var(--transition);
+}
+
+.search-container:focus-within {
+    background-color: white;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.1);
+}
+
+/* --- NEAT TABLE --- */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table th {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+table td {
+    padding: 18px 16px;
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    border-bottom: 1px solid rgba(0,0,0,0.03);
+}
+
+table tr:hover td {
+    background-color: rgba(0, 0, 0, 0.01);
+}
+
+/* --- CENTRALIZED MANAGEMENT (PRO) --- */
+.management-view {
+    display: none;
+    margin-top: 80px; /* Large separation from the list above */
+    padding-top: 48px;
+    border-top: 2px dashed var(--border-color); /* Visual divider */
+    animation: fadeIn 0.6s ease-out;
+}
+
+#toggle-gestion:checked ~ main .management-view {
+    display: block;
+}
+
+/* Modal Checkbox Logic */
+#toggle-checkin:checked ~ main .modal-overlay {
+    display: flex;
+}
+
+.detail-card {
+    padding: 56px; /* Even more spacious */
+}
+
+.management-actions-grid {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 64px;
+    padding-top: 40px;
+    border-top: 1px solid var(--border-color);
+}
+
+.management-actions-grid .btn-large {
+    width: auto;
+    min-width: 160px;
+}
+
+/* Status Badges Refined */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    font-weight: 700;
+}
+
+.status-pending { background: #fff9db; color: #f08c00; }
+.status-active { background: #ebfbee; color: #2b8a3e; }
+
+/* --- RESERVATION TABLE ACTIONS --- */
+.action-btn {
+    padding: 8px;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+    text-decoration: none;
+}
+
+.btn-update { background-color: #f1f5f9; color: var(--bg-sidebar); }
+.btn-update:hover { background-color: #e2e8f0; }
+.btn-cancel { background-color: #fee2e2; color: #ef4444; }
+.btn-cancel:hover { background-color: #fecaca; }
+.btn-checkin { background-color: #dcfce7; color: #10b981; }
+.btn-checkin:hover { background-color: #bbf7d0; }
+
+.status-badge {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.status-active { background: #dcfce7; color: #166534; }
+.status-pending { background: #fef9c3; color: #854d0e; }
+
     /* Responsive Table to Cards */
     table, thead, tbody, th, td, tr {
         display: block;
@@ -1432,6 +1731,16 @@ select.input-field {
     }
 
     .flex-center.gap-8 {
+        justify-content: flex-end;
+        width: 100%;
+    }
+}
+flex-center.gap-8 {
+        justify-content: flex-end;
+        width: 100%;
+    }
+}
+ {
         justify-content: flex-end;
         width: 100%;
     }
