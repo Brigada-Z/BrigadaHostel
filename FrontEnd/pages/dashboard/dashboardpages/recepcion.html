@@ -38,7 +38,7 @@
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
                 Cerrar Sesión
             </a>
-            <a href="../../../index.html">
+            <a href="../../index.html">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
                 Volver al sitio web
             </a>
@@ -64,6 +64,124 @@
 
     <!-- CONTENIDO PRINCIPAL -->
     <main>
+        <!-- SECCIÓN DE ACCESO RÁPIDO A RESERVAS (WIZARD CSS) -->
+        <section class="content-section mb-32" style="padding: 0; overflow: hidden; border: none; background: transparent; box-shadow: none;">
+            <!-- CONTROLES DE ESTADO DEL WIZARD (SÓLO CSS) -->
+            <input type="radio" name="wizard-step" id="step1" checked hidden>
+            <input type="radio" name="wizard-step" id="step2" hidden>
+            <input type="radio" name="wizard-step" id="step3" hidden>
+            <input type="radio" name="wizard-step" id="step-success" hidden>
+
+            <div class="wizard-container content-section">
+                <!-- CABECERA DEL WIZARD  (Caso de Uso: Reservar Habitacion.)-->
+                <div class="wizard-header flex-between mb-32">
+                    <div>
+                        <h2 style="margin-bottom: 4px;">Registrar Reserva</h2>
+                        <p class="header-subtitle">Completa los pasos obligatorios para el registro</p>
+                    </div>
+                    <div class="wizard-steps-indicator">
+                        <span class="dot active"></span>
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                    </div>
+                </div>
+
+                <form action="#">
+                    <!-- PASO 1: VERIFICAR DISPONIBILIDAD (INCLUDE) -->
+                    <div class="step-content" id="content-step1">
+                        <div class="form-grid-2">
+                            <div class="form-group">
+                                <label class="auth-label">Nombre del Huésped</label>
+                                <input type="text" class="input-field" placeholder="Ej. Juan Pérez" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="auth-label">DNI / Pasaporte</label>
+                                <input type="text" class="input-field" placeholder="Documento de identidad" required>
+                            </div>
+                        </div>
+                        <div class="form-grid-2 mt-20">
+                            <div class="form-group">
+                                <label class="auth-label">Fecha de Entrada</label>
+                                <input type="date" class="input-field" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="auth-label">Fecha de Salida</label>
+                                <input type="date" class="input-field" required>
+                            </div>
+                        </div>
+                        <div class="action-footer mt-32 flex-between">
+                            <a href="recepcion.html" class="btn-block text-danger font-semibold" style="font-size: 0.85rem;">Cancelar proceso</a>
+                            <label for="step2" class="btn-premium">Verificar Disponibilidad</label>
+                        </div>
+                    </div>
+
+                    <!-- PASO 2: SELECCIÓN DE HABITACIÓN Y SERVICIOS (EXTENDS) -->
+                    <div class="step-content" id="content-step2">
+                        <div class="form-group">
+                            <label class="auth-label">Habitaciones Disponibles</label>
+                            <select class="input-field" style="appearance: auto;" required>
+                                <option value="" disabled selected>Selecciona una opción...</option>
+                                <option value="101">Suite Deluxe - Hab 101 ($55/noche)</option>
+                                <option value="102">Habitación Doble - Hab 102 ($40/noche)</option>
+                                <option value="201">Dormitorio Compartido - Cama 4 ($20/noche)</option>
+                            </select>
+                        </div>
+
+                        <!-- SOLICITAR SERVICIO ADICIONAL (EXTENDS) -->
+                        <div class="mt-24 p-20" style="background: #f8f9fa; border-radius: 12px; border: 1px dashed var(--border-color);">
+                            <label class="auth-label" style="display: flex; align-items: center; gap: 8px;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                                Servicios Adicionales (Opcional)
+                            </label>
+                            <div class="flex-column gap-12 mt-12">
+                                <label style="display: flex; align-items: center; gap: 10px; font-size: 0.9rem; cursor: pointer;">
+                                    <input type="checkbox"> Desayuno Buffet (+$12)
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 10px; font-size: 0.9rem; cursor: pointer;">
+                                    <input type="checkbox"> Traslado Aeropuerto (+$25)
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="action-footer mt-32 flex-between">
+                            <label for="step1" class="btn-outline">Volver</label>
+                            <label for="step3" class="btn-premium">Calcular Costo Final</label>
+                        </div>
+                    </div>
+
+                    <!-- PASO 3: CALCULAR COSTO Y PERSISTENCIA (INCLUDE) -->
+                    <div class="step-content" id="content-step3">
+                        <div class="summary-card" style="box-shadow: none; border: 1px solid var(--border-color); background: #fdfdfd;">
+                            <div class="summary-item"><span>Estancia Seleccionada</span><span class="font-semibold">$165.00</span></div>
+                            <div class="summary-item"><span>Servicios Adicionales</span><span class="font-semibold">$0.00</span></div>
+                            <div class="summary-item" style="border-bottom: 2px solid var(--bg-main); margin-bottom: 10px; padding-bottom: 15px;"><span>Impuestos (10%)</span><span class="font-semibold">$16.50</span></div>
+                            <div class="summary-item total-row" style="font-size: 1.25rem; color: var(--accent-color);">
+                                <span>Total a Confirmar</span>
+                                <strong>$181.50</strong>
+                            </div>
+                        </div>
+
+                        <div class="action-footer mt-32 flex-between">
+                            <label for="step2" class="btn-outline">Editar selección</label>
+                            <label for="step-success" class="btn-premium" style="background: var(--accent-green); border-color: var(--accent-green);">Confirmar y Reservar</label>
+                        </div>
+                    </div>
+
+                    <!-- EXITO: PERSISTENCIA COMPLETADA -->
+                    <div class="step-content" id="content-success">
+                        <div class="flex-center flex-column" style="padding: 20px 0;">
+                            <div class="brand-logo" style="width: 64px; height: 64px; background: var(--accent-green); color: white; margin-bottom: 20px;">
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            </div>
+                            <h2 style="color: var(--accent-green);">¡Reserva Exitosa!</h2>
+                            <p class="color-secondary text-center mt-8">Los datos han sido persistidos en el sistema.<br>Código de confirmación: <strong>#BH-1002</strong></p>
+                            <a href="recepcion.html" class="btn-premium mt-24">Finalizar y Limpiar</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </section>
+
         <!-- MÉTRICAS OPERATIVAS -->
         <div class="dashboard-grid">
             <!-- Productividad de Recepción -->
@@ -206,27 +324,6 @@
             </section>
         </div>
 
-        <!-- SECCIÓN DE GESTIÓN DE RESERVAS -->
-        <section class="content-section mt-32">
-            <h2>Gestionar Reservas Activas</h2>
-            <table class="mt-20">
-                <thead><tr><th>Huésped</th><th>Hab.</th><th>Estado</th><th>Gestión</th><th>Acciones</th></tr></thead>
-                <tbody>
-                    <tr>
-                        <td data-label="Huésped">Juan Pérez</td>
-                        <td data-label="Hab.">Suite 201</td>
-                        <td data-label="Estado"><span class="status hosted">Hospedado</span></td>
-                        <td data-label="Gestión"><button class="btn btn-secondary btn-small">Actualizar</button></td>
-                        <td data-label="Acciones">
-                            <div class="flex-center gap-8">
-                                <button class="btn btn-primary btn-small">Check-out</button>
-                                <button class="btn btn-secondary btn-small text-danger">Reportar</button>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </section>
     </main>
 </body>
 </html>
