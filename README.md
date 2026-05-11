@@ -261,11 +261,12 @@ feature/huespedes-alejo
 
 | Área | Responsable |
 |---|---|
-| Inicio / Home | [@Oscar Quevedo](https://github.com/Oscar-Quevedo) |
-| Dashboard | [@Jorge Quevedo](https://github.com/JQuevedoJorge) |
-| Métricas + Caso de Uso | [@Mauricio Ferreyra](https://github.com/EmiTeck) |
-| Operaciones + Diagramas | [@Giuliano Batistella](https://github.com/gbatistela) |
-| Huéspedes + README + Branching | [@Alejo Camolotto](https://github.com/Camolotto) |
+| Inicio / Home | [Oscar Quevedo](https://github.com/Oscar-Quevedo) |
+| Sobre Nosotros | [Jorge Quevedo](https://github.com/JQuevedoJorge) |
+| Dashboard | [Agusin Gallardo](https://github.com/agstudio98) |
+| Métricas + Caso de Uso | [Mauricio Ferreyra](https://github.com/EmiTeck) |
+| Operaciones + Diagramas | [Giuliano Batistella](https://github.com/gbatistela) |
+| Huéspedes + README + Branching | [Alejo Camolotto](https://github.com/Camolotto) |
 
 > En caso de dificultades utilizando Git por terminal, también pueden realizarse modificaciones directamente desde GitHub mediante edición web y commits manuales.
 
