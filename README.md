@@ -240,14 +240,6 @@ El proyecto utiliza una metodología basada en ramas para facilitar el trabajo c
 - `develop` → integración general
 - `feature/*` → desarrollo individual
 
-**Ejemplos:**
-```
-feature/home-oscar
-feature/dashboard-jorge
-feature/metricas-emi
-feature/operaciones-giuliano
-feature/huespedes-alejo
-```
 
 ### Flujo de trabajo
 
