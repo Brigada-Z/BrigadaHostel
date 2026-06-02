@@ -100,24 +100,6 @@ Módulo orientado al trabajo operativo del mostrador y gestión diaria de huésp
 
 ---
 
-### Huéspedes — Análisis de Huéspedes
-
-Permite comprender el perfil y comportamiento de los visitantes mediante datos demográficos y patrones de estadía.
-
----
-
-### Operaciones — Operaciones y Eficiencia
-
-Muestra el estado operativo interno del hostel y permite monitorear el rendimiento diario del personal y los recursos.
-
----
-
-### Métricas — Métricas Financieras y Operativas
-
-Panel financiero y operativo del hostel con indicadores clave de rendimiento (RevPAR, ADR, Ocupación segmentada).
-
----
-
 ### Configuración — Ajustes del Sistema
 
 Módulo de personalización de la cuenta y el entorno del administrador.
