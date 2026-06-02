@@ -1393,6 +1393,48 @@ select.input-field {
 .color-4 { background: #94a3b8; }
 .color-5 { background: #cbd5e1; }
 
+/* --- ROLE-BASED DISPLAY LOGIC --- */
+#role-toggle { display: none; }
+
+/* Default: Admin view (everything visible) */
+/* When Receptionist is checked: */
+#role-toggle:checked ~ aside nav ul li.admin-only {
+    display: none;
+}
+
+#role-toggle:checked ~ main section.admin-only,
+#role-toggle:checked ~ main div.admin-only {
+    display: none;
+}
+
+/* Switcher styling in header */
+.role-switcher {
+    display: flex;
+    background: #f1f5f9;
+    padding: 4px;
+    border-radius: 100px;
+    margin-right: 20px;
+    position: relative;
+    border: 1px solid var(--border-color);
+}
+
+.role-label {
+    padding: 6px 16px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    cursor: pointer;
+    border-radius: 100px;
+    transition: var(--transition);
+    color: #64748b;
+}
+
+#role-toggle:not(:checked) ~ header .role-label.admin-label,
+#role-toggle:checked ~ header .role-label.recep-label {
+    background: var(--bg-sidebar);
+    color: white;
+    box-shadow: var(--shadow-sm);
+}
+
 /* Responsive */
 @media (max-width: 1200px) {
     .dashboard-grid { grid-template-columns: repeat(2, 1fr); }
