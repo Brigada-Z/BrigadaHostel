@@ -76,6 +76,11 @@
 
     <!-- SECCIÓN DE MÉTRICAS RÁPIDAS -->
     <main>
+        <div class="mb-40">
+            <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin-bottom: 8px;">Datos Principales</h2>
+            <p class="header-subtitle">Resumen operativo actual del hostel</p>
+        </div>
+
         <!-- MÉTRICAS CLAVE (Acotadas a lo operacional) -->
         <div class="dashboard-grid">
             <!-- Ocupación Real Diaria -->
@@ -179,6 +184,42 @@
                     </div>
                 </div>
             </section>
+        </div>
+
+        <!-- SECCIÓN: DATOS SECUNDARIOS -->
+        <div class="mt-56 mb-40 admin-only">
+            <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin-bottom: 8px;">Datos Secundarios</h2>
+            <p class="header-subtitle">Datos que se desearian implementar a futuro</p>
+        </div>
+
+        <div class="dashboard-grid admin-only">
+            <!-- Huéspedes Placeholder -->
+            <div class="metric-card" style="opacity: 0.6; border-style: dashed; background: #f8fafc;">
+                <div class="flex-between">
+                    <h3 style="font-size: 0.7rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 0; text-transform: uppercase;">Módulo Huéspedes</h3>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg>
+                </div>
+                <div class="metric-value" style="font-size: 1.25rem; margin: 15px 0;">Fase de Diseño</div>
+                <p class="header-subtitle">Análisis de nacionalidades, edades y recurrencia de clientes.</p>
+            </div>
+            <!-- Operaciones Placeholder -->
+            <div class="metric-card" style="opacity: 0.6; border-style: dashed; background: #f8fafc;">
+                <div class="flex-between">
+                    <h3 style="font-size: 0.7rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 0; text-transform: uppercase;">Módulo Operaciones</h3>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>
+                </div>
+                <div class="metric-value" style="font-size: 1.25rem; margin: 15px 0;">Pendiente</div>
+                <p class="header-subtitle">Control de inventario, limpieza, consumos y mantenimiento.</p>
+            </div>
+            <!-- Métricas Placeholder -->
+            <div class="metric-card" style="opacity: 0.6; border-style: dashed; background: #f8fafc;">
+                <div class="flex-between">
+                    <h3 style="font-size: 0.7rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 0; text-transform: uppercase;">Módulo Métricas</h3>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                </div>
+                <div class="metric-value" style="font-size: 1.25rem; margin: 15px 0;">Próximamente</div>
+                <p class="header-subtitle">Indicadores financieros RevPAR, ADR y ROI de campañas.</p>
+            </div>
         </div>
     </main>
 </body>
