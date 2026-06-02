@@ -3,356 +3,377 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Reservas</title>
+    <title>Gestión de Reservas - BrigadaHostel Admin</title>
     <link rel="stylesheet" href="../../../style/dashboard.css">
 </head>
 <body>
 
-    <!-- CONTROL DE MENÚ MÓVIL (SÓLO CSS) -->
+    <!-- CONTROLES DE ESTADO (PURO CSS) -->
+    <input type="checkbox" id="role-toggle" hidden> <!-- OFF: Admin / ON: Recep -->
     <input type="checkbox" id="menu-cb" hidden>
-
+    
     <!-- OVERLAY PARA MÓVIL -->
     <label for="menu-cb" class="sidebar-overlay"></label>
 
-    <!-- BARRA LATERAL (SIDEBAR) -->
+    <!-- SIDEBAR -->
     <aside>
         <div class="sidebar-brand">
             <div class="flex-center gap-12" style="justify-content: flex-start;">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
                 <div>
-                    <h2 style="font-size: 1.1rem; font-weight: 800; text-transform: uppercase; margin-bottom: 2px; letter-spacing: -0.5px;">Panel Dashboard</h2>
-                    <p style="font-size: 0.75rem; color: #94a3b8; font-weight: 500;">BrigadaHostel</p>
+                    <h2 style="font-size: 1.1rem; font-weight: 800; letter-spacing: -0.5px;">BRIGADA <span style="color: #94a3b8; font-weight: 500;">ADMIN</span></h2>
                 </div>
             </div>
         </div>
         <nav>
             <ul>
-                <li><a href="../dashboard.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg> Resumen</a></li>
-                <li><a href="reservas.html" class="active"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> Reservas</a></li>
-                <li><a href="recepcion.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg> Recepción</a></li>
-                <li><a href="configuracion.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg> Configuración</a></li>
+                <li><a href="../dashboard.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg> Resumen</a></li>
+                <li><a href="reservas.html" class="active"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> Reservas</a></li>
+                <li class="admin-only"><a href="configuracion.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg> Configuración</a></li>
             </ul>
         </nav>
         <div class="sidebar-footer">
-            <a href="../dashboardauth/loginDashboard.html" class="btn-logout">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
-                Cerrar Sesión
-            </a>
-            <a href="../../index.html">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-                Volver al sitio web
-            </a>
+            <a href="../dashboardauth/loginDashboard.html" class="btn-logout"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg> Cerrar Sesión</a>
         </div>
     </aside>
 
-    <!-- ENCABEZADO (HEADER) -->
+    <!-- HEADER -->
     <header>
-        <label for="menu-cb" class="menu-toggle">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
-        </label>
+        <label for="menu-cb" class="menu-toggle"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></label>
         <div class="header-title">
-            <h1>Gestión de Reservas</h1>
-            <p class="header-subtitle">Administrar, buscar y confirmar estadías</p>
+            <h1>Reservas</h1>
+            <p class="header-subtitle" id="dynamic-subtitle">Panel de Control General</p>
         </div>
-        <div class="user-info">
-            <span>Admin</span>
-            <div class="user-avatar-small">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+        <div style="display: flex; align-items: center; margin-left: auto;">
+            <div class="role-switcher">
+                <label for="role-toggle" class="role-label admin-label">Admin</label>
+                <a href="../dashboardUsuario.html" class="role-label recep-label" style="text-decoration: none; color: inherit;">Usuario</a>
+            </div>
+            <div class="user-info">
+                <span>Sesión Activa</span>
+                <div class="user-avatar-small"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></div>
             </div>
         </div>
     </header>
 
-    <!-- GESTIÓN DE RESERVAS (Caso de Uso: Gestion de Reserva.)-->
     <main>
-        <!-- CONTROLES DE ESTADO (SÓLO CSS) -->
-        <input type="checkbox" id="toggle-gestion" hidden>
-        <input type="checkbox" id="toggle-checkin" hidden>
+        
+        <!-- VISTA ADMIN: GESTIÓN DE RESERVAS -->
+        <div class="admin-wrapper">
+            <!-- TOGGLES LOCALES ADMIN -->
+            <input type="checkbox" id="toggle-search-fail" hidden>
+            <input type="checkbox" id="toggle-detail-side" hidden>
+            <input type="checkbox" id="toggle-cancel-modal" hidden>
+            <input type="checkbox" id="toggle-toast-msg" hidden>
+            <input type="radio" name="side-tab" id="side-tab-edit" checked hidden>
+            <input type="radio" name="side-tab" id="side-tab-audit" hidden>
 
-        <!-- VISTA DE DETALLE / GESTIÓN -->
-        <div class="management-view">
-            <div class="detail-card content-section">
-                <div class="flex-between mb-40">
-                    <div>
-                        <span class="status-badge status-pending mb-8">Acción Requerida</span>
-                        <h3 style="font-size: 1.5rem; font-weight: 700;">Gestión de Reserva</h3>
-                        <p class="header-subtitle">Módulo para actualizar datos, confirmar llegadas o cancelar estadías de forma centralizada.</p>
+            <!-- 1. MÓDULO DE BÚSQUEDA -->
+            <section class="admin-search-module mb-40">
+                <div class="flex-column gap-24">
+                    <div class="search-bar-row flex-between gap-16">
+                        <!-- 1.1 Barra de búsqueda global -->
+                        <div class="search-premium-box">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                            <input type="text" class="search-input" placeholder="Buscar por Huésped, DNI/Pasaporte o Código #BH...">
+                        </div>
+                        <!-- 1.2 Filtros rápidos -->
+                        <div class="filters-premium-row flex-center gap-12">
+                            <select class="input-field filter-select"><option>Estadía: Hoy</option><option>Esta Semana</option><option>Próximos 30 días</option></select>
+                            <select class="input-field filter-select"><option>Estado: Todos</option><option>Pendientes</option><option>Confirmadas</option><option>En Curso</option></select>
+                            <label for="toggle-search-fail" class="btn-outline flex-center" style="height: 52px; cursor: pointer; padding: 0 20px;">Simular Error (A3)</label>
+                        </div>
                     </div>
-                    <label for="toggle-gestion" class="btn-outline" style="cursor: pointer;">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 6px;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                        Cerrar edición
-                    </label>
                 </div>
+            </section>
 
-                <form action="#">
-                    <!-- FILTROS DE BÚSQUEDA INTERNOS -->
-                    <div class="search-section-area mb-40" style="background: #f8f9fa; padding: 24px; border-radius: 12px; border: 1px solid var(--border-color);">
-                        <h3 class="form-section-title">Búsqueda Rápida</h3>
-                        <div class="search-container" style="margin-bottom: 0; max-width: 100%;">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--text-secondary)" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                            <input type="text" class="search-input" placeholder="Buscar por código, nombre o DNI...">
-                        </div>
-                    </div>
+            <!-- 2. LISTADO DE RESULTADOS (DATA GRID) -->
+            <section class="admin-results-grid content-section">
+                <div class="flex-between mb-32">
+                    <h2 style="margin: 0; font-size: 1.35rem; font-weight: 800;">Listado Maestro de Reservas</h2>
+                    <span class="status-badge status-active" style="background: #f1f5f9; color: #475569;">3 Registros Encontrados</span>
+                </div>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Código</th>
+                                <th>Huésped</th>
+                                <th>Periodo</th>
+                                <th>Habitación</th>
+                                <th>Estado</th>
+                                <th style="text-align: right;">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="font-bold text-accent">#BH-9921</td>
+                                <td><div class="font-bold">Juan Pérez</div><div class="text-secondary" style="font-size: 0.75rem;">DNI: 20.345.678</div></td>
+                                <td>15/06 - 18/06</td>
+                                <td><span class="room-pill">Suite 101</span></td>
+                                <td><span class="badge-status yellow">Pendiente</span></td>
+                                <td style="text-align: right;"><label for="toggle-detail-side" class="btn-premium btn-small" style="cursor: pointer;">Gestionar</label></td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold text-accent">#BH-8840</td>
+                                <td><div class="font-bold">María García</div><div class="text-secondary" style="font-size: 0.75rem;">DNI: 35.123.456</div></td>
+                                <td>14/06 - 16/06</td>
+                                <td><span class="room-pill">Doble 102</span></td>
+                                <td><span class="badge-status green">Check-in</span></td>
+                                <td style="text-align: right;"><label for="toggle-detail-side" class="btn-premium btn-small" style="cursor: pointer;">Gestionar</label></td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold text-accent">#BH-7730</td>
+                                <td><div class="font-bold">Carlos Ruiz</div><div class="text-secondary" style="font-size: 0.75rem;">DNI: 12.888.444</div></td>
+                                <td>10/06 - 12/06</td>
+                                <td><span class="room-pill">Cama 4</span></td>
+                                <td><span class="badge-status red">Cancelada</span></td>
+                                <td style="text-align: right;"><label for="toggle-detail-side" class="btn-premium btn-small" style="cursor: pointer;">Gestionar</label></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
 
-                    <!-- GRUPO 1: DATOS DEL HUÉSPED -->
-                    <div class="form-section-title">Información del Huésped</div>
-                    <p class="header-subtitle mb-20">Actualiza los datos personales y de identidad del titular de la reserva.</p>
-                    <div class="form-grid-2">
-                        <div class="form-group">
-                            <label class="auth-label">Nombre Completo</label>
-                            <input type="text" class="input-field" value="Juan Pérez">
-                        </div>
-                        <div class="form-group">
-                            <label class="auth-label">Documento de Identidad</label>
-                            <input type="text" class="input-field" value="20.345.678">
-                        </div>
-                    </div>
-                    
-                    <!-- GRUPO 2: DATOS DE LA ESTANCIA -->
-                    <div class="form-section-title mt-32">Detalles de la Estancia</div>
-                    <p class="header-subtitle mb-20">Modifica las fechas de alojamiento y la habitación asignada según disponibilidad.</p>
-                    <div class="form-grid-2">
-                        <div class="form-group">
-                            <label class="auth-label">Asignación de Habitación</label>
-                            <select class="input-field" style="appearance: auto;">
-                                <option selected>Suite Deluxe - Hab 101</option>
-                                <option>Habitación Doble - Hab 102</option>
-                                <option>Dormitorio Compartido - Cama 4</option>
-                            </select>
-                        </div>
-                        <div class="form-grid-2">
-                            <div class="form-group">
-                                <label class="auth-label">Fecha Check-in</label>
-                                <input type="date" class="input-field" value="2026-05-12">
+            <!-- 3. PANEL DE DETALLE Y EDICIÓN (Side Panel) -->
+            <aside class="admin-side-panel">
+                <div class="panel-content-wrapper">
+                    <!-- Header -->
+                    <div class="panel-top-bar">
+                        <div class="flex-between mb-32">
+                            <div>
+                                <h3 style="font-size: 1.5rem; font-weight: 900; margin: 0;">Gestionar Reserva #BH-9921</h3>
+                                <p class="header-subtitle">Panel de Control y Edición Directa</p>
                             </div>
-                            <div class="form-group">
-                                <label class="auth-label">Fecha Check-out</label>
-                                <input type="date" class="input-field" value="2026-05-15">
+                            <label for="toggle-detail-side" class="close-btn-round" title="Descartar"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></label>
+                        </div>
+                        <!-- Pestañas Internas (Historial / Configuración) -->
+                        <div class="panel-tabs-row flex-center gap-32">
+                            <label for="side-tab-edit" class="tab-link-side active">Configuración y Edición</label>
+                            <label for="side-tab-audit" class="tab-link-side">Pestaña de Historial (Log)</label>
+                        </div>
+                    </div>
+
+                    <!-- Body -->
+                    <div class="panel-main-body p-40">
+                        <!-- 3.1 FORMULARIO DE ACTUALIZACIÓN -->
+                        <div id="side-content-edit" class="side-tab-pane">
+                            <form action="#">
+                                <div class="flex-column gap-24">
+                                    <div class="form-grid-2">
+                                        <div class="form-group">
+                                            <label class="auth-label">Fecha Check-in</label>
+                                            <input type="date" class="input-field" value="2026-06-15">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="auth-label">Fecha Check-out</label>
+                                            <input type="date" class="input-field" value="2026-06-18">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="auth-label">Reasignar Número de Habitación</label>
+                                        <select class="input-field" style="appearance: auto; font-weight: 600;">
+                                            <option selected>Habitación 101 (Suite)</option>
+                                            <option>Habitación 102 (Doble)</option>
+                                            <option>Cama 4 (Dormitorio)</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="auth-label">Cambiar Estado</label>
+                                        <select class="input-field" style="appearance: auto; font-weight: 800; color: #f08c00;">
+                                            <option selected>Pendiente</option>
+                                            <option>Confirmada</option>
+                                            <option>Ocupado (En curso)</option>
+                                            <option>Finalizada</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="auth-label">Agregar Notas Administrativas</label>
+                                        <textarea class="input-field" style="height: 80px; resize: none;" placeholder="Ej. El huésped requiere late check-out..."></textarea>
+                                    </div>
+
+                                    <!-- 4. ACCIONES RÁPIDAS -->
+                                    <div class="admin-quick-actions-panel mt-15 pt-32" style="border-top: 1px solid #e2e8f0;">
+                                        <h5 class="mb-16" style="font-size: 0.75rem; text-transform: uppercase; color: #64748b;">Acciones de Ejecución</h5>
+                                        <div class="flex-column gap-12">
+                                            <!-- Botón Confirmar Check-in (CTA Principal) -->
+                                            <label for="toggle-toast-msg" class="btn-premium flex-center" style="background: #10b981; height: 56px; cursor: pointer; font-weight: 800;">
+                                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="mr-8"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><polyline points="10 17 15 12 10 7"></polyline><line x1="15" y1="12" x2="3" y2="12"></line></svg>
+                                                Confirmar Check-in
+                                            </label>
+                                            <!-- Botón Cancelar Reserva (CTA Secundario/Destructivo) -->
+                                            <label for="toggle-cancel-modal" class="btn-outline flex-center text-danger" style="height: 52px; border-color: #fee2e2; background: #fff5f5; cursor: pointer; font-weight: 700;">
+                                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="mr-8"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+                                                Cancelar Reserva
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <!-- CONTROLES DE GUARDADO -->
+                                    <div class="panel-action-bar mt-40 flex-between pt-32" style="border-top: 1px solid #e2e8f0;">
+                                        <label for="toggle-detail-side" class="btn-outline" style="cursor: pointer; min-width: 140px;">Descartar</label>
+                                        <label for="toggle-toast-msg" class="btn-premium" style="background: var(--bg-sidebar); min-width: 220px; cursor: pointer; height: 56px; font-weight: 900;">GUARDAR CAMBIOS</label>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- 5.2 PESTAÑA DE HISTORIAL (LOG DE AUDITORÍA) -->
+                        <div id="side-content-audit" class="side-tab-pane" style="display: none;">
+                            <div class="audit-timeline-container">
+                                <div class="timeline-log-item">
+                                    <span class="log-time">15/05 10:30</span>
+                                    <div class="log-desc">
+                                        <strong>Reserva actualizada</strong>
+                                        <p>Se modificaron las fechas de estancia y se reasignó habitación. (Admin #01)</p>
+                                    </div>
+                                </div>
+                                <div class="timeline-log-item">
+                                    <span class="log-time">15/05 15:00</span>
+                                    <div class="log-desc">
+                                        <strong>Check-in confirmado</strong>
+                                        <p>El estado de la habitación pasó a "Ocupado".</p>
+                                    </div>
+                                </div>
+                                <div class="timeline-log-item active">
+                                    <span class="log-time">10/05 09:12</span>
+                                    <div class="log-desc">
+                                        <strong>Reserva creada</strong>
+                                        <p>Registro inicial generado automáticamente.</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
+                </div>
+            </aside>
 
-                    <!-- BARRA DE ACCIONES (Mac Style) -->
-                    <div class="management-actions-grid" style="display: flex; justify-content: space-between; align-items: center; margin-top: 56px; padding-top: 32px; border-top: 1px solid var(--border-color);">
-                        <!-- Acción Destructiva (Izquierda) -->
-                        <button type="button" class="btn-outline" style="color: var(--accent-red); border-color: #fee2e2; min-width: 160px;">
-                            Cancelar Reserva
-                        </button>
-                        
-                        <!-- Acciones de Gestión (Derecha) -->
-                        <div style="display: flex; gap: 16px;">
-                            <label for="toggle-checkin" class="btn-outline flex-center" style="color: var(--accent-green); border-color: #dcfce7; cursor: pointer; min-width: 160px;">
-                                Confirmar Check-in
-                            </label>
-                            <button type="submit" class="btn-premium" style="min-width: 160px;">
-                                Actualizar Reserva
-                            </button>
-                        </div>
+            <!-- 4.2 Modal de Confirmación de Cancelación -->
+            <div class="modal-overlay" id="confirm-cancel-modal">
+                <div class="modal-content-premium" style="max-width: 440px;">
+                    <div class="warning-icon-bg mb-24"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#e03131" stroke-width="3"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg></div>
+                    <h2 style="font-size: 1.5rem; margin-bottom: 12px; font-weight: 900;">¿Confirmar Cancelación?</h2>
+                    <p class="header-subtitle" style="line-height: 1.6;">Esta acción anulará la reserva #BH-9921 de forma permanente. La habitación 101 será liberada para nuevos huéspedes inmediatamente.</p>
+                    <div class="flex-center gap-16 mt-40">
+                        <label for="toggle-cancel-modal" class="btn-outline flex-1" style="cursor: pointer;">Mantener Reserva</label>
+                        <label for="toggle-cancel-modal" class="btn-premium flex-1" style="background: #e03131; cursor: pointer;">Sí, Cancelar</label>
                     </div>
-                </form>
+                </div>
             </div>
-        </div>
 
-        <!-- LISTADO DE RESERVAS (LIST VIEW) -->
-        <section class="content-section list-view">
-            <div class="section-header-area mb-40">
-                <div class="flex-between mb-24">
-                    <div>
-                        <h3 class="form-section-title" style="margin-bottom: 4px;">Listado de Reservas</h3>
-                        <p class="header-subtitle">Selecciona una reserva para acceder a sus funciones de gestión detallada.</p>
+            <!-- 4.3 Modal de Error de Búsqueda (Simulado) -->
+            <div class="modal-overlay" id="search-error-modal">
+                <div class="modal-content-premium" style="max-width: 440px;">
+                    <div class="warning-icon-bg mb-24" style="background: #fff5f5;">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#e03131" stroke-width="3">
+                            <line x1="12" y1="8" x2="12" y2="12"></line>
+                            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                            <circle cx="12" cy="12" r="10"></circle>
+                        </svg>
                     </div>
-                    <a href="#paso1" class="btn-premium">+ Nueva Reserva</a>
-                </div>
-                
-                <!-- BUSCADOR INTEGRADO EN EL RECUADRO -->
-                <div class="search-container" style="max-width: 100%; background: #f8f9fa; margin-bottom: 0;">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--text-secondary)" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                    <input type="text" class="search-input" placeholder="Buscar por código, nombre o documento...">
-                </div>
-            </div>
-            <table>
-                <thead>
-                    <tr>
-                        <th style="width: 120px;">Código</th>
-                        <th>Huésped</th>
-                        <th>Periodo</th>
-                        <th>Habitación</th>
-                        <th>Estado</th>
-                        <th style="text-align: right;">Acción</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td style="font-weight: 700; color: var(--accent-color);">#BH-9921</td>
-                        <td>
-                            <div style="font-weight: 600;">Juan Pérez</div>
-                            <div style="font-size: 0.75rem; color: var(--text-secondary);">DNI: 20.345.678</div>
-                        </td>
-                        <td>
-                            <div style="font-size: 0.85rem;">12 May - 15 May</div>
-                            <div style="font-size: 0.75rem; color: var(--text-secondary);">3 noches</div>
-                        </td>
-                        <td>Suite Deluxe (101)</td>
-                        <td><span class="status-badge status-pending">Pendiente</span></td>
-                        <td style="text-align: right;">
-                            <label for="toggle-gestion" class="btn-outline" style="padding: 6px 14px; font-size: 0.8rem; border-radius: 8px; cursor: pointer;">Gestionar</label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="font-weight: 700; color: var(--accent-color);">#BH-8840</td>
-                        <td>
-                            <div style="font-weight: 600;">María García</div>
-                            <div style="font-size: 0.75rem; color: var(--text-secondary);">DNI: 35.123.456</div>
-                        </td>
-                        <td>
-                            <div style="font-size: 0.85rem;">10 May - 12 May</div>
-                            <div style="font-size: 0.75rem; color: var(--text-secondary);">2 noches</div>
-                        </td>
-                        <td>Doble (102)</td>
-                        <td><span class="status-badge status-active">En curso</span></td>
-                        <td style="text-align: right;">
-                            <label for="toggle-gestion" class="btn-outline" style="padding: 6px 14px; font-size: 0.8rem; border-radius: 8px; cursor: pointer;">Gestionar</label>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </section>
-
-        <!-- MODAL DE CONFIRMACIÓN DE CHECK-IN -->
-        <div class="modal-overlay" id="modal-checkin">
-            <div class="modal-content">
-                <h2>Confirmar Check-in</h2>
-                <p class="color-secondary mt-20" style="font-size: 1.05rem; line-height: 1.6;">¿Deseas confirmar la llegada del huésped <strong>Juan Pérez</strong> para la reserva <strong>#BH-9921</strong>?</p>
-                <div class="modal-actions mt-32">
-                    <label for="toggle-checkin" class="btn-outline" style="cursor: pointer;">Cancelar</label>
-                    <label for="toggle-checkin" class="btn-premium" style="background: #10b981; cursor: pointer;">Confirmar Check-in</label>
+                    <h2 style="font-size: 1.5rem; margin-bottom: 12px; font-weight: 900;">No se encontraron reservas</h2>
+                    <p class="header-subtitle" style="line-height: 1.6;">Lo sentimos, no hay registros que coincidan con tu búsqueda. <br>Puedes intentar con otros términos o proceder al registro manual.</p>
+                    <div class="flex-center gap-16 mt-40">
+                        <label for="toggle-search-fail" class="btn-outline flex-1" style="cursor: pointer;">Nueva Búsqueda</label>
+                        <label for="role-toggle" class="btn-premium flex-1" style="background: #e03131; cursor: pointer;">+ Registrar Reserva</label>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- FLUJO DE NUEVA RESERVA (OCULTO POR DEFECTO) -->
-        <div id="paso1" class="booking-flow">
-            <!-- (Contenido de selección de fechas anterior) -->
-            <section class="content-section mt-32">
-                <div class="flex-between mb-20">
-                    <h2>Nueva Reserva: Paso 1</h2>
-                    <a href="#" class="btn-outline">Volver al listado</a>
+            <!-- 5.1 Sistema de Feedback (Toasts) -->
+            <div class="toast-fixed-stack">
+                <div class="toast-item-premium">
+                    <div class="toast-success-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+                    <div class="toast-content">
+                        <strong>Operación Exitosa</strong>
+                        <span>La reserva ha sido procesada y el historial actualizado.</span>
+                    </div>
+                    <label for="toggle-toast-msg" class="toast-close-btn">✕</label>
                 </div>
-                <!-- ... resto del contenido de nueva reserva ... -->
+            </div>
+
+        </div> <!-- Fin admin-wrapper -->
+
+        <!-- VISTA RECEPCIONISTA (RESERVA PASO A PASO - PRESERVADA) -->
+        <div class="recep-wrapper" style="display: none;">
+            <!-- Aquí iría la vista de registro que diseñamos antes, activada por el toggle -->
+            <section class="content-section flex-center py-80">
+                <div class="text-center">
+                    <h2 class="mb-16">Motor de Reserva Recepcionista</h2>
+                    <p class="header-subtitle">Cambia el switch superior para registrar una nueva reserva.</p>
+                </div>
             </section>
         </div>
 
-        <!-- SELECCIÓN DE CATEGORÍA -->
-        <section id="paso2" class="booking-flow">
-            <div class="flex-between mb-20">
-                <h2 style="margin-bottom: 0;">Tipos de Habitaciones</h2>
-                <a href="#paso1" class="btn-outline">Volver a fechas</a>
-            </div>
-            <div class="room-selection-grid">
-                <!-- Habitación Compartida -->
-                <div class="room-option-card">
-                    <div class="room-img-placeholder">
-                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7h18v10H3z"></path><path d="M16 21v-4"></path><path d="M8 21v-4"></path><path d="M3 12h18"></path></svg>
-                        <div class="room-price-tag">$20 / noche</div>
-                    </div>
-                    <div class="room-details">
-                        <h3>Dormitorio Compartido</h3>
-                        <div class="room-features">
-                            <span class="feature-tag">8 Camas</span>
-                            <span class="feature-tag">Wifi Gratis</span>
-                            <span class="feature-tag">Locker Privado</span>
-                        </div>
-                        <p class="card-subtitle-sm mb-20">Ideal para viajeros solitarios y grupos que buscan socializar al mejor precio.</p>
-                        <a href="#paso3" class="btn-premium w-full">Seleccionar Habitación</a>
-                    </div>
-                </div>
-
-                <!-- Habitación Privada -->
-                <div class="room-option-card">
-                    <div class="room-img-placeholder">
-                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 20h20"></path><path d="M7 20v-5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v5"></path><path d="M4 11V9a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v2"></path><circle cx="12" cy="5" r="2"></circle></svg>
-                        <div class="room-price-tag">$55 / noche</div>
-                    </div>
-                    <div class="room-details">
-                        <h3>Habitación Privada Deluxe</h3>
-                        <div class="room-features">
-                            <span class="feature-tag">Cama King</span>
-                            <span class="feature-tag">Baño Suite</span>
-                            <span class="feature-tag">Aire Acond.</span>
-                        </div>
-                        <p class="card-subtitle-sm mb-20">Máximo confort y privacidad con servicios exclusivos para tu descanso.</p>
-                        <a href="#paso3" class="btn-premium w-full">Seleccionar Habitación</a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- SERVICIOS Y RESUMEN -->
-        <section id="paso3" class="booking-flow">
-            <div class="grid-2 gap-24">
-                <div class="content-section">
-                    <h2>Servicios Adicionales</h2>
-                    <p class="mb-20 color-secondary">Personaliza tu estancia con nuestros servicios premium.</p>
-                    <div class="flex-column gap-15 mt-15">
-                        <label class="checkbox-label-bold">
-                            <input type="checkbox"> 
-                            <div>
-                                <span>Desayuno Buffet</span>
-                                <p class="card-subtitle-sm">Variedad local e internacional todas las mañanas (+$12/día)</p>
-                            </div>
-                        </label>
-                        <label class="checkbox-label-bold">
-                            <input type="checkbox"> 
-                            <div>
-                                <span>Traslado al Aeropuerto</span>
-                                <p class="card-subtitle-sm">Servicio puerta a puerta seguro y confiable (+$25)</p>
-                            </div>
-                        </label>
-                    </div>
-                    <div class="action-footer mt-32">
-                        <a href="#paso2" class="btn-outline">Atrás</a>
-                    </div>
-                </div>
-
-                <div class="summary-card">
-                    <h2 class="mb-20">Resumen de Reserva</h2>
-                    <div class="summary-item">
-                        <span>Estancia (3 noches)</span>
-                        <span class="font-semibold">$165.00</span>
-                    </div>
-                    <div class="summary-item">
-                        <span>Servicios seleccionados</span>
-                        <span class="font-semibold">$0.00</span>
-                    </div>
-                    <div class="summary-item">
-                        <span>Impuestos (10%)</span>
-                        <span class="font-semibold">$16.50</span>
-                    </div>
-                    <div class="summary-item total-row font-semibold">
-                        <span>Total a Pagar</span>
-                        <span>$181.50</span>
-                    </div>
-                    <div class="mt-24">
-                        <a href="#final" class="btn-premium w-full">Confirmar y Finalizar</a>
-                        <a href="../dashboard.html" class="btn-block mt-15 text-danger font-semibold" style="font-size: 0.85rem;">Cancelar proceso</a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- CONFIRMACIÓN FINAL -->
-        <section id="final" class="booking-flow">
-            <div class="content-section success-container">
-                <div class="brand-logo mb-24" style="margin-left: auto; margin-right: auto; width: 80px; height: 80px; background: #10b981;">
-                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                </div>
-                <h1 style="font-size: 2rem; margin-bottom: 10px;">¡Reserva Confirmada!</h1>
-                <p class="mb-32 color-secondary">Se ha enviado un correo de confirmación con los detalles de tu estancia y el código de reserva #BH-9921.</p>
-                <div class="flex-center gap-15">
-                    <a href="../dashboard.html" class="btn-premium">Ir al Dashboard</a>
-                    <button class="btn-outline">Descargar PDF</button>
-                </div>
-            </div>
-        </section>
     </main>
+
+    <style>
+        /* LÓGICA DE ROLES */
+        #role-toggle:checked ~ main .admin-wrapper { display: none !important; }
+        #role-toggle:not(:checked) ~ main .recep-wrapper { display: none !important; }
+        #role-toggle:checked ~ header #dynamic-subtitle::after { content: ' - Modo Usuario'; }
+        #role-toggle:not(:checked) ~ header #dynamic-subtitle::after { content: ' - Modo Administración'; }
+
+        /* BÚSQUEDA PREMIUM */
+        .search-premium-box { flex: 1; display: flex; align-items: center; gap: 16px; background: white; padding: 14px 24px; border-radius: 16px; border: 1px solid var(--border-color); box-shadow: var(--shadow-sm); transition: all 0.3s; }
+        .search-premium-box:focus-within { border-color: var(--accent-color); box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.1); }
+        .filter-select { width: 180px; height: 52px; background: white; appearance: auto; }
+
+        /* MODAL DE ERROR DE BÚSQUEDA */
+        #search-error-modal { position: fixed; inset: 0; z-index: 3000; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; }
+        #toggle-search-fail:checked ~ #search-error-modal { display: flex; }
+        #toggle-search-fail:checked ~ .admin-wrapper .admin-results-grid { filter: blur(4px); pointer-events: none; }
+
+        /* DATA GRID ELEMENTS */
+        .room-pill { background: #f1f5f9; padding: 4px 12px; border-radius: 8px; font-size: 0.75rem; font-weight: 800; color: #475569; }
+        .badge-status { padding: 5px 12px; border-radius: 100px; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; }
+        .badge-status.yellow { background: #fff9db; color: #f08c00; }
+        .badge-status.green { background: #ebfbee; color: #2b8a3e; }
+        .badge-status.red { background: #fff5f5; color: #e03131; }
+
+        /* SIDE PANEL (GESTIONAR DENTRO DE GESTIONAR) */
+        .admin-side-panel { position: fixed; inset: 0; z-index: 2000; display: none; }
+        #toggle-detail-side:checked ~ .admin-side-panel { display: block; }
+        .panel-content-wrapper { position: absolute; right: 0; top: 0; width: 100%; max-width: 640px; height: 100%; background: white; box-shadow: -15px 0 40px rgba(0,0,0,0.1); display: flex; flex-direction: column; animation: slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+        @keyframes slideInRight { from { transform: translateX(100%); } to { transform: translateX(0); } }
+
+        .panel-top-bar { padding: 48px 48px 0; border-bottom: 1px solid #f1f5f9; background: #f8fafc; }
+        .close-btn-round { width: 40px; height: 40px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 1px solid #e2e8f0; transition: all 0.3s; }
+        .close-btn-round:hover { background: #f1f5f9; transform: rotate(90deg); }
+
+        .tab-link-side { padding: 12px 0; font-size: 0.95rem; font-weight: 800; color: #94a3b8; cursor: pointer; border-bottom: 3px solid transparent; transition: all 0.3s; }
+        #side-tab-edit:checked ~ .admin-side-panel .tab-link-side[for="side-tab-edit"],
+        #side-tab-audit:checked ~ .admin-side-panel .tab-link-side[for="side-tab-audit"] { color: var(--accent-color); border-color: var(--accent-color); }
+        
+        #side-tab-audit:checked ~ .admin-side-panel #side-content-edit { display: none; }
+        #side-tab-audit:checked ~ .admin-side-panel #side-content-audit { display: block; }
+
+        /* TIMELINE LOG */
+        .audit-timeline-container { position: relative; padding-left: 24px; border-left: 2px solid #e2e8f0; }
+        .timeline-log-item { position: relative; margin-bottom: 40px; }
+        .timeline-log-item::before { content: ''; position: absolute; left: -31px; top: 4px; width: 12px; height: 12px; border-radius: 50%; background: white; border: 3px solid #cbd5e1; }
+        .timeline-log-item.active::before { border-color: var(--accent-color); background: var(--accent-color); }
+        .log-time { display: block; font-size: 0.75rem; font-weight: 800; color: var(--text-secondary); margin-bottom: 6px; }
+        .log-desc { background: #f8fafc; padding: 16px; border-radius: 12px; border: 1px solid #e2e8f0; }
+
+        /* MODAL PREMIUM */
+        #confirm-cancel-modal { position: fixed; inset: 0; z-index: 3000; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; }
+        #toggle-cancel-modal:checked ~ #confirm-cancel-modal { display: flex; }
+        .modal-content-premium { background: white; padding: 48px; border-radius: 32px; text-align: center; box-shadow: var(--shadow-lg); }
+        .warning-icon-bg { width: 80px; height: 80px; background: #fff5f5; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto; }
+
+        /* TOAST PREMIUM */
+        .toast-fixed-stack { position: fixed; top: 40px; right: 40px; z-index: 5000; display: none; }
+        #toggle-toast-msg:checked ~ .toast-fixed-stack { display: block; animation: slideInTop 0.5s ease; }
+        .toast-item-premium { background: #1a1d20; color: white; padding: 20px 32px; border-radius: 20px; display: flex; align-items: center; gap: 20px; box-shadow: var(--shadow-lg); border: 1px solid rgba(255,255,255,0.1); }
+        .toast-success-icon { width: 32px; height: 32px; background: #10b981; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .toast-content strong { display: block; font-size: 1rem; }
+        .toast-content span { font-size: 0.85rem; opacity: 0.8; }
+        .toast-close-btn { cursor: pointer; font-size: 1.2rem; opacity: 0.5; }
+
+        @keyframes slideInTop { from { transform: translateY(-50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        @keyframes slideInUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    </style>
+
 </body>
 </html>
