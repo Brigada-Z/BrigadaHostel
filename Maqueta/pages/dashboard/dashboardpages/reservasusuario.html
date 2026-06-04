@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reserva - BrigadaHostel</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../../../style/dashboard.css">
 </head>
 <body>
@@ -20,15 +21,23 @@
     <input type="checkbox" id="menu-cb" hidden>
 
     <!-- OVERLAY PARA MÓVIL -->
-    <label for="menu-cb" class="sidebar-overlay"></label>
+    <button type="button" class="sidebar-overlay border-none" onclick="document.getElementById('menu-cb').checked = false"></button>
 
     <!-- BARRA LATERAL (SIDEBAR) -->
     <aside>
         <div class="sidebar-brand">
-            <div class="flex-center gap-12" style="justify-content: flex-start;">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            <div class="flex-align-center gap-16">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
                 <div>
-                    <h2 style="font-size: 1.1rem; font-weight: 800; letter-spacing: -0.5px;">BRIGADA <span style="color: #94a3b8; font-weight: 500;">USER</span></h2>
+                    <h2 class="sidebar-title">Panel dashboard</h2>
+                    <p class="sidebar-subtitle">Modo Usuario</p>
+                </div>
+            </div>
+            <!-- ROLE SWITCHER MOBILE -->
+            <div class="role-switcher-sidebar d-md-none mt-32 mb-16">
+                <div class="role-switcher w-100">
+                    <button type="button" class="role-label admin-label border-none flex-1" onclick="window.location.href='reservas.html'">Admin</button>
+                    <button type="button" class="role-label recep-label border-none flex-1" onclick="window.location.href='reservasusuario.html'">Usuario</button>
                 </div>
             </div>
         </div>
@@ -40,25 +49,29 @@
         </nav>
         <div class="sidebar-footer">
             <a href="../dashboardauth/loginDashboard.html" class="btn-logout"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg> Cerrar Sesión</a>
-            <a href="../../index.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg> Web Principal</a>
+            <a href="../../index.html">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                Volver al sitio web
+            </a>
         </div>
     </aside>
 
-    <!-- HEADER -->
     <header>
-        <label for="menu-cb" class="menu-toggle"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></label>
-        <div class="header-title">
-            <h1>Reservar Estadía</h1>
-            <p class="header-subtitle">Planifica tu próxima aventura en BrigadaHostel</p>
+        <button type="button" class="menu-toggle border-none bg-transparent" onclick="document.getElementById('menu-cb').click()"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+        <div class="header-title flex-column">
+            <h1 class="m-0">Panel dashboard</h1>
+            <p class="header-subtitle m-0">Modo Usuario</p>
         </div>
-        <div style="display: flex; align-items: center; margin-left: auto;">
+        <div class="flex align-center ml-auto">
             <div class="role-switcher">
-                <a href="../dashboard.html" class="role-label admin-label" style="text-decoration: none; color: inherit;">Admin</a>
-                <label for="role-toggle" class="role-label recep-label">Usuario</label>
+                <button type="button" class="role-label admin-label border-none" onclick="window.location.href='reservas.html'">Admin</button>
+                <button type="button" class="role-label recep-label border-none" onclick="window.location.href='reservasusuario.html'">Usuario</button>
             </div>
             <div class="user-info">
                 <span>Huésped Activo</span>
-                <div class="user-avatar-small"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></div>
+                <div class="user-avatar-small">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                </div>
             </div>
         </div>
     </header>
@@ -70,13 +83,13 @@
             <!-- PASO 1: BÚSQUEDA Y DISPONIBILIDAD -->
             <section id="view-step-search" class="content-section">
                 <div class="text-center mb-40">
-                    <h2 style="font-size: 1.75rem; font-weight: 900; margin-bottom: 12px;">Planifica tu próxima aventura</h2>
+                    <h2 class="text-3xl font-weight-900 mb-12">Planifica tu próxima aventura</h2>
                     <p class="header-subtitle">Paso 1: Elige tus fechas y habitación</p>
                 </div>
                 
-                <div class="user-booking-flow" style="display: grid; grid-template-columns: 1fr 380px; gap: 40px;">
+                <div class="user-booking-flow-grid">
                     <div class="booking-form-box">
-                        <div class="form-grid-2 mb-32" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div class="form-grid-2-gap-20 mb-32">
                             <div class="form-group">
                                 <label class="auth-label">Fecha de Check-in</label>
                                 <input type="date" class="input-field" value="2026-06-20">
@@ -88,51 +101,51 @@
                         </div>
 
                         <div class="room-selector-box">
-                            <h3 class="mb-20" style="font-size: 1rem; font-weight: 800;">Elige tu tipo de habitación</h3>
+                            <h3 class="mb-20 font-weight-800 text-base">Elige tu tipo de habitación</h3>
                             <div class="room-options-stack flex-column gap-12">
-                                <label class="checkbox-label-bold" style="background: white; border: 2px solid var(--border-color);">
+                                <label class="checkbox-label-bold room-option-card">
                                     <input type="radio" name="room-select" checked>
-                                    <div style="flex: 1;">
+                                    <div class="flex-1">
                                         <strong>Habitación Individual</strong>
-                                        <p style="font-size: 0.75rem; color: #64748b;">Perfecta para viajeros solitarios.</p>
+                                        <p class="text-xs-muted">Perfecta para viajeros solitarios.</p>
                                     </div>
-                                    <span style="font-weight: 800;">$30/n</span>
+                                    <span class="font-weight-800">$30/n</span>
                                 </label>
-                                <label class="checkbox-label-bold" style="background: white; border: 2px solid var(--border-color);">
+                                <label class="checkbox-label-bold room-option-card">
                                     <input type="radio" name="room-select">
-                                    <div style="flex: 1;">
+                                    <div class="flex-1">
                                         <strong>Habitación Doble</strong>
-                                        <p style="font-size: 0.75rem; color: #64748b;">Espacio compartido para dos personas.</p>
+                                        <p class="text-xs-muted">Espacio compartido para dos personas.</p>
                                     </div>
-                                    <span style="font-weight: 800;">$45/n</span>
+                                    <span class="font-weight-800">$45/n</span>
                                 </label>
-                                <label class="checkbox-label-bold" style="background: white; border: 2px solid var(--border-color);">
+                                <label class="checkbox-label-bold room-option-card">
                                     <input type="radio" name="room-select">
-                                    <div style="flex: 1;">
+                                    <div class="flex-1">
                                         <strong>Suite Premium</strong>
-                                        <p style="font-size: 0.75rem; color: #64748b;">Máximo lujo y vistas panorámicas.</p>
+                                        <p class="text-xs-muted">Máximo lujo y vistas panorámicas.</p>
                                     </div>
-                                    <span style="font-weight: 800;">$85/n</span>
+                                    <span class="font-weight-800">$85/n</span>
                                 </label>
                             </div>
                         </div>
                     </div>
 
                     <div class="availability-check-sidebar">
-                        <div class="card" style="position: sticky; top: 20px; background: #f8fafc; border: 2px dashed #e2e8f0;">
+                        <div class="card availability-card-sidebar">
                             <div id="check-normal">
-                                <h3 style="margin-bottom: 16px;">Consulta de Disponibilidad</h3>
-                                <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 32px;">Haz clic para verificar si tenemos lugar para tus fechas.</p>
-                                <label for="step-config" class="btn-premium w-full flex-center" style="height: 56px; font-weight: 800; cursor: pointer;">VERIFICAR DISPONIBILIDAD</label>
-                                <label for="no-availability" style="display: block; text-align: center; margin-top: 16px; font-size: 0.75rem; color: #94a3b8; cursor: pointer; text-decoration: underline;">Simular Sin Cupo</label>
+                                <h3 class="mb-16">Consulta de Disponibilidad</h3>
+                                <p class="text-secondary mb-32 text-sm">Haz clic para verificar si tenemos lugar para tus fechas.</p>
+                                <button type="button" onclick="document.getElementById('step-config').click()" class="btn-premium w-full flex-center height-56 font-weight-800 cursor-pointer">VERIFICAR DISPONIBILIDAD</button>
+                                <button type="button" onclick="document.getElementById('no-availability').click()" class="bg-transparent border-none text-xs-muted cursor-pointer mt-16 w-full text-underline">Simular Sin Cupo</button>
                             </div>
                             <div id="check-fail">
                                 <div class="icon-error-circle mb-16"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="3"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg></div>
-                                <h3 style="color: #ef4444; margin-bottom: 8px;">Sin Disponibilidad</h3>
-                                <p style="font-size: 0.8rem; line-height: 1.5; color: #64748b; margin-bottom: 24px;">Lo sentimos, no hay habitaciones del tipo seleccionado para las fechas elegidas.</p>
+                                <h3 class="text-danger mb-8">Sin Disponibilidad</h3>
+                                <p class="text-secondary mb-24 line-height-1-6 text-sm">Lo sentimos, no hay habitaciones del tipo seleccionado para las fechas elegidas.</p>
                                 <div class="flex-column gap-12">
-                                    <label for="no-availability" class="btn-outline flex-center" style="cursor: pointer; font-size: 0.8rem;">Modificar Fechas</label>
-                                    <label for="no-availability" class="btn-outline flex-center" style="cursor: pointer; font-size: 0.8rem;">Cambiar Tipo de Habitación</label>
+                                    <button type="button" onclick="document.getElementById('no-availability').click()" class="btn-outline flex-center cursor-pointer text-sm">Modificar Fechas</button>
+                                    <button type="button" onclick="document.getElementById('no-availability').click()" class="btn-outline flex-center cursor-pointer text-sm">Cambiar Tipo de Habitación</button>
                                 </div>
                             </div>
                         </div>
@@ -143,20 +156,20 @@
             <!-- PASO 2: CONFIGURACIÓN Y SERVICIOS ADICIONALES -->
             <section id="view-step-config" class="content-section">
                 <div class="text-center mb-40">
-                    <h2 style="font-size: 1.75rem; font-weight: 900; margin-bottom: 12px;">Personaliza tu estadía</h2>
+                    <h2 class="text-3xl font-weight-900 mb-12">Personaliza tu estadía</h2>
                     <p class="header-subtitle">Paso 2: Datos del titular y servicios extras</p>
                 </div>
 
-                <div class="user-booking-flow" style="display: grid; grid-template-columns: 1fr 380px; gap: 40px;">
+                <div class="user-booking-flow-grid">
                     <div class="guest-details-box">
                         <div class="form-group mb-24">
                             <label class="auth-label">Nombre del Titular</label>
-                            <input type="text" class="input-field" value="Agustín Rodríguez" readonly style="background: #f1f5f9;">
+                            <input type="text" class="input-field bg-light-blue" value="Agustín Rodríguez" readonly>
                         </div>
-                        <div class="form-grid-2 mb-40" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div class="form-grid-2-gap-20 mb-40">
                             <div class="form-group">
                                 <label class="auth-label">DNI / Pasaporte</label>
-                                <input type="text" class="input-field" value="20.345.678" readonly style="background: #f1f5f9;">
+                                <input type="text" class="input-field bg-light-blue" value="20.345.678" readonly>
                             </div>
                             <div class="form-group">
                                 <label class="auth-label">Teléfono de Contacto</label>
@@ -164,42 +177,42 @@
                             </div>
                         </div>
 
-                        <h3 class="mb-24" style="font-size: 1.1rem; font-weight: 800; border-top: 1px solid #e2e8f0; pt-32">¿Deseas agregar algún servicio extra? (Upselling)</h3>
-                        <div class="extras-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-                            <label class="checkbox-label-bold" style="background: white; border: 1px solid var(--border-color); padding: 20px;">
+                        <h3 class="mb-24 pt-32 font-weight-800 text-lg border-top-e2">¿Deseas agregar algún servicio extra? (Upselling)</h3>
+                        <div class="extras-grid">
+                            <label class="checkbox-label-bold room-option-card p-20">
                                 <input type="checkbox">
-                                <div><strong>Desayuno Buffet</strong><p style="font-size: 0.7rem;">+$5 / día</p></div>
+                                <div><strong>Desayuno Buffet</strong><p class="text-xs">+$5 / día</p></div>
                             </label>
-                            <label class="checkbox-label-bold" style="background: white; border: 1px solid var(--border-color); padding: 20px;">
+                            <label class="checkbox-label-bold room-option-card p-20">
                                 <input type="checkbox">
-                                <div><strong>Traslado Aeropuerto</strong><p style="font-size: 0.7rem;">+$15 (único)</p></div>
+                                <div><strong>Traslado Aeropuerto</strong><p class="text-xs">+$15 (único)</p></div>
                             </label>
-                            <label class="checkbox-label-bold" style="background: white; border: 1px solid var(--border-color); padding: 20px;">
+                            <label class="checkbox-label-bold room-option-card p-20">
                                 <input type="checkbox">
-                                <div><strong>Cochera Privada</strong><p style="font-size: 0.7rem;">+$8 / día</p></div>
+                                <div><strong>Cochera Privada</strong><p class="text-xs">+$8 / día</p></div>
                             </label>
-                            <label class="checkbox-label-bold" style="background: white; border: 1px solid var(--border-color); padding: 20px;">
+                            <label class="checkbox-label-bold room-option-card p-20">
                                 <input type="checkbox">
-                                <div><strong>Late Check-out</strong><p style="font-size: 0.7rem;">+$10 (único)</p></div>
+                                <div><strong>Late Check-out</strong><p class="text-xs">+$10 (único)</p></div>
                             </label>
                         </div>
                     </div>
 
                     <div class="calculator-sidebar">
-                        <div class="card" style="position: sticky; top: 20px; background: white; border: 1px solid var(--border-color); box-shadow: var(--shadow-lg);">
-                            <h3 style="margin-bottom: 24px;">Costo de Reserva</h3>
-                            <div class="calc-items flex-column gap-12 mb-32" style="font-size: 0.9rem;">
+                        <div class="card calculator-card-sidebar">
+                            <h3 class="mb-24">Costo de Reserva</h3>
+                            <div class="calc-items flex-column gap-12 mb-32 text-md">
                                 <div class="flex-between"><span>Habitación (5 noches)</span><strong>$150.00</strong></div>
                                 <div class="flex-between"><span>Servicios Extras</span><strong>$0.00</strong></div>
                                 <div class="flex-between"><span>Impuestos (IVA)</span><strong>$31.50</strong></div>
-                                <div class="flex-between pt-16 mt-8" style="border-top: 2px dashed #e2e8f0;">
-                                    <span style="font-weight: 800; font-size: 1rem;">TOTAL ESTIMADO</span>
-                                    <span style="font-weight: 900; font-size: 1.5rem; color: var(--bg-sidebar);">$181.50</span>
+                                <div class="flex-between pt-16 mt-8 border-top-dashed">
+                                    <span class="font-weight-800 text-base">TOTAL ESTIMADO</span>
+                                    <span class="font-weight-900 bg-sidebar-custom font-size-15">$181.50</span>
                                 </div>
                             </div>
                             <div class="flex-column gap-12">
-                                <label for="step-summary" class="btn-premium w-full flex-center" style="height: 56px; font-weight: 800; cursor: pointer;">CONTINUAR AL RESUMEN</label>
-                                <label for="step-search" class="btn-outline flex-center" style="cursor: pointer;">Volver atrás</label>
+                                <button type="button" onclick="document.getElementById('step-summary').click()" class="btn-premium w-full flex-center height-56 font-weight-800 cursor-pointer">CONTINUAR AL RESUMEN</button>
+                                <button type="button" onclick="document.getElementById('step-search').click()" class="btn-outline flex-center cursor-pointer">Volver atrás</button>
                             </div>
                         </div>
                     </div>
@@ -209,18 +222,18 @@
             <!-- PASO 3: RESUMEN Y ACCIONES FINALES -->
             <section id="view-step-summary" class="content-section">
                 <div class="text-center mb-40">
-                    <h2 style="font-size: 1.75rem; font-weight: 900; margin-bottom: 12px;">Revisa tu reserva</h2>
+                    <h2 class="text-3xl font-weight-900 mb-12">Revisa tu reserva</h2>
                     <p class="header-subtitle">Paso 3: Verifica que todo esté correcto antes de finalizar</p>
                 </div>
 
-                <div class="summary-detailed-panel" style="max-width: 800px; margin: 0 auto;">
-                    <div class="card mb-40" style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 40px;">
-                        <div class="flex-between mb-32" style="border-bottom: 1px solid #e2e8f0; pb-16">
-                            <h3 style="font-size: 1.25rem; font-weight: 900;">Detalles de la Estadía</h3>
-                            <span class="status-badge" style="background: #e0f2fe; color: #0369a1;">PRE-RESERVA</span>
+                <div class="summary-detailed-panel max-w-800 mx-auto">
+                    <div class="card mb-40 summary-card-detailed">
+                        <div class="flex-between mb-32 border-bottom-soft-gray pb-16">
+                            <h3 class="text-xl font-weight-900">Detalles de la Estadía</h3>
+                            <span class="status-badge status-badge-blue">PRE-RESERVA</span>
                         </div>
                         
-                        <div class="summary-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 32px;">
+                        <div class="summary-grid-2">
                             <div>
                                 <p class="auth-label">Huésped</p>
                                 <p class="font-bold">Agustín Rodríguez (DNI: 20.345.678)</p>
@@ -242,15 +255,15 @@
                             </div>
                         </div>
 
-                        <div class="total-summary-box mt-40 pt-32" style="border-top: 2px solid #e2e8f0; text-align: right;">
-                            <span style="font-size: 1.1rem; color: #64748b; margin-right: 16px;">Precio Final:</span>
-                            <span style="font-size: 2.5rem; font-weight: 900; color: #1a1d20;">$181.50</span>
+                        <div class="total-summary-box-final mt-40 pt-32">
+                            <span class="text-secondary text-lg mr-16">Precio Final:</span>
+                            <span class="font-weight-900 color-dark text-5xl">$181.50</span>
                         </div>
                     </div>
 
                     <div class="flex-center gap-24">
-                        <label for="step-search" class="btn-outline" style="cursor: pointer; min-width: 180px; height: 56px; display: flex; align-items: center; justify-content: center;">CANCELAR / DESCARTAR</label>
-                        <label for="step-success" class="btn-premium" style="background: #10b981; min-width: 280px; height: 56px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 1.1rem;">CONFIRMAR RESERVA</label>
+                        <button type="button" onclick="document.getElementById('step-search').click()" class="btn-outline min-width-180 height-56 flex-center cursor-pointer">CANCELAR / DESCARTAR</button>
+                        <button type="button" onclick="document.getElementById('step-success').click()" class="btn-premium bg-success-soft min-width-280 height-56 flex-center font-weight-900 cursor-pointer text-lg">CONFIRMAR RESERVA</button>
                     </div>
                 </div>
             </section>
@@ -258,50 +271,32 @@
             <!-- PASO 4: PANTALLA DE ÉXITO -->
             <section id="view-step-success" class="content-section py-80">
                 <div class="text-center">
-                    <div class="icon-success-circle mb-32" style="width: 100px; height: 100px; background: #ebfbee; color: #2b8a3e; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto; box-shadow: 0 10px 20px rgba(43, 138, 62, 0.1);">
+                    <div class="success-icon-container mb-32">
                         <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4"><polyline points="20 6 9 17 4 12"></polyline></svg>
                     </div>
-                    <h2 style="font-size: 2.25rem; font-weight: 900; margin-bottom: 16px; color: #1a1d20;">¡Reserva Exitosa!</h2>
-                    <p class="header-subtitle mb-48" style="max-width: 500px; margin-left: auto; margin-right: auto; font-size: 1rem;">Tu lugar en BrigadaHostel ha sido asegurado. Te hemos enviado un correo electrónico con todos los detalles de tu estadía.</p>
+                    <h2 class="color-dark mb-16 font-weight-900 text-4xl">¡Reserva Exitosa!</h2>
+                    <p class="header-subtitle mb-48 mx-auto max-w-500 text-base">Tu lugar en BrigadaHostel ha sido asegurado. Te hemos enviado un correo electrónico con todos los detalles de tu estadía.</p>
                     
-                    <div class="booking-code-card mb-56" style="background: #1a1d20; color: white; padding: 32px; border-radius: 24px; display: inline-block; min-width: 320px; box-shadow: var(--shadow-lg);">
-                        <p style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; opacity: 0.6; margin-bottom: 8px;">Código de Reserva</p>
-                        <strong style="font-size: 2.5rem; letter-spacing: 4px; font-family: monospace;">#BH-55021</strong>
+                    <div class="booking-code-card-final mb-56">
+                        <p class="text-xs-muted color-white text-uppercase letter-spacing-wide mb-8 opacity-06">Código de Reserva</p>
+                        <strong class="font-family-mono text-5xl letter-spacing-v-wide">#BH-55021</strong>
                     </div>
 
                     <div class="flex-center gap-16">
-                        <button class="btn-outline flex-center gap-8" style="padding: 14px 24px;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> Descargar PDF</button>
-                        <button class="btn-outline flex-center gap-8" style="padding: 14px 24px;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg> Enviar por Email</button>
-                        <button class="btn-outline flex-center gap-8" style="padding: 14px 24px;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg> Imprimir</button>
+                        <button class="btn-outline flex-center gap-8 p-14-24"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> Descargar PDF</button>
+                        <button class="btn-outline flex-center gap-8 p-14-24"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg> Enviar por Email</button>
+                        <button class="btn-outline flex-center gap-8 p-14-24"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg> Imprimir</button>
                     </div>
 
                     <div class="mt-80">
-                        <a href="../dashboardUsuario.html" class="btn-premium" style="background: var(--bg-sidebar); padding: 16px 48px;">Volver a Inicio</a>
+                        <a href="../dashboardUsuario.html" class="btn-premium bg-sidebar-custom p-16-48">Volver a Inicio</a>
                     </div>
                 </div>
             </section>
 
         </div>
-    </main>
+        </main>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-    <style>
-        /* WIZARD LOGIC (CSS ONLY) */
-        .booking-wizard-container > section { display: none; animation: fadeIn 0.5s ease-out; }
-        
-        #step-search:checked ~ main .booking-wizard-container #view-step-search { display: block; }
-        #step-config:checked ~ main .booking-wizard-container #view-step-config { display: block; }
-        #step-summary:checked ~ main .booking-wizard-container #view-step-summary { display: block; }
-        #step-success:checked ~ main .booking-wizard-container #view-step-success { display: block; }
-
-        /* AVAILABILITY LOGIC */
-        #check-fail { display: none; text-align: center; padding: 20px; }
-        #no-availability:checked ~ main #check-normal { display: none; }
-        #no-availability:checked ~ main #check-fail { display: block; }
-
-        /* UTILS */
-        .icon-error-circle { width: 48px; height: 48px; background: #fff5f5; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-    </style>
-
-</body>
-</html>
+        </body>
+        </html>

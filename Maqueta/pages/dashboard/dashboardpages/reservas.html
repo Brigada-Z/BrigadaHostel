@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión de Reservas - BrigadaHostel Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../../../style/dashboard.css">
 </head>
 <body>
@@ -13,15 +14,23 @@
     <input type="checkbox" id="menu-cb" hidden>
     
     <!-- OVERLAY PARA MÓVIL -->
-    <label for="menu-cb" class="sidebar-overlay"></label>
+    <button type="button" class="sidebar-overlay border-none" onclick="document.getElementById('menu-cb').checked = false"></button>
 
     <!-- SIDEBAR -->
     <aside>
         <div class="sidebar-brand">
-            <div class="flex-center gap-12" style="justify-content: flex-start;">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            <div class="flex-align-center gap-16">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
                 <div>
-                    <h2 style="font-size: 1.1rem; font-weight: 800; letter-spacing: -0.5px;">BRIGADA <span style="color: #94a3b8; font-weight: 500;">ADMIN</span></h2>
+                    <h2 class="sidebar-title">Panel dashboard</h2>
+                    <p class="sidebar-subtitle">Modo Admin</p>
+                </div>
+            </div>
+            <!-- ROLE SWITCHER MOBILE -->
+            <div class="role-switcher-sidebar d-md-none mt-32 mb-16">
+                <div class="role-switcher w-100">
+                    <button type="button" class="role-label admin-label border-none flex-1" onclick="window.location.href='reservas.html'">Admin</button>
+                    <button type="button" class="role-label recep-label border-none flex-1" onclick="window.location.href='reservasusuario.html'">Usuario</button>
                 </div>
             </div>
         </div>
@@ -34,24 +43,30 @@
         </nav>
         <div class="sidebar-footer">
             <a href="../dashboardauth/loginDashboard.html" class="btn-logout"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg> Cerrar Sesión</a>
+            <a href="../../index.html">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                Volver al sitio web
+            </a>
         </div>
     </aside>
 
     <!-- HEADER -->
     <header>
-        <label for="menu-cb" class="menu-toggle"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></label>
-        <div class="header-title">
-            <h1>Reservas</h1>
-            <p class="header-subtitle" id="dynamic-subtitle">Panel de Control General</p>
+        <button type="button" class="menu-toggle border-none bg-transparent" onclick="document.getElementById('menu-cb').click()"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+        <div class="header-title flex-column">
+            <h1 class="m-0">Panel dashboard</h1>
+            <p class="header-subtitle m-0" id="dynamic-subtitle">Modo Admin</p>
         </div>
-        <div style="display: flex; align-items: center; margin-left: auto;">
+        <div class="flex align-center ml-auto">
             <div class="role-switcher">
-                <label for="role-toggle" class="role-label admin-label">Admin</label>
-                <a href="../dashboardUsuario.html" class="role-label recep-label" style="text-decoration: none; color: inherit;">Usuario</a>
+                <button type="button" class="role-label admin-label border-none" onclick="window.location.href='reservas.html'">Admin</button>
+                <button type="button" class="role-label recep-label border-none" onclick="window.location.href='reservasusuario.html'">Usuario</button>
             </div>
             <div class="user-info">
                 <span>Sesión Activa</span>
-                <div class="user-avatar-small"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></div>
+                <div class="user-avatar-small">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                </div>
             </div>
         </div>
     </header>
@@ -71,17 +86,21 @@
             <!-- 1. MÓDULO DE BÚSQUEDA -->
             <section class="admin-search-module mb-40">
                 <div class="flex-column gap-24">
-                    <div class="search-bar-row flex-between gap-16">
+                    <div class="search-bar-row row g-3 align-items-center">
                         <!-- 1.1 Barra de búsqueda global -->
-                        <div class="search-premium-box">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                            <input type="text" class="search-input" placeholder="Buscar por Huésped, DNI/Pasaporte o Código #BH...">
+                        <div class="col-lg-6">
+                            <div class="search-premium-box">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                                <input type="text" class="search-input" placeholder="Buscar por Huésped, DNI/Pasaporte o Código #BH...">
+                            </div>
                         </div>
                         <!-- 1.2 Filtros rápidos -->
-                        <div class="filters-premium-row flex-center gap-12">
-                            <select class="input-field filter-select"><option>Estadía: Hoy</option><option>Esta Semana</option><option>Próximos 30 días</option></select>
-                            <select class="input-field filter-select"><option>Estado: Todos</option><option>Pendientes</option><option>Confirmadas</option><option>En Curso</option></select>
-                            <label for="toggle-search-fail" class="btn-outline flex-center" style="height: 52px; cursor: pointer; padding: 0 20px;">Simular Error (A3)</label>
+                        <div class="col-lg-6">
+                            <div class="d-flex gap-2">
+                                <select class="form-select filter-select height-52"><option>Estadía: Hoy</option><option>Esta Semana</option><option>Próximos 30 días</option></select>
+                                <select class="form-select filter-select height-52"><option>Estado: Todos</option><option>Pendientes</option><option>Confirmadas</option><option>En Curso</option></select>
+                                <button type="button" onclick="document.getElementById('toggle-search-fail').click()" class="btn btn-outline-secondary flex-shrink-0 height-52">Simular Error</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -90,45 +109,45 @@
             <!-- 2. LISTADO DE RESULTADOS (DATA GRID) -->
             <section class="admin-results-grid content-section">
                 <div class="flex-between mb-32">
-                    <h2 style="margin: 0; font-size: 1.35rem; font-weight: 800;">Listado Maestro de Reservas</h2>
-                    <span class="status-badge status-active" style="background: #f1f5f9; color: #475569;">3 Registros Encontrados</span>
+                    <h2 class="m-0 text-2xl font-weight-800">Listado Maestro de Reservas</h2>
+                    <span class="status-badge status-reserva-activa">3 Registros Encontrados</span>
                 </div>
                 <div class="table-responsive">
-                    <table>
-                        <thead>
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light">
                             <tr>
-                                <th>Código</th>
-                                <th>Huésped</th>
-                                <th>Periodo</th>
-                                <th>Habitación</th>
-                                <th>Estado</th>
-                                <th style="text-align: right;">Acción</th>
+                                <th class="border-0">Código</th>
+                                <th class="border-0">Huésped</th>
+                                <th class="border-0">Periodo</th>
+                                <th class="border-0">Habitación</th>
+                                <th class="border-0">Estado</th>
+                                <th class="border-0 text-end">Acción</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td class="font-bold text-accent">#BH-9921</td>
-                                <td><div class="font-bold">Juan Pérez</div><div class="text-secondary" style="font-size: 0.75rem;">DNI: 20.345.678</div></td>
-                                <td>15/06 - 18/06</td>
-                                <td><span class="room-pill">Suite 101</span></td>
-                                <td><span class="badge-status yellow">Pendiente</span></td>
-                                <td style="text-align: right;"><label for="toggle-detail-side" class="btn-premium btn-small" style="cursor: pointer;">Gestionar</label></td>
+                                <td data-label="Código" class="font-bold text-accent">#BH-9921</td>
+                                <td data-label="Huésped"><div class="font-bold">Juan Pérez</div><div class="text-xs-muted">DNI: 20.345.678</div></td>
+                                <td data-label="Periodo">15/06 - 18/06</td>
+                                <td data-label="Habitación"><span class="room-pill">Suite 101</span></td>
+                                <td data-label="Estado"><span class="badge-status yellow">Pendiente</span></td>
+                                <td data-label="Acción" class="text-end"><button type="button" onclick="document.getElementById('toggle-detail-side').click()" class="btn-premium btn-small cursor-pointer">Gestionar</button></td>
                             </tr>
                             <tr>
-                                <td class="font-bold text-accent">#BH-8840</td>
-                                <td><div class="font-bold">María García</div><div class="text-secondary" style="font-size: 0.75rem;">DNI: 35.123.456</div></td>
-                                <td>14/06 - 16/06</td>
-                                <td><span class="room-pill">Doble 102</span></td>
-                                <td><span class="badge-status green">Check-in</span></td>
-                                <td style="text-align: right;"><label for="toggle-detail-side" class="btn-premium btn-small" style="cursor: pointer;">Gestionar</label></td>
+                                <td data-label="Código" class="font-bold text-accent">#BH-8840</td>
+                                <td data-label="Huésped"><div class="font-bold">María García</div><div class="text-xs-muted">DNI: 35.123.456</div></td>
+                                <td data-label="Periodo">14/06 - 16/06</td>
+                                <td data-label="Habitación"><span class="room-pill">Doble 102</span></td>
+                                <td data-label="Estado"><span class="badge-status green">Check-in</span></td>
+                                <td data-label="Acción" class="text-end"><button type="button" onclick="document.getElementById('toggle-detail-side').click()" class="btn-premium btn-small cursor-pointer">Gestionar</button></td>
                             </tr>
                             <tr>
-                                <td class="font-bold text-accent">#BH-7730</td>
-                                <td><div class="font-bold">Carlos Ruiz</div><div class="text-secondary" style="font-size: 0.75rem;">DNI: 12.888.444</div></td>
-                                <td>10/06 - 12/06</td>
-                                <td><span class="room-pill">Cama 4</span></td>
-                                <td><span class="badge-status red">Cancelada</span></td>
-                                <td style="text-align: right;"><label for="toggle-detail-side" class="btn-premium btn-small" style="cursor: pointer;">Gestionar</label></td>
+                                <td data-label="Código" class="font-bold text-accent">#BH-7730</td>
+                                <td data-label="Huésped"><div class="font-bold">Carlos Ruiz</div><div class="text-xs-muted">DNI: 12.888.444</div></td>
+                                <td data-label="Periodo">10/06 - 12/06</td>
+                                <td data-label="Habitación"><span class="room-pill">Cama 4</span></td>
+                                <td data-label="Estado"><span class="badge-status red">Cancelada</span></td>
+                                <td data-label="Acción" class="text-end"><button type="button" onclick="document.getElementById('toggle-detail-side').click()" class="btn-premium btn-small cursor-pointer">Gestionar</button></td>
                             </tr>
                         </tbody>
                     </table>
@@ -142,15 +161,15 @@
                     <div class="panel-top-bar">
                         <div class="flex-between mb-32">
                             <div>
-                                <h3 style="font-size: 1.5rem; font-weight: 900; margin: 0;">Gestionar Reserva #BH-9921</h3>
+                                <h3 class="m-0 text-2xl font-weight-900">Gestionar Reserva #BH-9921</h3>
                                 <p class="header-subtitle">Panel de Control y Edición Directa</p>
                             </div>
-                            <label for="toggle-detail-side" class="close-btn-round" title="Descartar"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></label>
+                            <button type="button" onclick="document.getElementById('toggle-detail-side').click()" class="close-btn-round" title="Descartar"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
                         </div>
                         <!-- Pestañas Internas (Historial / Configuración) -->
                         <div class="panel-tabs-row flex-center gap-32">
-                            <label for="side-tab-edit" class="tab-link-side active">Configuración y Edición</label>
-                            <label for="side-tab-audit" class="tab-link-side">Pestaña de Historial (Log)</label>
+                            <button type="button" class="tab-link-side active bg-transparent border-none" onclick="document.getElementById('side-tab-edit').click()">Configuración y Edición</button>
+                            <button type="button" class="tab-link-side bg-transparent border-none" onclick="document.getElementById('side-tab-audit').click()">Pestaña de Historial (Log)</button>
                         </div>
                     </div>
 
@@ -172,7 +191,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label class="auth-label">Reasignar Número de Habitación</label>
-                                        <select class="input-field" style="appearance: auto; font-weight: 600;">
+                                        <select class="input-field appearance-auto font-weight-600">
                                             <option selected>Habitación 101 (Suite)</option>
                                             <option>Habitación 102 (Doble)</option>
                                             <option>Cama 4 (Dormitorio)</option>
@@ -180,7 +199,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label class="auth-label">Cambiar Estado</label>
-                                        <select class="input-field" style="appearance: auto; font-weight: 800; color: #f08c00;">
+                                        <select class="input-field appearance-auto font-weight-800 color-dark">
                                             <option selected>Pendiente</option>
                                             <option>Confirmada</option>
                                             <option>Ocupado (En curso)</option>
@@ -189,37 +208,37 @@
                                     </div>
                                     <div class="form-group">
                                         <label class="auth-label">Agregar Notas Administrativas</label>
-                                        <textarea class="input-field" style="height: 80px; resize: none;" placeholder="Ej. El huésped requiere late check-out..."></textarea>
+                                        <textarea class="input-field h-80 resize-none" placeholder="Ej. El huésped requiere late check-out..."></textarea>
                                     </div>
 
                                     <!-- 4. ACCIONES RÁPIDAS -->
-                                    <div class="admin-quick-actions-panel mt-15 pt-32" style="border-top: 1px solid #e2e8f0;">
-                                        <h5 class="mb-16" style="font-size: 0.75rem; text-transform: uppercase; color: #64748b;">Acciones de Ejecución</h5>
+                                    <div class="admin-quick-actions-panel mt-15 pt-32 border-top-soft-gray">
+                                        <h5 class="mb-16 text-xs-muted text-uppercase">Acciones de Ejecución</h5>
                                         <div class="flex-column gap-12">
                                             <!-- Botón Confirmar Check-in (CTA Principal) -->
-                                            <label for="toggle-toast-msg" class="btn-premium flex-center" style="background: #10b981; height: 56px; cursor: pointer; font-weight: 800;">
+                                            <button type="button" onclick="document.getElementById('toggle-toast-msg').click()" class="btn-premium flex-center bg-success-soft height-56 cursor-pointer font-weight-800">
                                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="mr-8"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><polyline points="10 17 15 12 10 7"></polyline><line x1="15" y1="12" x2="3" y2="12"></line></svg>
                                                 Confirmar Check-in
-                                            </label>
+                                            </button>
                                             <!-- Botón Cancelar Reserva (CTA Secundario/Destructivo) -->
-                                            <label for="toggle-cancel-modal" class="btn-outline flex-center text-danger" style="height: 52px; border-color: #fee2e2; background: #fff5f5; cursor: pointer; font-weight: 700;">
+                                            <button type="button" onclick="document.getElementById('toggle-cancel-modal').click()" class="btn-outline flex-center text-danger height-52 border-danger-soft bg-danger-soft cursor-pointer font-weight-700">
                                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="mr-8"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
                                                 Cancelar Reserva
-                                            </label>
+                                            </button>
                                         </div>
                                     </div>
 
                                     <!-- CONTROLES DE GUARDADO -->
-                                    <div class="panel-action-bar mt-40 flex-between pt-32" style="border-top: 1px solid #e2e8f0;">
-                                        <label for="toggle-detail-side" class="btn-outline" style="cursor: pointer; min-width: 140px;">Descartar</label>
-                                        <label for="toggle-toast-msg" class="btn-premium" style="background: var(--bg-sidebar); min-width: 220px; cursor: pointer; height: 56px; font-weight: 900;">GUARDAR CAMBIOS</label>
+                                    <div class="panel-action-bar mt-40 flex-between pt-32 border-top-soft-gray">
+                                        <button type="button" onclick="document.getElementById('toggle-detail-side').click()" class="btn-outline cursor-pointer min-width-140">Descartar</button>
+                                        <button type="button" onclick="document.getElementById('toggle-toast-msg').click()" class="btn-premium bg-sidebar-custom min-width-220 cursor-pointer height-56 font-weight-900">GUARDAR CAMBIOS</button>
                                     </div>
                                 </div>
                             </form>
                         </div>
 
                         <!-- 5.2 PESTAÑA DE HISTORIAL (LOG DE AUDITORÍA) -->
-                        <div id="side-content-audit" class="side-tab-pane" style="display: none;">
+                        <div id="side-content-audit" class="side-tab-pane display-none">
                             <div class="audit-timeline-container">
                                 <div class="timeline-log-item">
                                     <span class="log-time">15/05 10:30</span>
@@ -250,32 +269,32 @@
 
             <!-- 4.2 Modal de Confirmación de Cancelación -->
             <div class="modal-overlay" id="confirm-cancel-modal">
-                <div class="modal-content-premium" style="max-width: 440px;">
+                <div class="modal-content-premium max-width-440">
                     <div class="warning-icon-bg mb-24"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#e03131" stroke-width="3"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg></div>
-                    <h2 style="font-size: 1.5rem; margin-bottom: 12px; font-weight: 900;">¿Confirmar Cancelación?</h2>
-                    <p class="header-subtitle" style="line-height: 1.6;">Esta acción anulará la reserva #BH-9921 de forma permanente. La habitación 101 será liberada para nuevos huéspedes inmediatamente.</p>
+                    <h2 class="text-2xl mb-12 font-weight-900">¿Confirmar Cancelación?</h2>
+                    <p class="header-subtitle line-height-1-6">Esta acción anulará la reserva #BH-9921 de forma permanente. La habitación 101 será liberada para nuevos huéspedes inmediatamente.</p>
                     <div class="flex-center gap-16 mt-40">
-                        <label for="toggle-cancel-modal" class="btn-outline flex-1" style="cursor: pointer;">Mantener Reserva</label>
-                        <label for="toggle-cancel-modal" class="btn-premium flex-1" style="background: #e03131; cursor: pointer;">Sí, Cancelar</label>
+                        <button type="button" onclick="document.getElementById('toggle-cancel-modal').click()" class="btn-outline flex-1 cursor-pointer">Mantener Reserva</button>
+                        <button type="button" onclick="document.getElementById('toggle-cancel-modal').click()" class="btn-premium flex-1 bg-danger-strong cursor-pointer">Sí, Cancelar</button>
                     </div>
                 </div>
             </div>
 
             <!-- 4.3 Modal de Error de Búsqueda (Simulado) -->
             <div class="modal-overlay" id="search-error-modal">
-                <div class="modal-content-premium" style="max-width: 440px;">
-                    <div class="warning-icon-bg mb-24" style="background: #fff5f5;">
+                <div class="modal-content-premium max-width-440">
+                    <div class="warning-icon-bg mb-24 bg-danger-soft">
                         <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#e03131" stroke-width="3">
                             <line x1="12" y1="8" x2="12" y2="12"></line>
                             <line x1="12" y1="16" x2="12.01" y2="16"></line>
                             <circle cx="12" cy="12" r="10"></circle>
                         </svg>
                     </div>
-                    <h2 style="font-size: 1.5rem; margin-bottom: 12px; font-weight: 900;">No se encontraron reservas</h2>
-                    <p class="header-subtitle" style="line-height: 1.6;">Lo sentimos, no hay registros que coincidan con tu búsqueda. <br>Puedes intentar con otros términos o proceder al registro manual.</p>
+                    <h2 class="text-2xl mb-12 font-weight-900">No se encontraron reservas</h2>
+                    <p class="header-subtitle line-height-1-6">Lo sentimos, no hay registros que coincidan con tu búsqueda. <br>Puedes intentar con otros términos o proceder al registro manual.</p>
                     <div class="flex-center gap-16 mt-40">
-                        <label for="toggle-search-fail" class="btn-outline flex-1" style="cursor: pointer;">Nueva Búsqueda</label>
-                        <label for="role-toggle" class="btn-premium flex-1" style="background: #e03131; cursor: pointer;">+ Registrar Reserva</label>
+                        <button type="button" onclick="document.getElementById('toggle-search-fail').click()" class="btn-outline flex-1 cursor-pointer">Nueva Búsqueda</button>
+                        <button type="button" onclick="document.getElementById('role-toggle').click()" class="btn-premium flex-1 bg-danger-strong cursor-pointer">+ Registrar Reserva</button>
                     </div>
                 </div>
             </div>
@@ -288,14 +307,14 @@
                         <strong>Operación Exitosa</strong>
                         <span>La reserva ha sido procesada y el historial actualizado.</span>
                     </div>
-                    <label for="toggle-toast-msg" class="toast-close-btn">✕</label>
+                    <button type="button" onclick="document.getElementById('toggle-toast-msg').click()" class="toast-close-btn bg-transparent border-none color-white">✕</button>
                 </div>
             </div>
 
         </div> <!-- Fin admin-wrapper -->
 
         <!-- VISTA RECEPCIONISTA (RESERVA PASO A PASO - PRESERVADA) -->
-        <div class="recep-wrapper" style="display: none;">
+        <div class="recep-wrapper display-none">
             <!-- Aquí iría la vista de registro que diseñamos antes, activada por el toggle -->
             <section class="content-section flex-center py-80">
                 <div class="text-center">
@@ -306,74 +325,7 @@
         </div>
 
     </main>
-
-    <style>
-        /* LÓGICA DE ROLES */
-        #role-toggle:checked ~ main .admin-wrapper { display: none !important; }
-        #role-toggle:not(:checked) ~ main .recep-wrapper { display: none !important; }
-        #role-toggle:checked ~ header #dynamic-subtitle::after { content: ' - Modo Usuario'; }
-        #role-toggle:not(:checked) ~ header #dynamic-subtitle::after { content: ' - Modo Administración'; }
-
-        /* BÚSQUEDA PREMIUM */
-        .search-premium-box { flex: 1; display: flex; align-items: center; gap: 16px; background: white; padding: 14px 24px; border-radius: 16px; border: 1px solid var(--border-color); box-shadow: var(--shadow-sm); transition: all 0.3s; }
-        .search-premium-box:focus-within { border-color: var(--accent-color); box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.1); }
-        .filter-select { width: 180px; height: 52px; background: white; appearance: auto; }
-
-        /* MODAL DE ERROR DE BÚSQUEDA */
-        #search-error-modal { position: fixed; inset: 0; z-index: 3000; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; }
-        #toggle-search-fail:checked ~ #search-error-modal { display: flex; }
-        #toggle-search-fail:checked ~ .admin-wrapper .admin-results-grid { filter: blur(4px); pointer-events: none; }
-
-        /* DATA GRID ELEMENTS */
-        .room-pill { background: #f1f5f9; padding: 4px 12px; border-radius: 8px; font-size: 0.75rem; font-weight: 800; color: #475569; }
-        .badge-status { padding: 5px 12px; border-radius: 100px; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; }
-        .badge-status.yellow { background: #fff9db; color: #f08c00; }
-        .badge-status.green { background: #ebfbee; color: #2b8a3e; }
-        .badge-status.red { background: #fff5f5; color: #e03131; }
-
-        /* SIDE PANEL (GESTIONAR DENTRO DE GESTIONAR) */
-        .admin-side-panel { position: fixed; inset: 0; z-index: 2000; display: none; }
-        #toggle-detail-side:checked ~ .admin-side-panel { display: block; }
-        .panel-content-wrapper { position: absolute; right: 0; top: 0; width: 100%; max-width: 640px; height: 100%; background: white; box-shadow: -15px 0 40px rgba(0,0,0,0.1); display: flex; flex-direction: column; animation: slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
-        @keyframes slideInRight { from { transform: translateX(100%); } to { transform: translateX(0); } }
-
-        .panel-top-bar { padding: 48px 48px 0; border-bottom: 1px solid #f1f5f9; background: #f8fafc; }
-        .close-btn-round { width: 40px; height: 40px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 1px solid #e2e8f0; transition: all 0.3s; }
-        .close-btn-round:hover { background: #f1f5f9; transform: rotate(90deg); }
-
-        .tab-link-side { padding: 12px 0; font-size: 0.95rem; font-weight: 800; color: #94a3b8; cursor: pointer; border-bottom: 3px solid transparent; transition: all 0.3s; }
-        #side-tab-edit:checked ~ .admin-side-panel .tab-link-side[for="side-tab-edit"],
-        #side-tab-audit:checked ~ .admin-side-panel .tab-link-side[for="side-tab-audit"] { color: var(--accent-color); border-color: var(--accent-color); }
-        
-        #side-tab-audit:checked ~ .admin-side-panel #side-content-edit { display: none; }
-        #side-tab-audit:checked ~ .admin-side-panel #side-content-audit { display: block; }
-
-        /* TIMELINE LOG */
-        .audit-timeline-container { position: relative; padding-left: 24px; border-left: 2px solid #e2e8f0; }
-        .timeline-log-item { position: relative; margin-bottom: 40px; }
-        .timeline-log-item::before { content: ''; position: absolute; left: -31px; top: 4px; width: 12px; height: 12px; border-radius: 50%; background: white; border: 3px solid #cbd5e1; }
-        .timeline-log-item.active::before { border-color: var(--accent-color); background: var(--accent-color); }
-        .log-time { display: block; font-size: 0.75rem; font-weight: 800; color: var(--text-secondary); margin-bottom: 6px; }
-        .log-desc { background: #f8fafc; padding: 16px; border-radius: 12px; border: 1px solid #e2e8f0; }
-
-        /* MODAL PREMIUM */
-        #confirm-cancel-modal { position: fixed; inset: 0; z-index: 3000; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; }
-        #toggle-cancel-modal:checked ~ #confirm-cancel-modal { display: flex; }
-        .modal-content-premium { background: white; padding: 48px; border-radius: 32px; text-align: center; box-shadow: var(--shadow-lg); }
-        .warning-icon-bg { width: 80px; height: 80px; background: #fff5f5; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto; }
-
-        /* TOAST PREMIUM */
-        .toast-fixed-stack { position: fixed; top: 40px; right: 40px; z-index: 5000; display: none; }
-        #toggle-toast-msg:checked ~ .toast-fixed-stack { display: block; animation: slideInTop 0.5s ease; }
-        .toast-item-premium { background: #1a1d20; color: white; padding: 20px 32px; border-radius: 20px; display: flex; align-items: center; gap: 20px; box-shadow: var(--shadow-lg); border: 1px solid rgba(255,255,255,0.1); }
-        .toast-success-icon { width: 32px; height: 32px; background: #10b981; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-        .toast-content strong { display: block; font-size: 1rem; }
-        .toast-content span { font-size: 0.85rem; opacity: 0.8; }
-        .toast-close-btn { cursor: pointer; font-size: 1.2rem; opacity: 0.5; }
-
-        @keyframes slideInTop { from { transform: translateY(-50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        @keyframes slideInUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-    </style>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>

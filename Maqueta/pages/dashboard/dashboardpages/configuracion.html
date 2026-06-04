@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Configuración</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../../../style/dashboard.css">
 </head>
 <body>
@@ -13,16 +14,23 @@
     <input type="checkbox" id="menu-cb" hidden>
 
     <!-- OVERLAY PARA MÓVIL -->
-    <label for="menu-cb" class="sidebar-overlay"></label>
+    <button type="button" class="sidebar-overlay border-none" onclick="document.getElementById('menu-cb').checked = false"></button>
 
     <!-- BARRA LATERAL (SIDEBAR) -->
     <aside>
         <div class="sidebar-brand">
-            <div class="flex-center gap-12" style="justify-content: flex-start;">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            <div class="flex-align-center gap-16">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
                 <div>
-                    <h2 style="font-size: 1.1rem; font-weight: 800; text-transform: uppercase; margin-bottom: 2px; letter-spacing: -0.5px;">Panel Dashboard</h2>
-                    <p style="font-size: 0.75rem; color: #94a3b8; font-weight: 500;">BrigadaHostel</p>
+                    <h2 class="sidebar-title">Panel dashboard</h2>
+                    <p class="sidebar-subtitle">Modo Admin</p>
+                </div>
+            </div>
+            <!-- ROLE SWITCHER MOBILE -->
+            <div class="role-switcher-sidebar d-md-none mt-32 mb-16">
+                <div class="role-switcher w-100">
+                    <button type="button" class="role-label admin-label border-none flex-1" onclick="window.location.href='configuracion.html'">Admin</button>
+                    <button type="button" class="role-label recep-label border-none flex-1" onclick="window.location.href='reservasusuario.html'">Usuario</button>
                 </div>
             </div>
         </div>
@@ -49,19 +57,19 @@
 
     <!-- ENCABEZADO (HEADER) -->
     <header>
-        <label for="menu-cb" class="menu-toggle">
+        <button type="button" class="menu-toggle border-none bg-transparent" onclick="document.getElementById('menu-cb').click()">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
-        </label>
-        <div class="header-title">
-            <h1>Configuración del Sistema</h1>
-            <p class="header-subtitle">Vista Operativa BrigadaHostel</p>
+        </button>
+        <div class="header-title flex-column">
+            <h1 class="m-0">Panel dashboard</h1>
+            <p class="header-subtitle m-0">Modo Admin</p>
         </div>
 
-        <div style="display: flex; align-items: center; margin-left: auto;">
-            <!-- ROLE SWITCHER (Simulado con Label/Checkbox) -->
+        <div class="flex align-center ml-auto">
+            <!-- ROLE SWITCHER (Simulado con Button/Checkbox) -->
             <div class="role-switcher">
-                <label for="role-toggle" class="role-label admin-label">Admin</label>
-                <label for="role-toggle" class="role-label recep-label">Recepcionista</label>
+                <button type="button" class="role-label admin-label border-none" onclick="window.location.href='configuracion.html'">Admin</button>
+                <button type="button" class="role-label recep-label border-none" onclick="window.location.href='reservasusuario.html'">Usuario</button>
             </div>
 
             <div class="user-info">
@@ -80,7 +88,7 @@
             <section class="content-section">
                 <h3 class="form-section-title mb-24">Perfil de Administrador</h3>
                 <div class="flex-center flex-column mb-32">
-                    <div class="user-avatar-small" style="width: 100px; height: 100px; font-size: 2rem; margin-bottom: 16px;">
+                    <div class="user-avatar-small user-avatar-config">
                         <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                     </div>
                     <button class="btn-outline btn-small">Cambiar Foto</button>
@@ -117,7 +125,7 @@
                 </div>
                 <button class="btn-premium mt-32 w-full">Actualizar Contraseña</button>
                 
-                <div class="mt-40 pt-24" style="border-top: 1px solid #f1f5f9;">
+                <div class="mt-40 pt-24 border-top-f1">
                     <label class="checkbox-label-bold">
                         <input type="checkbox" checked>
                         <div>
@@ -135,7 +143,7 @@
             <div class="grid-3 gap-24">
                 <div class="form-group">
                     <label class="auth-label">Idioma</label>
-                    <select class="input-field" style="appearance: auto;">
+                    <select class="input-field appearance-auto">
                         <option selected>Español (ES)</option>
                         <option>English (US)</option>
                         <option>Português (BR)</option>
@@ -143,7 +151,7 @@
                 </div>
                 <div class="form-group">
                     <label class="auth-label">Tema Visual</label>
-                    <select class="input-field" style="appearance: auto;">
+                    <select class="input-field appearance-auto">
                         <option selected>Claro (Defecto)</option>
                         <option>Oscuro (Noche)</option>
                         <option>Alto Contraste</option>
@@ -151,7 +159,7 @@
                 </div>
                 <div class="form-group">
                     <label class="auth-label">Notificaciones</label>
-                    <select class="input-field" style="appearance: auto;">
+                    <select class="input-field appearance-auto">
                         <option selected>Todas las alertas</option>
                         <option>Solo críticas</option>
                         <option>Silenciar todas</option>
@@ -160,5 +168,6 @@
             </div>
         </section>
     </main>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
