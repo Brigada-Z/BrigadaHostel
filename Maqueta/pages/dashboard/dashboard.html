@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Inicio</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../style/dashboard.css">
+</head>
+<body>
+
+    <!-- CONTROL DE ROL Y MENÚ (SÓLO CSS) -->
+    <input type="checkbox" id="role-toggle" hidden>
+    <input type="checkbox" id="menu-cb" hidden>
+
+    <!-- OVERLAY PARA MÓVIL -->
+    <button type="button" class="sidebar-overlay border-none" onclick="document.getElementById('menu-cb').checked = false"></button>
+
+    <!-- BARRA LATERAL (SIDEBAR) -->
+    <aside>
+        <div class="sidebar-brand">
+            <div class="flex-align-center gap-16">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                <div>
+                    <h1 class="sidebar-title">Panel dashboard</h1>
+                    <p class="sidebar-subtitle">Modo Admin</p>
+                </div>
+            </div>
+            <!-- ROLE SWITCHER MOBILE -->
+            <div class="role-switcher-sidebar d-md-none mt-32 mb-16">
+                <div class="role-switcher w-100">
+                    <button type="button" class="role-label admin-label border-none flex-1" onclick="window.location.href='dashboard.html'">Admin</button>
+                    <button type="button" class="role-label recep-label border-none flex-1" onclick="window.location.href='dashboardUsuario.html'">Usuario</button>
+                </div>
+            </div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="dashboard.html" class="active"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg> Resumen</a></li>
+                <li><a href="dashboardpages/reservas.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> Reservas</a></li>
+
+
+                <li class="admin-only"><a href="dashboardpages/configuracion.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg> Configuración</a></li>
+            </ul>
+        </nav>
+        <div class="sidebar-footer">
+            <a href="dashboardauth/loginDashboard.html" class="btn-logout">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                Cerrar Sesión
+            </a>
+            <a href="../index.html">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                Volver al sitio web
+            </a>
+        </div>
+    </aside>
+
+    <!-- ENCABEZADO (HEADER) -->
+    <header>
+        <button type="button" class="menu-toggle border-none bg-transparent" onclick="document.getElementById('menu-cb').click()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+        </button>
+        <div class="header-title flex-column">
+            <h1 class="m-0">Panel dashboard</h1>
+            <p class="header-subtitle m-0">Modo Admin</p>
+        </div>
+
+        <div class="flex-align-center ml-auto">
+            <!-- ROLE SWITCHER (Simulado con Button/Checkbox) -->
+            <div class="role-switcher">
+                <button type="button" class="role-label admin-label border-none" onclick="window.location.href='dashboard.html'">Admin</button>
+                <button type="button" class="role-label recep-label border-none" onclick="window.location.href='dashboardUsuario.html'">Usuario</button>
+            </div>
+
+            <div class="user-info">
+                <span>Sesión Activa</span>
+                <div class="user-avatar-small">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- SECCIÓN DE MÉTRICAS RÁPIDAS -->
+    <main>
+                    <!-- 2. MÓDULO OPERACIONES (GIULIANO) -->
+            <section class="content-section" style="min-height: 85vh; margin-bottom: 120px;">
+                <div class="flex-between mb-40 border-bottom-soft pb-24">
+                    <div>
+                        <h2 class="m-0 text-3xl font-weight-900">Módulo Operaciones</h2>
+                        <p class="header-subtitle">Optimización de recursos, mantenimiento preventivo y limpieza</p>
+                    </div>
+                    <div class="flex gap-16">
+                        <button class="btn-outline">Ver Planilla Mensual</button>
+                        <button class="btn-premium">+ Nueva Incidencia</button>
+                    </div>
+                </div>
+                <div class="row g-5">
+                    <!-- Control de Limpieza Extendido -->
+                    <div class="col-md-6">
+                        <div class="card p-32 h-100 border-0 shadow-none bg-light">
+                            <div class="flex-between mb-24">
+                                <h3 class="text-lg font-weight-800">Estado de Habitaciones</h3>
+                                <span class="text-xs font-weight-700 text-muted">ACTUALIZADO: 14:30 PM</span>
+                            </div>
+                            <div class="flex-column gap-12">
+                                <div class="flex-between p-16 bg-white rounded-4 border shadow-sm">
+                                    <div class="flex-align-center gap-12">
+                                        <div class="p-8 bg-success-soft rounded-3"><svg width="18" height="18" fill="#10b981" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+                                        <div><strong>Hab 101</strong><p class="text-xs-muted mb-0">Suite - Limpia</p></div>
+                                    </div>
+                                    <span class="text-xs text-muted">Mucama: Rosa</span>
+                                </div>
+                                <div class="flex-between p-16 bg-white rounded-4 border shadow-sm">
+                                    <div class="flex-align-center gap-12">
+                                        <div class="p-8 bg-warning-soft rounded-3"><svg width="18" height="18" fill="#f59e0b" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg></div>
+                                        <div><strong>Hab 102</strong><p class="text-xs-muted mb-0">Doble - En Limpieza</p></div>
+                                    </div>
+                                    <span class="text-xs text-muted">Mucama: Ana</span>
+                                </div>
+                                <div class="flex-between p-16 bg-white rounded-4 border shadow-sm border-danger-soft">
+                                    <div class="flex-align-center gap-12">
+                                        <div class="p-8 bg-danger-soft rounded-3"><svg width="18" height="18" fill="#ef4444" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></div>
+                                        <div><strong>Dorm 4</strong><p class="text-xs-muted mb-0">8 Camas - Sucia</p></div>
+                                    </div>
+                                    <span class="text-xs text-danger font-bold">URGENTE</span>
+                                </div>
+                                <div class="flex-between p-16 bg-white rounded-4 border shadow-sm">
+                                    <div class="flex-align-center gap-12">
+                                        <div class="p-8 bg-success-soft rounded-3"><svg width="18" height="18" fill="#10b981" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+                                        <div><strong>Dorm 2</strong><p class="text-xs-muted mb-0">4 Camas - Limpia</p></div>
+                                    </div>
+                                    <span class="text-xs text-muted">Mucama: Rosa</span>
+                                </div>
+                            </div>
+                            <div class="mt-32 p-24 bg-white rounded-4 border-dashed border-2">
+                                <h4 class="text-sm font-weight-800 text-uppercase mb-12">Mantenimiento Pendiente</h4>
+                                <ul class="list-unstyled flex-column gap-8 mb-0">
+                                    <li class="text-sm flex-align-center gap-8"><span class="badge bg-warning p-1 rounded-circle"> </span> Reparar grifería Hab 105</li>
+                                    <li class="text-sm flex-align-center gap-8"><span class="badge bg-danger p-1 rounded-circle"> </span> Aire acondicionado Dorm 1 (Falla)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Inventario Crítico Extendido -->
+                    <div class="col-md-6">
+                        <div class="card p-32 h-100 border-0 shadow-none bg-light">
+                            <h3 class="text-lg font-weight-800 mb-24">Control de Stock e Insumos</h3>
+                            <div class="table-responsive">
+                                <table class="table table-sm table-borderless align-middle">
+                                    <thead><tr class="text-xs-muted uppercase border-bottom"><th class="pb-3">Insumo</th><th class="pb-3">Categoría</th><th class="pb-3 text-end">Existencia</th></tr></thead>
+                                    <tbody>
+                                        <tr class="border-bottom-soft"><td class="py-12"><strong>Sábanas Blancas</strong></td><td class="text-xs">Lencería</td><td class="text-end font-bold">42</td></tr>
+                                        <tr class="border-bottom-soft"><td class="py-12"><strong>Toallas de Baño</strong></td><td class="text-xs">Lencería</td><td class="text-end text-danger font-bold">12 <small>(Bajo)</small></td></tr>
+                                        <tr class="border-bottom-soft"><td class="py-12"><strong>Kits de Limpieza</strong></td><td class="text-xs">Químicos</td><td class="text-end font-bold">85</td></tr>
+                                        <tr class="border-bottom-soft"><td class="py-12"><strong>Papel Higiénico</strong></td><td class="text-xs">Descartables</td><td class="text-end font-bold">120</td></tr>
+                                        <tr class="border-bottom-soft"><td class="py-12"><strong>Café / Té (Cajas)</strong></td><td class="text-xs">Alimentos</td><td class="text-end text-warning font-bold">8</td></tr>
+                                        <tr class="border-bottom-soft"><td class="py-12"><strong>Detergente Ind.</strong></td><td class="text-xs">Químicos</td><td class="text-end font-bold">15 Lts</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="mt-auto pt-32">
+                                <div class="bg-sidebar p-24 rounded-4 text-white">
+                                    <div class="flex-between mb-8">
+                                        <span class="text-sm opacity-08">Eficiencia Operativa</span>
+                                        <span class="font-bold">92%</span>
+                                    </div>
+                                    <div class="progress bg-white-soft" style="height: 8px;"><div class="progress-bar bg-success" style="width: 92%;"></div></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

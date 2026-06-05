@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Configuración</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../style/dashboard.css">
+</head>
+<body>
+
+    <!-- CONTROL DE ROL Y MENÚ (SÓLO CSS) -->
+    <input type="checkbox" id="role-toggle" hidden>
+    <input type="checkbox" id="menu-cb" hidden>
+
+    <!-- OVERLAY PARA MÓVIL -->
+    <button type="button" class="sidebar-overlay border-none" onclick="document.getElementById('menu-cb').checked = false"></button>
+
+    <!-- BARRA LATERAL (SIDEBAR) -->
+    <aside>
+        <div class="sidebar-brand">
+            <div class="flex-align-center gap-16">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                <div>
+                    <h2 class="sidebar-title">Panel dashboard</h2>
+                    <p class="sidebar-subtitle">Modo Admin</p>
+                </div>
+            </div>
+            <!-- ROLE SWITCHER MOBILE -->
+            <div class="role-switcher-sidebar d-md-none mt-32 mb-16">
+                <div class="role-switcher w-100">
+                    <button type="button" class="role-label admin-label border-none flex-1" onclick="window.location.href='configuracion.html'">Admin</button>
+                    <button type="button" class="role-label recep-label border-none flex-1" onclick="window.location.href='reservasusuario.html'">Usuario</button>
+                </div>
+            </div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="../dashboard.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg> Resumen</a></li>
+                <li><a href="reservas.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> Reservas</a></li>
+
+
+                <li class="admin-only"><a href="configuracion.html" class="active"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg> Configuración</a></li>
+            </ul>
+        </nav>
+        <div class="sidebar-footer">
+            <a href="../dashboardauth/loginDashboard.html" class="btn-logout">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                Cerrar Sesión
+            </a>
+            <a href="../../index.html">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                Volver al sitio web
+            </a>
+        </div>
+    </aside>
+
+    <!-- ENCABEZADO (HEADER) -->
+    <header>
+        <button type="button" class="menu-toggle border-none bg-transparent" onclick="document.getElementById('menu-cb').click()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+        </button>
+        <div class="header-title flex-column">
+            <h1 class="m-0">Panel dashboard</h1>
+            <p class="header-subtitle m-0">Modo Admin</p>
+        </div>
+
+        <div class="flex align-center ml-auto">
+            <!-- ROLE SWITCHER (Simulado con Button/Checkbox) -->
+            <div class="role-switcher">
+                <button type="button" class="role-label admin-label border-none" onclick="window.location.href='configuracion.html'">Admin</button>
+                <button type="button" class="role-label recep-label border-none" onclick="window.location.href='reservasusuario.html'">Usuario</button>
+            </div>
+
+            <div class="user-info">
+                <span>Sesión Activa</span>
+                <div class="user-avatar-small">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- CONTENIDO DE CONFIGURACIÓN -->
+    <main>
+        <div class="grid-2 gap-32">
+            <!-- SECCIÓN PERFIL -->
+            <section class="content-section">
+                <h3 class="form-section-title mb-24">Perfil de Administrador</h3>
+                <div class="flex-center flex-column mb-32">
+                    <div class="user-avatar-small user-avatar-config">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    </div>
+                    <button class="btn-outline btn-small">Cambiar Foto</button>
+                </div>
+                <div class="flex-column gap-15">
+                    <div class="form-group">
+                        <label class="auth-label">Nombre Completo</label>
+                        <input type="text" class="input-field" value="Administrador General">
+                    </div>
+                    <div class="form-group">
+                        <label class="auth-label">Correo Electrónico</label>
+                        <input type="email" class="input-field" value="admin@brigadahostel.com">
+                    </div>
+                </div>
+                <button class="btn-premium mt-32 w-full">Guardar Cambios</button>
+            </section>
+
+            <!-- SECCIÓN SEGURIDAD -->
+            <section class="content-section">
+                <h3 class="form-section-title mb-24">Seguridad y Acceso</h3>
+                <div class="flex-column gap-20">
+                    <div class="form-group">
+                        <label class="auth-label">Contraseña Actual</label>
+                        <input type="password" class="input-field" placeholder="••••••••">
+                    </div>
+                    <div class="form-group">
+                        <label class="auth-label">Nueva Contraseña</label>
+                        <input type="password" class="input-field" placeholder="Mínimo 8 caracteres">
+                    </div>
+                    <div class="form-group">
+                        <label class="auth-label">Confirmar Nueva Contraseña</label>
+                        <input type="password" class="input-field" placeholder="••••••••">
+                    </div>
+                </div>
+                <button class="btn-premium mt-32 w-full">Actualizar Contraseña</button>
+                
+                <div class="mt-40 pt-24 border-top-f1">
+                    <label class="checkbox-label-bold">
+                        <input type="checkbox" checked>
+                        <div>
+                            <span class="font-semibold">Autenticación de dos factores (2FA)</span>
+                            <p class="header-subtitle">Añade una capa extra de seguridad a tu cuenta.</p>
+                        </div>
+                    </label>
+                </div>
+            </section>
+        </div>
+
+        <!-- PREFERENCIAS DEL SISTEMA -->
+        <section class="content-section mt-32">
+            <h3 class="form-section-title mb-24">Preferencias del Panel</h3>
+            <div class="grid-3 gap-24">
+                <div class="form-group">
+                    <label class="auth-label">Idioma</label>
+                    <select class="input-field appearance-auto">
+                        <option selected>Español (ES)</option>
+                        <option>English (US)</option>
+                        <option>Português (BR)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="auth-label">Tema Visual</label>
+                    <select class="input-field appearance-auto">
+                        <option selected>Claro (Defecto)</option>
+                        <option>Oscuro (Noche)</option>
+                        <option>Alto Contraste</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="auth-label">Notificaciones</label>
+                    <select class="input-field appearance-auto">
+                        <option selected>Todas las alertas</option>
+                        <option>Solo críticas</option>
+                        <option>Silenciar todas</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
