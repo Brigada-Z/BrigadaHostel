@@ -1,111 +1,59 @@
 body {
     font-family: Arial, Helvetica, sans-serif;
-    margin: 0;
     background-color: #f4f4f4;
     color: #222222;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
 }
 
-header {
+.encabezado {
     background-color: #1f4e79;
-    color: white;
-    text-align: center;
-    padding: 20px;
 }
 
-nav {
-    margin-top: 15px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
+.encabezado h1 {
+    font-weight: 700;
 }
 
-nav a {
+.navbar-dark .navbar-nav .nav-link {
     color: white;
-    margin: 8px;
-    text-decoration: none;
     font-weight: bold;
+    margin: 0 6px;
 }
 
-.nav-dashboard {
-    position: absolute;
-    right: 0;
-    display: flex;
-    align-items: center;
-    padding: 5px;
-    transition: opacity 0.3s;
-}
-
-.nav-dashboard:hover {
-    opacity: 0.8;
+.navbar-dark .navbar-nav .nav-link:hover,
+.navbar-dark .navbar-nav .nav-link.active {
+    text-decoration: underline;
+    color: white;
 }
 
 .nav-dashboard svg {
     stroke: white;
 }
 
-nav a:hover {
-    text-decoration: underline;
-}
-
-main {
-    width: 80%;
-    margin: 20px auto;
-    flex: 1;
-}
-
-section {
-    background-color: white;
-    padding: 20px;
-    margin-bottom: 20px;
+.card {
     border: 1px solid #dddddd;
 }
 
-h1, h2 {
-    margin-top: 0;
+.card-title {
+    color: #1f4e79;
 }
 
-ul {
-    line-height: 1.8;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: white;
-}
-
-th {
+.table-primary th {
     background-color: #d9eaf7;
+    color: #222222;
 }
 
-th, td {
-    border: 1px solid #999999;
-    padding: 10px;
-    text-align: left;
-}
-
-footer {
+.pie {
     background-color: #333333;
-    color: white;
-    text-align: center;
-    padding: 20px;
 }
 
-footer p {
-    margin: 0;
-}
-
-@media (max-width: 700px) {
-    main {
-        width: 95%;
+@media (max-width: 767px) {
+    .navbar-nav {
+        margin-top: 12px;
     }
 
-    nav a {
-        display: block;
-        margin: 10px 0;
+    .navbar-dark .navbar-nav .nav-link {
+        margin: 4px 0;
     }
 }
