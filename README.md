@@ -1,305 +1,568 @@
-# Panel de Administración — BrigadaHostel
+# BrigadaHostel y Panel de Administracion
 
-> Interfaz interna de gestión operativa para el sistema de administración de BrigadaHostel. Diseñada con foco en usabilidad, rendimiento y mantenibilidad a largo plazo.
-
----
-
-## Índice
-
-1. [Descripción General](#descripción-general)
-2. [Acceso y Autenticación](#acceso-y-autenticación)
-3. [Módulos del Panel](#módulos-del-panel)
-   - [Dashboard — Resumen General](#dashboard--resumen-general)
-   - [Reservas — Flujo de Registro](#reservas--flujo-de-registro)
-   - [Recepción — Operatividad Diaria](#recepción--operatividad-diaria)
-   - [Huéspedes — Análisis de Huéspedes](#huéspedes--análisis-de-huéspedes)
-   - [Operaciones — Operaciones y Eficiencia](#operaciones--operaciones-y-eficiencia)
-   - [Métricas — Métricas Financieras y Operativas](#métricas--métricas-financieras-y-operativas)
-   - [Configuración — Ajustes del Sistema](#configuración--ajustes-del-sistema)
-4. [Navegación y Estructura Compartida](#navegación-y-estructura-compartida)
-5. [Aspectos Técnicos](#aspectos-técnicos)
-6. [Sistema de Branching y Organización](#sistema-de-branching-y-organización)
+> Interfaz de gestión operativa y portal de autogestión para el sistema de administración de BrigadaHostel. Diseñada con foco en usabilidad, rendimiento, accesibilidad y mantenibilidad a largo plazo.
 
 ---
 
-## Descripción General
+# Índice
 
-BrigadaHostel Admin es un panel de administración interno compuesto por páginas HTML estáticas con estilos centralizados en un único archivo CSS. No depende de frameworks JavaScript ni de un backend activo para funcionar: toda la lógica de navegación, menús y layout está resuelta a nivel de CSS puro.
-
-El panel está orientado al personal administrativo del hostel y cubre múltiples áreas operativas:
-
-- análisis de rendimiento,
-- gestión de reservas,
-- control de recepción,
-- análisis de huéspedes,
-- monitoreo operativo,
-- métricas financieras,
-- configuración del sistema.
-
-El objetivo principal es centralizar la administración interna del hostel en una interfaz moderna, responsive y fácilmente mantenible.
+1. Descripción General
+2. Acceso y Autenticación
+3. Modo Administrador
+4. Modo Usuario
+5. Casos de Uso e Historias de Usuario
+6. Navegación y Estructura Compartida
+7. Aspectos Técnicos
+8. Sistema de Branching y Organización
+9. About & Contributors
 
 ---
 
-## Acceso y Autenticación
+# Descripción General
 
-El ingreso al panel se realiza a través de dos páginas dedicadas que comparten la misma estética visual del sistema.
+BrigadaHostel es un ecosistema de gestión compuesto por páginas HTML estáticas. Para esta versión del proyecto se incorporó **Bootstrap 5.3.3** para la construcción de layouts responsivos, tanto en las páginas públicas del sitio como en los módulos internos del Dashboard.
 
-### Login (`loginDashboard.html`)
-Formulario de acceso con dos campos: email y contraseña. Al enviar el formulario, el usuario es redirigido directamente a `dashboard.html`. Incluye un enlace para crear una cuenta nueva.
+El sistema fue desarrollado en dos vistas claramente diferenciadas:
 
-### Registro (`signupDashboard.html`)
-Formulario de alta de nuevo usuario administrativo con los campos: nombre, apellido, email y contraseña (mínimo 8 caracteres, validado con `minlength`). Al completarse, redirige al login.
+* **Modo Administrador:** orientado al personal interno del hostel.
+* **Modo Usuario:** enfocado en la autogestión de reservas y estadías por parte de huéspedes y clientes.
 
-> **Nota:** El título del `<head>` contiene un typo menor (`Singup`) que puede corregirse por `Signup`.
+Además, se realizó una importante refactorización visual eliminando estilos en línea y clases repetidas, centralizando toda la apariencia visual y estructura compartida en un único archivo CSS (`dashboard.css`).
 
-Ambas páginas muestran el logo del hostel y la tarjeta de autenticación centrada con estilo visual compartido con el resto del sistema.
-
----
-
-## Módulos del Panel
-
-### Dashboard — Resumen General
-
-Es la pantalla principal luego de autenticarse. Está orientada a brindar una visión rápida del rendimiento comercial y operativo del hostel.
-
-**Métricas principales (fila de tarjetas):**
-
-| Métrica | Valor de ejemplo | Indicador |
-|---|---|---|
-| Anticipación Promedio de Reserva | 12.4 días | ▲ vs mes pasado |
-| Tasa de Abandono en Checkout | 24.8% | ▼ mejora del 5% |
-| Ratio de Cancelación | 4.2% | ▲ riesgo |
-| Estadía Promedio (LOS) | 3.2 noches | ▲ 0.5 noches |
-
-**Gráficos y análisis detallados:**
-
-- **Embudo de Conversión** — Recorrido del usuario desde la búsqueda hasta la reserva efectiva: Búsquedas (4.2k) → Ver disponibilidad (2.7k) → Calcular costo (1.2k) → Registrar reserva (504).
-- **Top Servicios Extras** — Ranking de servicios adicionales más vendidos: Desayuno Buffet ($4.2k), Cochera Privada ($2.8k), Masajes Spa ($1.5k), Traslados ($1.2k), Lavandería ($0.8k).
-- **Distribución de Ingresos** — Gráfico de torta CSS por tipo de habitación: Suites 45%, Dobles 30%, Simples 25%.
-- **Estacionalidad de Consultas** — Gráfico de barras verticales con la demanda mensual de enero a junio.
-- **Canales de Venta** — Comparación entre Web Site (70% — $8.4k) y Mobile App (30% — $3.6k).
-- **Impacto de Extras en el Ticket** — Ticket base promedio ($145) vs ticket final con extras ($192.50).
+El objetivo principal es centralizar la administración interna y la experiencia de autogestión del cliente en una plataforma moderna, responsive y fácilmente mantenible.
 
 ---
 
-### Reservas — Flujo de Registro
+# Acceso y Autenticación
 
-Página orientada al registro de nuevas estadías. El proceso está dividido en **4 pasos secuenciales** mediante un stepper visual.
+El ingreso al sistema se realiza mediante dos páginas dedicadas que comparten la misma identidad visual del proyecto.
 
-| Paso | Contenido |
-|---|---|
-| **1 — Selección de Fechas** | Formulario con Fecha de Entrada y Fecha de Salida. El botón "Ver Disponibilidad" avanza al paso 2. |
-| **2 — Tipo de Habitación** | **Dormitorio Compartido** ($20/noche — 8 camas, Wifi, Locker) y **Habitación Privada Deluxe** ($55/noche — Cama King, Baño Suite, Aire Acondicionado). |
-| **3 — Servicios y Resumen** | Servicios adicionales (Desayuno Buffet +$12/día, Traslado al Aeropuerto +$25) con resumen de costos: estadía, servicios, impuestos (10%) y total final. |
-| **4 — Confirmación** | Pantalla de éxito con ícono de check verde, código de reserva (`#BH-9921`), descarga PDF y botón para volver al Dashboard. |
+## Login (`loginDashboard.html`)
 
-La navegación entre pasos funciona mediante anclas HTML (`#paso1`, `#paso2`, etc.), sin JavaScript.
+Formulario de acceso compuesto por:
 
----
+* Email
+* Contraseña
 
-### Recepción — Operatividad Diaria
+Al enviar el formulario, el usuario es redirigido al panel correspondiente según su rol.
 
-Módulo orientado al trabajo operativo del mostrador y gestión diaria de huéspedes. Combina métricas operativas en tiempo real con herramientas administrativas.
+Incluye:
 
-**Métricas rápidas:**
+* Crear cuenta nueva
+* Recuperar contraseña
 
-| Métrica | Valor de ejemplo |
-|---|---|
-| Productividad del Staff | 142 gestiones (+12 hoy) |
-| No-Show Rate | 2.1% (▼ mejora) |
-| Tiempo Promedio de Check-in | 4.5 min (▼ mejorado) |
-| Ingresos en Mostrador | $1,240 (▲ 15% venta directa) |
+## Registro (`signupDashboard.html`)
 
-**Secciones de análisis:**
+Formulario de alta de nuevos usuarios compuesto por:
 
-- **Ocupación Real Diaria** — Círculo de progreso CSS: 18 de 24 habitaciones ocupadas (85%).
-- **Estado de Inventario** — Distribución visual: Ocupadas (18), Limpias (4), Sucias (2), En Mantenimiento (0).
-- **Modificaciones Manuales** — Gráfico de barras por día para monitorear ajustes en recepción.
-- **Origen de Cancelaciones** — Admin/Recepción (45%) vs autogestión del usuario (55%).
-- **Previsión de Check-outs** — Visualización de salidas programadas para próximos días.
-- **Discrepancia de Montos** — Alerta en rojo con diferencias entre montos calculados y cobrados (+$245.00 de ejemplo).
+* Nombre
+* Apellido
+* Email
+* Contraseña
 
-**Tabla de gestión:** Lista de huéspedes activos con habitación, estado y acciones rápidas por fila (Actualizar, Check-out, Reportar).
+La contraseña requiere un mínimo de 8 caracteres mediante validación HTML (`minlength`).
 
----
+Una vez completado el registro, el usuario es redirigido al Login.
 
-### Huéspedes — Análisis de Huéspedes
+Ambas páginas presentan:
 
-> Responsable: [@Alejo Camolotto](https://github.com/Camolotto)
-
-Permite comprender el perfil y comportamiento de los visitantes mediante datos demográficos y patrones de estadía.
-
-Incluye información sobre:
-- Nacionalidades principales
-- Rangos de edad
-- Motivos del viaje
-- Nivel de fidelización
-
-Estas métricas ayudan a identificar el público objetivo, adaptar servicios, optimizar estrategias de marketing y aumentar la retención de clientes recurrentes.
-
-**Funcionalidades principales:**
-- Distribución por nacionalidades
-- Segmentación por edades
-- Motivos frecuentes de viaje
-- Huéspedes recurrentes
-- Estadísticas visuales
-- Análisis demográfico general
+* Logo institucional
+* Tarjeta de autenticación centrada
+* Diseño responsive
+* Estética unificada con el resto del sistema
 
 ---
 
-### Operaciones — Operaciones y Eficiencia
+# Modo Administrador
 
-> Responsable: [@Giuliano Batistella](https://github.com/gbatistela)
-
-Muestra el estado operativo interno del hostel y permite monitorear el rendimiento diario del personal y los recursos. Incluye métricas de limpieza, mantenimiento, inventario, consumo energético y atención al huésped.
-
-**Objetivos:** optimizar procesos internos, mejorar eficiencia operativa, reducir costos y mantener calidad de servicio.
-
-**Funcionalidades principales:**
-- Seguimiento de limpieza
-- Estado de inventario
-- Consumo de energía
-- Tiempo de respuesta al huésped
-- Rendimiento operativo diario
-- Gestión de recursos internos
+Orientado al personal administrativo del hostel. Permite gestionar reservas, monitorear operaciones, controlar recepción y analizar indicadores de rendimiento.
 
 ---
 
-### Métricas — Métricas Financieras y Operativas
+## Dashboard — Resumen Operativo (`dashboard.html`)
 
-> Responsable: [@Mauricio Ferreyra](https://github.com/EmiTeck)
+Pantalla principal del sistema.
 
-Panel financiero y operativo del hostel con indicadores clave de rendimiento.
+### Métricas Principales
 
-**Indicadores principales:**
+| Métrica           | Valor Prototipo | Indicador     |
+| ----------------- | --------------- | ------------- |
+| Ocupación Hoy     | 85%             | ▲ 18/24 camas |
+| Check-ins Hoy     | 6               | 2 pendientes  |
+| Ratio Cancelación | 4.2%            | ▲ riesgo      |
+| Estadía Promedio  | 3.2 noches      | ▲ mejora      |
 
-- **RevPAR** — Ingreso por habitación disponible con evolución mensual.
-- **ADR (Average Daily Rate)** — Tarifa diaria promedio de reservas.
-- **Ocupación por tipo de habitación** — Análisis de ocupación segmentado.
-- **ROI de campañas de marketing** — Retorno de inversión de campañas promocionales.
+### Gráficos y Análisis
 
-**Objetivos del módulo:** evaluar rentabilidad, medir crecimiento, analizar eficiencia operativa y visualizar desempeño comercial.
+#### Estado de Habitaciones
 
----
+* Ocupadas: 18
+* Limpias: 4
+* Sucias: 2
 
-### Configuración — Ajustes del Sistema
+#### Tendencia de Ingresos
 
-Módulo de personalización de la cuenta y el entorno del administrador.
+Visualización semanal mediante gráfico CSS.
 
-**Métricas de estado:**
+#### Mix de Canales de Venta
 
-| Indicador | Valor |
-|---|---|
-| Estado de Cuenta | Verificada — Seguridad Alta |
-| Rol de Usuario | Super Admin — Acceso Total |
-| Último Cambio de Contraseña | Hace 12 días (próximo en 78 días) |
-| Versión del Sistema | v2.4.8-stable |
+* Booking: 60%
+* Expedia: 20%
+* Venta Directa: 15%
+* Otros: 5%
 
-**Secciones:**
+#### Últimos Movimientos
 
-- **Perfil de Administrador** — Foto de perfil (JPG/PNG, máx. 800K), nombre completo y email de contacto.
-- **Preferencias Visuales** — Idioma (Español, English, Português), tema Claro/Oscuro y Modo Compacto.
-- **Alertas y Notificaciones** — Nuevas Reservas (email), Reporte de Turno y Alertas SMS.
-- **Seguridad y Acceso** — Estado de 2FA, cambio de contraseña y registro de sesiones activas.
+Registro cronológico de actividades recientes:
 
----
-
-## Navegación y Estructura Compartida
-
-Todas las páginas del panel comparten los mismos componentes reutilizables:
-
-- **Sidebar** — Logo, navegación principal, Cerrar Sesión y Volver al sitio web.
-- **Header** — Título actual, subtítulo, usuario activo y avatar.
-- **Botón hamburguesa** — Visible únicamente en dispositivos móviles. Controla la apertura y cierre del sidebar.
-
-El enlace activo en la barra lateral utiliza la clase `active`.
+* Check-in
+* Check-out
+* Modificaciones
+* Cancelaciones
 
 ---
 
-## Aspectos Técnicos
+## Reservas — Gestión y Listado Maestro (`reservas.html`)
 
-### Navegación Mobile sin JavaScript
-El menú lateral mobile se controla con un `<input type="checkbox" id="menu-cb" hidden>` y un `<label for="menu-cb">` como disparador visual. Al activarse, aparece un overlay y se despliega el sidebar sin requerir JavaScript, garantizando compatibilidad total y carga instantánea.
+Panel centralizado para administración de reservas.
 
-### Diseño Adaptativo
-Las tablas se transforman automáticamente en tarjetas apiladas usando el atributo `data-label` en cada celda `<td>`, manteniendo compatibilidad responsive en pantallas pequeñas.
+### Ejemplos
 
-### Centralización de Estilos
-Todos los módulos utilizan un único archivo `dashboard.css`. Esto permite mantenimiento simplificado, consistencia visual y reutilización de componentes en todo el panel.
+| Código  | Huésped      | Habitación | Estado    |
+| ------- | ------------ | ---------- | --------- |
+| BH-9921 | Juan Pérez   | Suite 101  | Pendiente |
+| BH-8840 | María García | Doble 102  | Check-in  |
+| BH-7730 | Carlos Ruiz  | Cama 4     | Cancelada |
+
+### Funcionalidades
+
+* Búsqueda avanzada
+* Filtrado por estado
+* Reasignación de habitación
+* Gestión de observaciones
+* Confirmar check-in
+* Cancelar reserva
+
+### Side Panel Administrativo
+
+Permite:
+
+* Editar datos
+* Cambiar estado
+* Agregar notas
+* Ejecutar acciones rápidas
 
 ---
 
-## Sistema de Branching y Organización
+## Recepción — Operatividad Diaria
+
+Módulo orientado a la gestión diaria del mostrador.
+
+### Métricas Operativas
+
+| Métrica                  | Valor         |
+| ------------------------ | ------------- |
+| Productividad Staff      | 142 gestiones |
+| No-Show Rate             | 2.1%          |
+| Tiempo Promedio Check-in | 4.5 min       |
+| Ingresos Mostrador       | $1,240        |
+
+### Análisis Incluidos
+
+* Ocupación diaria
+* Estado del inventario
+* Modificaciones manuales
+* Origen de cancelaciones
+* Previsión de check-outs
+* Alertas de discrepancias de montos
+
+### Gestión de Huéspedes Activos
+
+Tabla con:
+
+* Habitación
+* Estado
+* Actualización rápida
+* Check-out
+* Reportes
+
+---
+
+## Huéspedes — Análisis de Huéspedes
+
+**Responsable: Alejo Camolotto**
+
+Permite comprender el perfil y comportamiento de los visitantes.
+
+### Indicadores
+
+* Huéspedes Totales: 1.240
+* Satisfacción General: 4.8 / 5
+
+### Directorio Reciente
+
+* Carlos Mendoza (Argentina)
+* Emily Watson (Reino Unido)
+* Jean Pierre (Francia)
+* Sofia Rossi (Italia)
+
+### Distribución Demográfica
+
+* Argentina: 45%
+* Brasil: 20%
+* Estados Unidos: 15%
+* España: 10%
+* Otros: 10%
+
+### Funcionalidades
+
+* Nacionalidades
+* Segmentación por edad
+* Motivos de viaje
+* Fidelización
+* Estadísticas visuales
+* Análisis demográfico
+
+---
+
+## Operaciones — Operaciones y Eficiencia
+
+**Responsable: Giuliano Batistella**
+
+Monitorea recursos internos, limpieza y mantenimiento.
+
+### Indicadores
+
+* Eficiencia Operativa: 92%
+
+### Estado de Habitaciones
+
+* Habitación 101 — Limpia
+* Habitación 102 — En Limpieza
+* Dormitorio 4 — Sucia (URGENTE)
+
+### Mantenimiento
+
+* Reparación de grifería — Habitación 105
+
+### Funcionalidades
+
+* Seguimiento de limpieza
+* Inventario
+* Consumo energético
+* Atención al huésped
+* Rendimiento operativo
+* Gestión de recursos
+
+---
+
+## Métricas — Métricas Financieras y Operativas
+
+**Responsable: Mauricio Ferreyra**
+
+Panel financiero y operativo del hostel.
+
+### Indicadores Principales
+
+| Indicador            | Valor  |
+| -------------------- | ------ |
+| RevPAR               | $45.20 |
+| ADR                  | $58.00 |
+| Utilidad Neta        | $12.4K |
+| Costo de Adquisición | $4.10  |
+
+### Funcionalidades
+
+* Evolución financiera
+* Rentabilidad
+* ROI de campañas
+* Ocupación segmentada
+* Análisis comercial
+
+---
+
+## Configuración — Ajustes del Sistema
+
+Personalización de la cuenta administrativa.
+
+### Estado del Sistema
+
+| Indicador                | Valor         |
+| ------------------------ | ------------- |
+| Estado Cuenta            | Verificada    |
+| Rol Usuario              | Super Admin   |
+| Último Cambio Contraseña | Hace 12 días  |
+| Versión Sistema          | v2.4.8-stable |
+
+### Secciones
+
+#### Perfil
+
+* Foto
+* Nombre
+* Email
+
+#### Preferencias
+
+* Idioma
+* Tema Claro/Oscuro
+* Modo Compacto
+
+#### Notificaciones
+
+* Reservas
+* Reportes
+* Alertas SMS
+
+#### Seguridad
+
+* 2FA
+* Cambio de contraseña
+* Sesiones activas
+
+---
+
+# Modo Usuario
+
+Diseñado para huéspedes y clientes que desean autogestionar sus reservas y estadías.
+
+## Dashboard — Tu Resumen (`dashboardUsuario.html`)
+
+| Métrica            | Valor |
+| ------------------ | ----- |
+| Días para tu viaje | 13    |
+| Estadías Totales   | 4     |
+| Brigada Points     | 1.250 |
+| Crédito Disponible | $25   |
+
+### Próxima Estadía
+
+* Habitación 101 — Suite Premium
+* Estado: Confirmada
+* Código: BH-9921
+* Estadía: 15/06/2026 al 18/06/2026
+
+---
+
+## Reservas — Wizard de Registro (`reservasUsuario.html`)
+
+Proceso guiado de reserva.
+
+### Paso 1 — Selección de Fechas
+
+* Fecha Check-in
+* Fecha Check-out
+
+### Paso 2 — Tipo de Habitación
+
+* Individual ($30/noche)
+* Doble ($45/noche)
+* Suite Premium ($85/noche)
+
+### Paso 3 — Disponibilidad
+
+* Disponible
+* Sin disponibilidad
+
+### Paso 4 — Servicios Adicionales
+
+* Desayuno Buffet
+* Traslado
+* Cochera
+* Late Check-out
+
+### Paso 5 — Confirmación
+
+* Resumen final
+* Cálculo total
+* Código de reserva generado
+
+---
+
+# Casos de Uso e Historias de Usuario
+
+## Casos de Uso
+
+### CU01 — Iniciar Sesión / Registrar Cuenta
+
+El sistema permite acceder mediante Login y Registro diferenciando vistas de Administrador y Usuario.
+
+### CU02 — Registrar Reserva
+
+El usuario puede seleccionar fechas, habitación, servicios y confirmar una reserva.
+
+### CU03 — Gestionar Reserva
+
+El administrador puede modificar, reasignar o cancelar reservas.
+
+---
+
+## Historias de Usuario
+
+* HU01 — Iniciar Sesión (Cliente)
+* HU02 — Iniciar Sesión (Administrador)
+* HU03 — Recuperar Contraseña
+* HU04 — Registrar Reserva
+* HU05 — Agregar Servicios a la Reserva
+* HU06 — Cancelar Reserva
+* HU07 — Gestionar Reservas del Hotel
+
+---
+
+# Navegación y Estructura Compartida
+
+Todas las páginas reutilizan componentes comunes.
+
+## Sidebar
+
+* Logo institucional
+* Navegación principal
+* Cerrar sesión
+* Volver al sitio web
+
+## Header
+
+* Título actual
+* Usuario activo
+* Avatar
+* Switch de modo Administrador / Usuario
+
+## Menú Mobile
+
+Implementado mediante checkbox oculto y botón hamburguesa.
+
+---
+
+# Aspectos Técnicos
+
+## Bootstrap 5.3.3
+
+Utilizado para:
+
+* Sistema de grillas
+* Componentes responsive
+* Layouts adaptativos
+
+## Refactorización CSS
+
+* Eliminación de estilos inline
+* Eliminación de clases duplicadas
+* Centralización en `dashboard.css`
+
+## Navegación Mobile sin JavaScript
+
+El menú lateral mobile se controla mediante:
+
+```html
+<input type="checkbox" id="menu-cb" hidden>
+```
+
+Al activarse despliega el sidebar sin requerir JavaScript.
+
+## Diseño Adaptativo
+
+Las tablas utilizan el atributo:
+
+```html
+data-label=""
+```
+
+permitiendo transformarse automáticamente en tarjetas responsive en dispositivos móviles.
+
+---
+
+# Sistema de Branching y Organización
 
 Este proyecto está documentado con un flujo de Git basado en Git Flow, que incluye las ramas `main` y `develop`.
 
-### Estructura de ramas
+## Estructura de ramas
 
-- `main` — versión estable y lista para producción.
-- `develop` — rama de integración donde se unen las nuevas funcionalidades.
-- `feature/*` — ramas para el desarrollo de funcionalidades, creadas desde `develop`.
-- `release/*` — ramas opcionales para preparar versiones estables desde `develop`.
-- `hotfix/*` — ramas para correcciones urgentes creadas desde `main` y luego sincronizadas con `develop`.
+* `main` — versión estable y lista para producción.
+* `develop` — rama de integración donde se unen las nuevas funcionalidades.
+* `feature/*` — ramas para el desarrollo de funcionalidades, creadas desde `develop`.
+* `release/*` — ramas opcionales para preparar versiones estables desde `develop`.
+* `hotfix/*` — ramas para correcciones urgentes creadas desde `main` y luego sincronizadas con `develop`.
 
-### Flujo de trabajo recomendado
+## Flujo de trabajo recomendado
 
 1. Cambiar a `develop`.
-2. Crear la rama de trabajo desde `develop`: `git checkout -b feature/nombre-feature`.
+2. Crear la rama de trabajo desde `develop`:
+
+```bash
+git checkout -b feature/nombre-feature
+```
+
 3. Hacer commits pequeños, atómicos y descriptivos.
+
 4. Usar convenciones de mensaje:
-   - `feat:` para nuevas funcionalidades
-   - `fix:` para correcciones
-   - `docs:` para documentación
-   - `refactor:` para mejoras internas
-5. Subir la rama al remoto: `git push -u origin feature/nombre-feature`.
-6. Abrir Pull Request/Merge Request hacia `develop`.
+
+* `feat:` para nuevas funcionalidades.
+* `fix:` para correcciones.
+* `docs:` para documentación.
+* `refactor:` para mejoras internas.
+
+5. Subir la rama al remoto:
+
+```bash
+git push -u origin feature/nombre-feature
+```
+
+6. Abrir Pull Request / Merge Request hacia `develop`.
 7. Una vez revisado, unir la rama a `develop`.
 8. Para lanzamientos, crear `release/*` desde `develop`, luego merge a `main`.
 9. En caso de corrección urgente, crear `hotfix/*` desde `main`, mergear a `main` y luego a `develop`.
 
-### Buena práctica de commits
+## Buena práctica de commits
 
-- Cada commit debe representar un cambio claro y limitado.
-- Evitar mensajes genéricos como "cambios" o "arreglos".
-- Ejemplo: `git commit -m "feat: agregar sección de contribuyentes en README"`.
+* Cada commit debe representar un cambio claro y limitado.
+* Evitar mensajes genéricos como "cambios" o "arreglos".
 
-### Consideración importante
+Ejemplo:
 
-El repositorio ya incluye la rama `develop`, por lo que el documento debe reflejar este flujo real. Si el equipo decide usar un flujo más simple (GitHub Flow), el README debe ajustarse para describir ese esquema en lugar de Git Flow.
+```bash
+git commit -m "feat: agregar sección de contribuyentes en README"
+```
 
-### Roles
+## Consideración importante
 
-| Área | Responsable |
-|---|---|
-| Inicio / Home | [Oscar Quevedo](https://github.com/Oscar-Quevedo) |
-| Sobre Nosotros | [Jorge Quevedo](https://github.com/JQuevedoJorge) |
-| Dashboard | [Agusin Gallardo](https://github.com/agstudio98) |
-| Métricas + Caso de Uso | [Mauricio Ferreyra](https://github.com/EmiTeck) |
-| Operaciones + Diagramas | [Giuliano Batistella](https://github.com/gbatistela) |
-| Huéspedes + README + Branching | [Alejo Camolotto](https://github.com/Camolotto) |
+El repositorio ya incluye la rama `develop`, por lo que el documento debe reflejar este flujo real.
 
-> En caso de dificultades utilizando Git por terminal, también pueden realizarse modificaciones directamente desde GitHub mediante edición web y commits manuales.
+Si el equipo decide usar un flujo más simple (GitHub Flow), el README deberá ajustarse para describir ese esquema en lugar de Git Flow.
 
 ---
 
+# About & Contributors
 
-## About
+**Proyecto de Evidencia 1 — Sistema de Administración Hotelera**
 
-Proyecto de Evidencia 1 — Sistema de administración hotelera.
-Prototipo básico realizado como sitio estático responsive orientado a gestión interna.
+Prototipo responsive orientado a la gestión interna y autogestión de huéspedes.
+
+**Tecnicatura Superior en Desarrollo de Software — ISPC 2026**
+
+## Roles
+
+| Área                           | Responsable         |
+| ------------------------------ | ------------------- |
+| Inicio / Home                  | Oscar Quevedo       |
+| Sobre Nosotros                 | Jorge Quevedo       |
+| Dashboard                      | Agustín Gallardo    |
+| Métricas + Caso de Uso         | Mauricio Ferreyra   |
+| Operaciones + Diagramas        | Giuliano Batistella |
+| Huéspedes + README + Branching | Alejo Camolotto     |
 
 ## Contributors
 
-| | |
-|---|---|
-| [@agstudio98](https://github.com/agstudio98) | Agustín Gallardo |
-| [@Oscar-Quevedo](https://github.com/Oscar-Quevedo) | Oscar Quevedo |
-| [@JQuevedoJorge](https://github.com/JQuevedoJorge) | Jorge Quevedo |
-| [@Camolotto](https://github.com/Camolotto) | Alejo Camolotto |
-| [@gbatistela](https://github.com/gbatistela) | Giuliano Batistella |
-| [@EmiTeck](https://github.com/EmiTeck) | Mauricio Ferreyra |
+* @agstudio98 — Agustín Gallardo
+* @Oscar-Quevedo — Oscar Quevedo
+* @JQuevedoJorge — Jorge Quevedo
+* @Camolotto — Alejo Camolotto
+* @gbatistela — Giuliano Batistella
+* @EmiTeck — Mauricio Ferreyra
 
-## Languages
+## Tecnologías Utilizadas
 
-- HTML
-- CSS
+* HTML5
+* CSS3
+* Bootstrap 5.3.3
+* Git
+* GitHub
