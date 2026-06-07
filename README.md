@@ -1,4 +1,4 @@
-# BrigadaHostel Admin & Panel de Administracion
+# BrigadaHostel & Panel de Administracion
 
 > Interfaz de gestión operativa y portal de autogestión para el sistema de administración de BrigadaHostel. Diseñada con foco en usabilidad, rendimiento, accesibilidad y mantenibilidad a largo plazo.
 
