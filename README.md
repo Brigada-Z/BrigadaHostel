@@ -19,7 +19,6 @@
 4. [Navegación y Estructura Compartida](#navegación-y-estructura-compartida)
 5. [Aspectos Técnicos](#aspectos-técnicos)
 6. [Sistema de Branching y Organización](#sistema-de-branching-y-organización)
-7. [Guía para el Desarrollo](#guía-para-el-desarrollo)
 
 ---
 
@@ -264,16 +263,6 @@ El proyecto utiliza una metodología basada en ramas para facilitar el trabajo c
 
 ---
 
-## Guía para el Desarrollo
-
-- **No introducir JavaScript** para funciones resueltas por CSS.
-- **Reutilizar clases existentes** (`btn-premium`, `btn-outline`, `metric-card`, `content-section`, `input-field`, etc.) antes de crear nuevas.
-- **Mantener `data-label`** en las celdas `<td>` de cualquier tabla nueva para que funcione el layout responsive en mobile.
-- **Seguir la misma estructura de sidebar y header** al agregar nuevas páginas, incluyendo el checkbox de control del menú mobile y el link activo en la navegación.
-- **Mantener comentarios HTML en mayúsculas** con el estilo actual: `<!-- SECCIÓN DE ... -->`.
-- **Respetar consistencia visual y responsive** en todos los módulos.
-
----
 
 ## About
 
