@@ -231,22 +231,41 @@ Todos los módulos utilizan un único archivo `dashboard.css`. Esto permite mant
 
 ## Sistema de Branching y Organización
 
-El proyecto utiliza una metodología basada en ramas para facilitar el trabajo colaborativo.
+Este proyecto está documentado con un flujo de Git basado en Git Flow, que incluye las ramas `main` y `develop`.
 
 ### Estructura de ramas
 
-- `main` → versión estable final
-- `develop` → integración general
-- `feature/*` → desarrollo individual
+- `main` — versión estable y lista para producción.
+- `develop` — rama de integración donde se unen las nuevas funcionalidades.
+- `feature/*` — ramas para el desarrollo de funcionalidades, creadas desde `develop`.
+- `release/*` — ramas opcionales para preparar versiones estables desde `develop`.
+- `hotfix/*` — ramas para correcciones urgentes creadas desde `main` y luego sincronizadas con `develop`.
 
+### Flujo de trabajo recomendado
 
-### Flujo de trabajo
+1. Cambiar a `develop`.
+2. Crear la rama de trabajo desde `develop`: `git checkout -b feature/nombre-feature`.
+3. Hacer commits pequeños, atómicos y descriptivos.
+4. Usar convenciones de mensaje:
+   - `feat:` para nuevas funcionalidades
+   - `fix:` para correcciones
+   - `docs:` para documentación
+   - `refactor:` para mejoras internas
+5. Subir la rama al remoto: `git push -u origin feature/nombre-feature`.
+6. Abrir Pull Request/Merge Request hacia `develop`.
+7. Una vez revisado, unir la rama a `develop`.
+8. Para lanzamientos, crear `release/*` desde `develop`, luego merge a `main`.
+9. En caso de corrección urgente, crear `hotfix/*` desde `main`, mergear a `main` y luego a `develop`.
 
-1. Crear rama desde `develop`
-2. Desarrollar el módulo correspondiente
-3. Realizar commits descriptivos
-4. Subir cambios al repositorio
-5. Realizar merge hacia `develop`
+### Buena práctica de commits
+
+- Cada commit debe representar un cambio claro y limitado.
+- Evitar mensajes genéricos como "cambios" o "arreglos".
+- Ejemplo: `git commit -m "feat: agregar sección de contribuyentes en README"`.
+
+### Consideración importante
+
+El repositorio ya incluye la rama `develop`, por lo que el documento debe reflejar este flujo real. Si el equipo decide usar un flujo más simple (GitHub Flow), el README debe ajustarse para describir ese esquema en lugar de Git Flow.
 
 ### Roles
 
