@@ -19,7 +19,6 @@
 4. [Navegación y Estructura Compartida](#navegación-y-estructura-compartida)
 5. [Aspectos Técnicos](#aspectos-técnicos)
 6. [Sistema de Branching y Organización](#sistema-de-branching-y-organización)
-
 ---
 
 ## Descripción General

@@ -213,7 +213,100 @@
 
             <!-- 1. MÓDULO HUÉSPEDES (ALEJO) -->
             <section class="content-section" style="min-height: 85vh; margin-bottom: 120px;">
-            <p> Agregar Modulo Aqui </p>
+                <div class="flex-between mb-40 border-bottom-soft pb-24">
+                    <div>
+                        <h2 class="m-0 text-3xl font-weight-900">Módulo Huéspedes</h2>
+                        <p class="header-subtitle">Gestión de fidelización, demografía y perfiles detallados</p>
+                    </div>
+                    <div class="d-flex flex-column align-items-end gap-2 text-end">
+                        <span class="status-badge status-badge-blue">Total: 1,240 Huéspedes</span>
+                        <span class="text-xs text-muted">Huéspedes frecuentes: 340</span>
+                    </div>
+                </div>
+                <div class="row g-5">
+                    <div class="col-lg-8">
+                        <h3 class="text-lg font-weight-800 mb-20">Directorio de Huéspedes Recientes</h3>
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th class="border-0">Huésped</th>
+                                        <th class="border-0">Origen</th>
+                                        <th class="border-0">Visitas</th>
+                                        <th class="border-0">Gasto Total</th>
+                                        <th class="border-0 text-end">Acción</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Carlos Mendoza</strong><div class="text-xs-muted">carlos.m@email.com</div></td>
+                                        <td><span class="flex-align-center gap-8">🇦🇷 Argentina</span></td>
+                                        <td><span class="badge rounded-pill bg-primary">5 veces</span></td>
+                                        <td class="font-bold">$850.00</td>
+                                        <td class="text-end"><button class="btn-premium btn-small">Ver Perfil</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Emily Watson</strong><div class="text-xs-muted">e.watson@travel.co</div></td>
+                                        <td><span class="flex-align-center gap-8">🇬🇧 Reino Unido</span></td>
+                                        <td><span class="badge rounded-pill bg-light text-dark border">1 vez</span></td>
+                                        <td class="font-bold">$120.00</td>
+                                        <td class="text-end"><button class="btn-premium btn-small">Ver Perfil</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Jean Pierre</strong><div class="text-xs-muted">jp.fr@hostmail.fr</div></td>
+                                        <td><span class="flex-align-center gap-8">🇫🇷 Francia</span></td>
+                                        <td><span class="badge rounded-pill bg-accent text-white">2 veces</span></td>
+                                        <td class="font-bold">$340.50</td>
+                                        <td class="text-end"><button class="btn-premium btn-small">Ver Perfil</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Sofia Rossi</strong><div class="text-xs-muted">s.rossi@italia.it</div></td>
+                                        <td><span class="flex-align-center gap-8">🇮🇹 Italia</span></td>
+                                        <td><span class="badge rounded-pill bg-primary">3 veces</span></td>
+                                        <td class="font-bold">$510.00</td>
+                                        <td class="text-end"><button class="btn-premium btn-small">Ver Perfil</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Lars Jensen</strong><div class="text-xs-muted">lars.j@nordic.com</div></td>
+                                        <td><span class="flex-align-center gap-8">🇩🇰 Dinamarca</span></td>
+                                        <td><span class="badge rounded-pill bg-light text-dark border">1 vez</span></td>
+                                        <td class="font-bold">$180.00</td>
+                                        <td class="text-end"><button class="btn-premium btn-small">Ver Perfil</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="card p-32 bg-light border-0 mb-32">
+                            <h3 class="text-sm font-weight-800 text-uppercase mb-24">Distribución Demográfica</h3>
+                            <div class="flex-column gap-16">
+                                <div class="flex-between"><span>🇦🇷 Argentina</span><strong>45%</strong></div>
+                                <div class="h-bar-bg"><div class="h-bar-fill" style="width: 45%;"></div></div>
+                                <div class="flex-between"><span>🇧🇷 Brasil</span><strong>20%</strong></div>
+                                <div class="h-bar-bg"><div class="h-bar-fill" style="width: 20%;"></div></div>
+                                <div class="flex-between"><span>🇺🇸 EE.UU</span><strong>15%</strong></div>
+                                <div class="h-bar-bg"><div class="h-bar-fill" style="width: 15%;"></div></div>
+                                <div class="flex-between"><span>🇪🇸 España</span><strong>10%</strong></div>
+                                <div class="h-bar-bg"><div class="h-bar-fill" style="width: 10%;"></div></div>
+                                <div class="flex-between"><span>Otros</span><strong>10%</strong></div>
+                                <div class="h-bar-bg"><div class="h-bar-fill" style="width: 10%;"></div></div>
+                            </div>
+                        </div>
+                        <div class="card p-32 border-0 bg-sidebar text-white shadow-lg">
+                            <h3 class="text-base font-weight-800 mb-16">Satisfacción General</h3>
+                            <div class="text-5xl font-weight-900 mb-8">4.8<span class="text-lg opacity-06">/5</span></div>
+                            <div class="flex gap-4 text-warning mb-16">
+                                <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                                <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                                <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                                <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                                <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                            </div>
+                            <p class="text-sm opacity-08">Basado en 856 reseñas recolectadas el último trimestre.</p>
+                        </div>
+                    </div>
+                </div>
             </section>
 
             <!-- 2. MÓDULO OPERACIONES (GIULIANO) -->
