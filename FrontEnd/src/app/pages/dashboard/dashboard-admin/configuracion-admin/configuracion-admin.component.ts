@@ -1,0 +1,138 @@
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+@Component({
+  selector: 'app-configuracion-admin',
+  standalone: true,
+  imports: [FormsModule],
+  template: `
+    <div>
+      <div class="row g-4">
+        <!-- SECCIÓN PERFIL -->
+        <div class="col-lg-6">
+          <section class="content-section h-100">
+            <h3 class="form-section-title mb-24 h5">Perfil de Administrador</h3>
+            <div class="flex-center flex-column mb-32">
+              <div class="user-avatar-small mb-3" style="width: 70px; height: 70px;">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+              </div>
+              <button type="button" class="btn-outline btn-small" (click)="notify('Foto actualizada')">Cambiar Foto</button>
+            </div>
+            <div class="flex-column gap-15">
+              <div class="form-group mb-3">
+                <label class="auth-label">Nombre Completo</label>
+                <input type="text" class="input-field" [(ngModel)]="fullName">
+              </div>
+              <div class="form-group mb-3">
+                <label class="auth-label">Correo Electrónico</label>
+                <input type="email" class="input-field" [(ngModel)]="email">
+              </div>
+            </div>
+            <button type="button" class="btn-premium mt-32 w-full" (click)="notify('Perfil guardado con éxito')">
+              Guardar Cambios
+            </button>
+          </section>
+        </div>
+
+        <!-- SECCIÓN SEGURIDAD -->
+        <div class="col-lg-6">
+          <section class="content-section h-100">
+            <h3 class="form-section-title mb-24 h5">Seguridad y Acceso</h3>
+            <div class="flex-column gap-20">
+              <div class="form-group mb-3">
+                <label class="auth-label">Contraseña Actual</label>
+                <input type="password" class="input-field" placeholder="••••••••" [(ngModel)]="currentPass">
+              </div>
+              <div class="form-group mb-3">
+                <label class="auth-label">Nueva Contraseña</label>
+                <input type="password" class="input-field" placeholder="Mínimo 8 caracteres" [(ngModel)]="newPass">
+              </div>
+              <div class="form-group mb-3">
+                <label class="auth-label">Confirmar Nueva Contraseña</label>
+                <input type="password" class="input-field" placeholder="••••••••" [(ngModel)]="confirmPass">
+              </div>
+            </div>
+            <button type="button" class="btn-premium mt-32 w-full" (click)="notify('Contraseña actualizada correctamente')">
+              Actualizar Contraseña
+            </button>
+
+            <div class="mt-4 pt-3 border-top">
+              <label class="d-flex align-items-center gap-3 cursor-pointer">
+                <input type="checkbox" [(ngModel)]="enable2FA" style="width:20px;height:20px;">
+                <div>
+                  <span class="font-semibold d-block">Autenticación de dos factores (2FA)</span>
+                  <p class="header-subtitle m-0">Añade una capa extra de seguridad a tu cuenta.</p>
+                </div>
+              </label>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <!-- PREFERENCIAS DEL SISTEMA -->
+      <section class="content-section mt-32">
+        <h3 class="form-section-title mb-24 h5">Preferencias del Panel</h3>
+        <div class="row g-3">
+          <div class="col-md-4">
+            <div class="form-group mb-0">
+              <label class="auth-label">Idioma</label>
+              <select class="form-select input-field" [(ngModel)]="language">
+                <option value="es">Español (ES)</option>
+                <option value="en">English (US)</option>
+                <option value="pt">Português (BR)</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group mb-0">
+              <label class="auth-label">Tema Visual</label>
+              <select class="form-select input-field" [(ngModel)]="theme">
+                <option value="light">Claro (Predeterminado)</option>
+                <option value="dark">Oscuro Pro</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-4 d-flex align-items-end">
+            <button type="button" class="btn-premium w-full" (click)="notify('Preferencias aplicadas')">
+              Guardar Preferencias
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- TOAST -->
+      @if (toastMessage) {
+        <div class="toast-fixed-stack">
+          <div class="toast-item-premium">
+            <div class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center" style="width:28px;height:28px;">
+              ✓
+            </div>
+            <span>{{ toastMessage }}</span>
+          </div>
+        </div>
+      }
+    </div>
+  `
+})
+export class ConfiguracionAdminComponent {
+  fullName = 'Administrador General';
+  email = 'admin@brigadahostel.com';
+  currentPass = '';
+  newPass = '';
+  confirmPass = '';
+  enable2FA = true;
+  language = 'es';
+  theme = 'light';
+
+  toastMessage: string | null = null;
+
+  notify(msg: string): void {
+    this.toastMessage = msg;
+    setTimeout(() => {
+      this.toastMessage = null;
+    }, 3000);
+  }
+}
