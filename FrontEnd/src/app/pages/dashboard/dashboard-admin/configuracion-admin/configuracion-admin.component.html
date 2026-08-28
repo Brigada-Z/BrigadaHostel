@@ -13,19 +13,54 @@
           </div>
           <button type="button" class="btn-outline btn-small" (click)="notify('Foto actualizada')">Cambiar Foto</button>
         </div>
-        <div class="flex-column gap-15">
-          <div class="form-group mb-3">
-            <label class="auth-label">Nombre Completo</label>
-            <input type="text" class="input-field" [(ngModel)]="fullName">
+
+        <form [formGroup]="profileForm" (ngSubmit)="onSaveProfile()" novalidate>
+          <div class="flex-column gap-15">
+            <div class="form-group mb-3">
+              <label class="auth-label" for="adminFullName">Nombre Completo</label>
+              <input 
+                id="adminFullName"
+                type="text" 
+                class="input-field" 
+                [class.is-invalid]="pf['fullName'].invalid && (pf['fullName'].touched || profileSubmitted)"
+                formControlName="fullName">
+              @if (pf['fullName'].invalid && (pf['fullName'].touched || profileSubmitted)) {
+                <div class="invalid-feedback-custom">
+                  @if (pf['fullName'].errors?.['required'] || pf['fullName'].errors?.['whitespace']) {
+                    <span>El nombre es obligatorio.</span>
+                  }
+                  @if (pf['fullName'].errors?.['minlength']) {
+                    <span>Mínimo 3 caracteres.</span>
+                  }
+                </div>
+              }
+            </div>
+
+            <div class="form-group mb-3">
+              <label class="auth-label" for="adminEmail">Correo Electrónico</label>
+              <input 
+                id="adminEmail"
+                type="email" 
+                class="input-field" 
+                [class.is-invalid]="pf['email'].invalid && (pf['email'].touched || profileSubmitted)"
+                formControlName="email">
+              @if (pf['email'].invalid && (pf['email'].touched || profileSubmitted)) {
+                <div class="invalid-feedback-custom">
+                  @if (pf['email'].errors?.['required']) {
+                    <span>El correo es obligatorio.</span>
+                  }
+                  @if (pf['email'].errors?.['email'] || pf['email'].errors?.['invalidEmailFormat']) {
+                    <span>Ingresa un correo válido (ej: admin&#64;brigadahostel.com).</span>
+                  }
+                </div>
+              }
+            </div>
           </div>
-          <div class="form-group mb-3">
-            <label class="auth-label">Correo Electrónico</label>
-            <input type="email" class="input-field" [(ngModel)]="email">
-          </div>
-        </div>
-        <button type="button" class="btn-premium mt-32 w-full" (click)="notify('Perfil guardado con éxito')">
-          Guardar Cambios
-        </button>
+
+          <button type="submit" class="btn-premium mt-32 w-full">
+            Guardar Cambios
+          </button>
+        </form>
       </section>
     </div>
 
@@ -33,33 +68,81 @@
     <div class="col-lg-6">
       <section class="content-section h-100">
         <h3 class="form-section-title mb-24 h5">Seguridad y Acceso</h3>
-        <div class="flex-column gap-20">
-          <div class="form-group mb-3">
-            <label class="auth-label">Contraseña Actual</label>
-            <input type="password" class="input-field" placeholder="••••••••" [(ngModel)]="currentPass">
-          </div>
-          <div class="form-group mb-3">
-            <label class="auth-label">Nueva Contraseña</label>
-            <input type="password" class="input-field" placeholder="Mínimo 8 caracteres" [(ngModel)]="newPass">
-          </div>
-          <div class="form-group mb-3">
-            <label class="auth-label">Confirmar Nueva Contraseña</label>
-            <input type="password" class="input-field" placeholder="••••••••" [(ngModel)]="confirmPass">
-          </div>
-        </div>
-        <button type="button" class="btn-premium mt-32 w-full" (click)="notify('Contraseña actualizada correctamente')">
-          Actualizar Contraseña
-        </button>
-
-        <div class="mt-4 pt-3 border-top">
-          <label class="d-flex align-items-center gap-3 cursor-pointer">
-            <input type="checkbox" [(ngModel)]="enable2FA" style="width:20px;height:20px;">
-            <div>
-              <span class="font-semibold d-block">Autenticación de dos factores (2FA)</span>
-              <p class="header-subtitle m-0">Añade una capa extra de seguridad a tu cuenta.</p>
+        <form [formGroup]="securityForm" (ngSubmit)="onUpdateSecurity()" novalidate>
+          <div class="flex-column gap-20">
+            <div class="form-group mb-3">
+              <label class="auth-label" for="currentPass">Contraseña Actual</label>
+              <input 
+                id="currentPass"
+                type="password" 
+                class="input-field" 
+                [class.is-invalid]="sf['currentPass'].invalid && (sf['currentPass'].touched || securitySubmitted)"
+                placeholder="••••••••" 
+                formControlName="currentPass">
+              @if (sf['currentPass'].invalid && (sf['currentPass'].touched || securitySubmitted)) {
+                <div class="invalid-feedback-custom">
+                  <span>Ingresa tu contraseña actual.</span>
+                </div>
+              }
             </div>
-          </label>
-        </div>
+
+            <div class="form-group mb-3">
+              <label class="auth-label" for="newPass">Nueva Contraseña</label>
+              <input 
+                id="newPass"
+                type="password" 
+                class="input-field" 
+                [class.is-invalid]="sf['newPass'].invalid && (sf['newPass'].touched || securitySubmitted)"
+                placeholder="Mínimo 6 caracteres con letras y números" 
+                formControlName="newPass">
+              @if (sf['newPass'].invalid && (sf['newPass'].touched || securitySubmitted)) {
+                <div class="invalid-feedback-custom">
+                  @if (sf['newPass'].errors?.['required']) {
+                    <span>La nueva contraseña es obligatoria.</span>
+                  }
+                  @if (sf['newPass'].errors?.['minlength'] || sf['newPass'].errors?.['weakPassword']) {
+                    <span>Debe tener al menos 6 caracteres y combinar letras y números.</span>
+                  }
+                </div>
+              }
+            </div>
+
+            <div class="form-group mb-3">
+              <label class="auth-label" for="confirmPass">Confirmar Nueva Contraseña</label>
+              <input 
+                id="confirmPass"
+                type="password" 
+                class="input-field" 
+                [class.is-invalid]="(sf['confirmPass'].invalid || securityForm.errors?.['passwordsMismatch']) && (sf['confirmPass'].touched || securitySubmitted)"
+                placeholder="••••••••" 
+                formControlName="confirmPass">
+              @if ((sf['confirmPass'].invalid || securityForm.errors?.['passwordsMismatch']) && (sf['confirmPass'].touched || securitySubmitted)) {
+                <div class="invalid-feedback-custom">
+                  @if (sf['confirmPass'].errors?.['required']) {
+                    <span>Confirma la nueva contraseña.</span>
+                  }
+                  @if (sf['confirmPass'].errors?.['passwordsMismatch'] || securityForm.errors?.['passwordsMismatch']) {
+                    <span>Las contraseñas no coinciden.</span>
+                  }
+                </div>
+              }
+            </div>
+          </div>
+
+          <div class="mt-4 pt-3 border-top">
+            <label class="d-flex align-items-center gap-3 cursor-pointer">
+              <input type="checkbox" formControlName="enable2FA" style="width:20px;height:20px;">
+              <div>
+                <span class="font-semibold d-block">Autenticación de dos factores (2FA)</span>
+                <p class="header-subtitle m-0">Añade una capa extra de seguridad a tu cuenta.</p>
+              </div>
+            </label>
+          </div>
+
+          <button type="submit" class="btn-premium mt-32 w-full">
+            Actualizar Contraseña
+          </button>
+        </form>
       </section>
     </div>
   </div>
@@ -67,32 +150,34 @@
   <!-- PREFERENCIAS DEL SISTEMA -->
   <section class="content-section mt-32">
     <h3 class="form-section-title mb-24 h5">Preferencias del Panel</h3>
-    <div class="row g-3">
-      <div class="col-md-4">
-        <div class="form-group mb-0">
-          <label class="auth-label">Idioma</label>
-          <select class="form-select input-field" [(ngModel)]="language">
-            <option value="es">Español (ES)</option>
-            <option value="en">English (US)</option>
-            <option value="pt">Português (BR)</option>
-          </select>
+    <form [formGroup]="preferencesForm" (ngSubmit)="onSavePreferences()">
+      <div class="row g-3">
+        <div class="col-md-4">
+          <div class="form-group mb-0">
+            <label class="auth-label" for="prefLang">Idioma</label>
+            <select id="prefLang" class="form-select input-field" formControlName="language">
+              <option value="es">Español (ES)</option>
+              <option value="en">English (US)</option>
+              <option value="pt">Português (BR)</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group mb-0">
+            <label class="auth-label" for="prefTheme">Tema Visual</label>
+            <select id="prefTheme" class="form-select input-field" formControlName="theme">
+              <option value="light">Claro (Predeterminado)</option>
+              <option value="dark">Oscuro Pro</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-4 d-flex align-items-end">
+          <button type="submit" class="btn-premium w-full">
+            Guardar Preferencias
+          </button>
         </div>
       </div>
-      <div class="col-md-4">
-        <div class="form-group mb-0">
-          <label class="auth-label">Tema Visual</label>
-          <select class="form-select input-field" [(ngModel)]="theme">
-            <option value="light">Claro (Predeterminado)</option>
-            <option value="dark">Oscuro Pro</option>
-          </select>
-        </div>
-      </div>
-      <div class="col-md-4 d-flex align-items-end">
-        <button type="button" class="btn-premium w-full" (click)="notify('Preferencias aplicadas')">
-          Guardar Preferencias
-        </button>
-      </div>
-    </div>
+    </form>
   </section>
 
   <!-- Toast Notificación -->
@@ -100,7 +185,9 @@
     <div class="toast-fixed-stack">
       <div class="toast-item-premium">
         <div class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center" style="width:28px;height:28px;">
-          ✓
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
         </div>
         <span>{{ toastMessage }}</span>
       </div>
