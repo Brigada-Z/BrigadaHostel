@@ -15,6 +15,7 @@
 7. Aspectos Técnicos
 8. Sistema de Branching y Organización
 9. About & Contributors
+10. Traspaso a Angular
 
 ---
 
@@ -566,3 +567,53 @@ Prototipo responsive orientado a la gestión interna y autogestión de huéspede
 * Bootstrap 5.3.3
 * Git
 * GitHub
+
+---
+
+# Traspaso a Angular
+
+> Esta sección documenta el estado del traspaso de la maqueta estática descrita arriba a componentes Angular. El resto del README se conserva sin modificar como registro del proyecto original; lo que sigue refleja la arquitectura actual del FrontEnd.
+
+**Última verificación:** 29/08/2026 — Alejo Camolotto
+
+## Estado general
+
+Todos los módulos y pantallas fueron migrados a Angular y verificados por navegación directa en la aplicación (`ng serve` + `localhost:4200`), no solo por la existencia de archivos en el proyecto.
+
+## Detalle por módulo
+
+| Módulo | Ruta | Estado |
+| --- | --- | --- |
+| Home | `/home` | Migrado |
+| Quiénes Somos | `/quienes-somos` | Migrado |
+| Login | `/auth/login` | Migrado |
+| Registro | `/auth/signup` | Migrado |
+| Recuperar contraseña | `/auth/forgot-password` | Migrado |
+| Dashboard Admin — Resumen | `/dashboard/admin/resumen` | Migrado |
+| Dashboard Admin — Reservas | `/dashboard/admin/reservas` | Migrado |
+| Dashboard Admin — Configuración | `/dashboard/admin/configuracion` | Migrado |
+| Dashboard Usuario — Resumen | `/dashboard/usuario/resumen` | Migrado |
+| Dashboard Usuario — Reservas | `/dashboard/usuario/reservas` | Migrado |
+| 404 | `/404`, `/**` | Migrado |
+
+### Submódulos embebidos en Resumen Admin
+
+Los módulos de Huéspedes, Métricas y Operaciones (ver responsables en la sección *About & Contributors*) no tienen ruta propia: se renderizan dentro de `resumen-admin` (`/dashboard/admin/resumen`), apilados uno debajo del otro. Para verlos hay que entrar a esa ruta y hacer scroll — no existe un link de menú que lleve directo a cada uno.
+
+| Componente | Estado | Ubicación en el código |
+| --- | --- | --- |
+| Módulo Huéspedes | Migrado | `resumen-admin/components/modulo-huespedes` |
+| Módulo Métricas | Migrado | `resumen-admin/components/modulo-metricas` |
+| Módulo Operaciones | Migrado | `resumen-admin/components/modulo-operaciones` |
+
+## Cómo verificar un componente correctamente
+
+Un error común es abrir el archivo `.component.html` directamente en el navegador (`file:///...`). Esto **no funciona**: el archivo es un template de Angular, no una página HTML autónoma — no carga estilos ni resuelve bindings, y se ve como texto plano sin formato.
+
+**Forma correcta:**
+
+1. Instalar dependencias una vez por máquina (no se sube al repo): `npm install` dentro de `FrontEnd`.
+2. Levantar el servidor de desarrollo: `ng serve` dentro de `FrontEnd`.
+3. Abrir `http://localhost:4200` en el navegador.
+4. Navegar por la app (menú, links) hasta la pantalla en cuestión — nunca abrir el `.html` suelto.
+5. Si el componente es un submódulo embebido (ver tabla arriba), puede requerir scroll dentro de la vista padre en vez de tener una URL propia.

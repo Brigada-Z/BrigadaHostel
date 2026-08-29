@@ -2,101 +2,95 @@
   <div class="flex-between mb-40 border-bottom-soft pb-24">
     <div>
       <h2 class="m-0 text-3xl font-weight-900">Módulo Huéspedes</h2>
-      <p class="header-subtitle">Historial de pasajeros, fidelización y preferencias de estadía</p>
+      <p class="header-subtitle">Gestión de fidelización, demografía y perfiles detallados</p>
     </div>
-    <div class="d-flex flex-wrap gap-3">
-      <button type="button" class="btn-premium">
-        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" class="me-2">
-          <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-          <circle cx="8.5" cy="7" r="4"></circle>
-          <line x1="20" y1="8" x2="20" y2="14"></line>
-          <line x1="23" y1="11" x2="17" y2="11"></line>
-        </svg>
-        Registrar Huésped
-      </button>
+    <div class="d-flex flex-column align-items-end gap-2 text-end">
+      <span class="status-badge status-badge-blue">Total: 1,240 Huéspedes</span>
+      <span class="text-xs text-muted">Huéspedes frecuentes: 340</span>
     </div>
   </div>
-
-  <!-- Tarjetas de Métricas de Huéspedes -->
-  <div class="row g-4 mb-40">
-    <div class="col-xl-3 col-md-6">
-      <div class="metric-card bg-sidebar text-white border-0 shadow-lg">
-        <h3 class="metric-title text-white opacity-06">Huéspedes Activos</h3>
-        <div class="metric-value text-white">24</div>
-        <div class="metric-trend trend-up">+ 100% capacidad</div>
+  <div class="row g-5">
+    <div class="col-lg-8">
+      <h3 class="text-lg font-weight-800 mb-20">Directorio de Huéspedes Recientes</h3>
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+          <thead class="table-light">
+            <tr>
+              <th class="border-0">Huésped</th>
+              <th class="border-0">Origen</th>
+              <th class="border-0">Visitas</th>
+              <th class="border-0">Gasto Total</th>
+              <th class="border-0 text-end">Acción</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td data-label="Huésped"><strong>Carlos Mendoza</strong><div class="text-xs-muted">carlos.m&#64;email.com</div></td>
+              <td data-label="Origen"><span class="flex-align-center gap-8">🇦🇷 Argentina</span></td>
+              <td data-label="Visitas"><span class="badge rounded-pill bg-primary">5 veces</span></td>
+              <td data-label="Gasto Total" class="font-bold">$850.00</td>
+              <td data-label="Acción" class="text-end"><button type="button" class="btn-premium btn-small">Ver Perfil</button></td>
+            </tr>
+            <tr>
+              <td data-label="Huésped"><strong>Emily Watson</strong><div class="text-xs-muted">e.watson&#64;travel.co</div></td>
+              <td data-label="Origen"><span class="flex-align-center gap-8">🇬🇧 Reino Unido</span></td>
+              <td data-label="Visitas"><span class="badge rounded-pill bg-light text-dark border">1 vez</span></td>
+              <td data-label="Gasto Total" class="font-bold">$120.00</td>
+              <td data-label="Acción" class="text-end"><button type="button" class="btn-premium btn-small">Ver Perfil</button></td>
+            </tr>
+            <tr>
+              <td data-label="Huésped"><strong>Jean Pierre</strong><div class="text-xs-muted">jp.fr&#64;hostmail.fr</div></td>
+              <td data-label="Origen"><span class="flex-align-center gap-8">🇫🇷 Francia</span></td>
+              <td data-label="Visitas"><span class="badge rounded-pill bg-accent text-white">2 veces</span></td>
+              <td data-label="Gasto Total" class="font-bold">$340.50</td>
+              <td data-label="Acción" class="text-end"><button type="button" class="btn-premium btn-small">Ver Perfil</button></td>
+            </tr>
+            <tr>
+              <td data-label="Huésped"><strong>Sofia Rossi</strong><div class="text-xs-muted">s.rossi&#64;italia.it</div></td>
+              <td data-label="Origen"><span class="flex-align-center gap-8">🇮🇹 Italia</span></td>
+              <td data-label="Visitas"><span class="badge rounded-pill bg-primary">3 veces</span></td>
+              <td data-label="Gasto Total" class="font-bold">$510.00</td>
+              <td data-label="Acción" class="text-end"><button type="button" class="btn-premium btn-small">Ver Perfil</button></td>
+            </tr>
+            <tr>
+              <td data-label="Huésped"><strong>Lars Jensen</strong><div class="text-xs-muted">lars.j&#64;nordic.com</div></td>
+              <td data-label="Origen"><span class="flex-align-center gap-8">🇩🇰 Dinamarca</span></td>
+              <td data-label="Visitas"><span class="badge rounded-pill bg-light text-dark border">1 vez</span></td>
+              <td data-label="Gasto Total" class="font-bold">$180.00</td>
+              <td data-label="Acción" class="text-end"><button type="button" class="btn-premium btn-small">Ver Perfil</button></td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
-    <div class="col-xl-3 col-md-6">
-      <div class="metric-card bg-primary text-white border-0 shadow-lg">
-        <h3 class="metric-title text-white opacity-06">Frecuentes / VIP</h3>
-        <div class="metric-value text-white">12</div>
-        <div class="metric-trend trend-up">+ 3 nuevos</div>
+    <div class="col-lg-4">
+      <div class="card p-32 bg-light border-0 mb-32">
+        <h3 class="text-sm font-weight-800 text-uppercase mb-24">Distribución Demográfica</h3>
+        <div class="flex-column gap-16">
+          <div class="flex-between"><span>🇦🇷 Argentina</span><strong>45%</strong></div>
+          <div class="h-bar-bg"><div class="h-bar-fill" style="width: 45%;"></div></div>
+          <div class="flex-between"><span>🇧🇷 Brasil</span><strong>20%</strong></div>
+          <div class="h-bar-bg"><div class="h-bar-fill" style="width: 20%;"></div></div>
+          <div class="flex-between"><span>🇺🇸 EE.UU</span><strong>15%</strong></div>
+          <div class="h-bar-bg"><div class="h-bar-fill" style="width: 15%;"></div></div>
+          <div class="flex-between"><span>🇪🇸 España</span><strong>10%</strong></div>
+          <div class="h-bar-bg"><div class="h-bar-fill" style="width: 10%;"></div></div>
+          <div class="flex-between"><span>Otros</span><strong>10%</strong></div>
+          <div class="h-bar-bg"><div class="h-bar-fill" style="width: 10%;"></div></div>
+        </div>
+      </div>
+      <div class="card p-32 border-0 bg-sidebar text-white shadow-lg">
+        <h3 class="text-base font-weight-800 mb-16 text-white">Satisfacción General</h3>
+        <div class="text-5xl font-weight-900 mb-8 text-white">4.8<span class="text-lg opacity-06 text-white">/5</span></div>
+        <div class="flex gap-4 text-warning mb-16">
+          <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+          <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+          <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+          <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+          <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+        </div>
+        <p class="text-sm opacity-08 mb-0 text-white">Basado en 856 reseñas recolectadas el último trimestre.</p>
       </div>
     </div>
-    <div class="col-xl-3 col-md-6">
-      <div class="metric-card bg-success text-white border-0 shadow-lg">
-        <h3 class="metric-title text-white opacity-06">Satisfacción General</h3>
-        <div class="metric-value text-white">4.8 / 5</div>
-        <div class="metric-trend trend-up">+ 0.2 vs mes ant.</div>
-      </div>
-    </div>
-    <div class="col-xl-3 col-md-6">
-      <div class="metric-card bg-info text-white border-0 shadow-lg">
-        <h3 class="metric-title text-white opacity-06">Nacionalidades</h3>
-        <div class="metric-value text-white">8 Países</div>
-        <div class="metric-trend font-semibold">AR, BR, CL, ES, FR...</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Tabla de Huéspedes Destacados -->
-  <div class="table-responsive">
-    <table class="table table-hover align-middle mb-0">
-      <thead class="table-light">
-        <tr>
-          <th class="border-0">Huésped</th>
-          <th class="border-0">DNI / Pasaporte</th>
-          <th class="border-0">Origen</th>
-          <th class="border-0">Estadías Totales</th>
-          <th class="border-0">Nivel Fidelidad</th>
-          <th class="border-0 text-end">Estado</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>
-            <div class="font-bold">Juan Manuel Pérez</div>
-            <div class="text-xs text-secondary">juan.perez&#64;email.com</div>
-          </td>
-          <td>20.345.678</td>
-          <td>Córdoba, Argentina</td>
-          <td>5 estadías</td>
-          <td><span class="badge bg-warning text-dark px-2 py-1">Oro VIP</span></td>
-          <td class="text-end"><span class="badge-status green">Hospedado</span></td>
-        </tr>
-        <tr>
-          <td>
-            <div class="font-bold">María Cecilia García</div>
-            <div class="text-xs text-secondary">mgarcia&#64;gmail.com</div>
-          </td>
-          <td>35.123.456</td>
-          <td>San Pablo, Brasil</td>
-          <td>2 estadías</td>
-          <td><span class="badge bg-secondary text-white px-2 py-1">Plata</span></td>
-          <td class="text-end"><span class="badge-status green">Hospedado</span></td>
-        </tr>
-        <tr>
-          <td>
-            <div class="font-bold">Lucas Martín Domínguez</div>
-            <div class="text-xs text-secondary">lucas.d&#64;hotmail.com</div>
-          </td>
-          <td>41.987.654</td>
-          <td>Santiago, Chile</td>
-          <td>1 estadía</td>
-          <td><span class="badge bg-light text-dark border px-2 py-1">Bronce</span></td>
-          <td class="text-end"><span class="badge-status yellow">Check-in Pendiente</span></td>
-        </tr>
-      </tbody>
-    </table>
   </div>
 </section>
