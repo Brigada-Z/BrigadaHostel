@@ -811,60 +811,39 @@ Un error común es abrir el archivo `.component.html` directamente en el navegad
 
   
   
-  ### Entidades y Cardinalidades del DER                                     
-                                                                             
-   Relación      │ Entre Entidades      │ Cardinalid… │ Descripción de la R…
-  ───────────────┼──────────────────────┼─────────────┼──────────────────────
-   REALIZA       │ USUARIO — RESERVA    │    1 : N    │ Un Cliente puede
-                 │                      │             │ realizar muchas
-                 │                      │             │ reservas; cada
-                 │                      │             │ reserva pertenece a
-                 │                      │             │ un único Cliente.
-   CORRESPONDE A │ HABITACION — RESERVA │    1 : N    │ Una habitación puede
-                 │                      │             │ integrar múltiples
-                 │                      │             │ reservas en
-                 │                      │             │ distintos períodos;
-                 │                      │             │ cada reserva
-                    │                    │              │ períodos; cada
-                    │                    │              │ reserva
-                    │                    │              │ corresponde a una
-                    │                    │              │ habitación.
-   INCLUYE          │ RESERVA — SERVICIO │    N : M     │ Una reserva puede
-                    │                    │              │ incluir varios
-                    │                    │              │ servicios
-                    │                    │              │ adicionales y un
-                    │                    │              │ servicio puede
-                    │                    │              │ figurar en
-                    │                    │              │ múltiples
-                    │                    │              │ reservas. Se
-                    │                    │              │ resuelve mediante
-                    │                    │              │ la entidad
-                    │                    │              │ asociativa
-                    │                    │              │ RESERVA_SERVICIO.
-   GENERA           │ USUARIO —          │    1 : N     │ Cada acción
-                    │ LOG_AUDITORIA      │              │ administrativa
-                    │                    │              │ queda registrada
-                    │                    │              │ junto con el
-                    │                    │              │ usuario (Admin)
-                    │                    │              │ que la ejecutó.
-   QUEDA REGISTRADA │ RESERVA —          │    1 : N     │ Una reserva puede
-                    │ LOG_AUDITORIA      │              │ acumular múltiples
-                    │                    │              │ entradas de
-                    │                    │              │ auditoría a lo
-                    │                    │              │ largo de su ciclo
-                    │                    │              │ de vida.
-   RECIBE           │ USUARIO —          │    1 : N     │ El cliente recibe
-                    │ NOTIFICACION       │              │ avisos automáticos
-                    │                    │              │ ante
-                    │                    │              │ confirmaciones,
-                    │                    │              │ cambios o
-                    │                    │              │ cancelaciones.
-   ORIGINA          │ RESERVA —          │    1 : N     │ Cada reserva
-                    │ NOTIFICACION       │              │ genera
-                    │                    │              │ notificaciones
-                    │                    │              │ vinculadas a sus
-                    │                    │              │ cambios de estado.
-  ──────                                                                     
+  ### Entidades y Cardinalidades del DER
+                                                                            
+  • REALIZA (USUARIO — RESERVA) | Cardinalidad: 1 : N                        
+  Un Cliente puede realizar múltiples reservas a lo largo del tiempo; cada   
+  reserva pertenece a un único Cliente.
+  
+  • CORRESPONDE A (HABITACION — RESERVA) | Cardinalidad: 1 : N               
+  Una habitación puede integrar múltiples reservas en distintos períodos de  
+  fechas; cada reserva corresponde a una única habitación asignada.
+  
+  • INCLUYE (RESERVA — SERVICIO) | Cardinalidad: N : M
+  Una reserva puede incluir varios servicios adicionales y un mismo servicio 
+  puede figurar en múltiples reservas. Esta relación de muchos a muchos se   
+  resuelve mediante la entidad asociativa RESERVA_SERVICIO (con clave        
+  compuesta id_reserva e id_servicio).
+  
+  • GENERA (USUARIO — LOG_AUDITORIA) | Cardinalidad: 1 : N
+  Cada acción administrativa queda registrada en el historial junto con el   
+  usuario (habitualmente Administrador) que la ejecutó.
+  
+  • QUEDA REGISTRADA (RESERVA — LOG_AUDITORIA) | Cardinalidad: 1 : N         
+  Una reserva puede acumular múltiples registros de auditoría a lo largo de  
+  su ciclo de vida (creación, modificaciones, cancelaciones, check-in).
+  
+  • RECIBE (USUARIO — NOTIFICACION) | Cardinalidad: 1 : N
+  El cliente puede recibir múltiples avisos y notificaciones automáticas por 
+  correo electrónico ante confirmaciones, cambios de estado o cancelaciones.
+  
+  • ORIGINA (RESERVA — NOTIFICACION) | Cardinalidad: 1 : N
+  Cada reserva puede originar diversas notificaciones vinculadas a las       
+  modificaciones de su estado operativo.
+
+                                                                                                                       
   ## Modelo Relacional (MR)                                                  
                                                                              
   El Modelo Relacional (MR) traduce el modelo conceptual a un esquema físico 
@@ -912,14 +891,19 @@ Un error común es abrir el archivo `.component.html` directamente en el navegad
   
   • HU01 / HU02 / FA-01 (Inicio de Sesión y Bloqueo de Cuenta): Mapeado en   
   USUARIO mediante rol, estado_cuenta, intentos_fallidos y fecha_bloqueo.    
+  
   • HU03 / FA-02 (Recuperación de Contraseña): Mapeado en NOTIFICACION (tipo 
   = 'Recuperación de contraseña').
+  
   • HU04 (Verificar Disponibilidad y Calcular Estadía): Resuelto mediante la 
   combinación de HABITACION y RESERVA.
+  
   • HU05 / FA-04 (Contratación de Servicios Extras): Mapeado en SERVICIO y la
   tabla asociativa RESERVA_SERVICIO.
+  
   • HU06 (Cancelación de Reserva por el Cliente): Actualiza RESERVA.estado = 
   'Cancelada' y registra en NOTIFICACION.
+  
   • HU07 (Gestión Administrativa, Check-in y Auditoría): Interactúa sobre    
   RESERVA, persistiendo cada cambio en LOG_AUDITORIA y disparando avisos en  
   NOTIFICACION.
