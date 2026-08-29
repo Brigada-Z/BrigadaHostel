@@ -874,183 +874,40 @@ Un error común es abrir el archivo `.component.html` directamente en el navegad
                                                                              
   │ Archivo original: Puedes consultar el diagrama relacional en Docs/Modelo 
   │ Relacional (MR)/MR_BrigadaHostel.png.                                    
-  ──────                                                                     
+                                                        
   ### Diccionario de Datos / Estructura de Tablas                            
                                                                              
   #### 1. Tabla: USUARIO                                                     
                                                                              
   Almacena las credenciales, roles y políticas de seguridad y bloqueo de     
   cuentas.                                                                   
-                                                                             
-   Campo            │ Tipo de Dato     │ Clave / Restri… │ Descripción
-  ──────────────────┼──────────────────┼─────────────────┼───────────────────
-   id_usuario       │ INT              │    PK (Auto     │ Identificador
-                    │                  │  Incremental)   │ único del
-                    │                  │                 │ usuario.
-   nombre           │ VARCHAR(60)      │    NOT NULL     │ Nombre de pila
-                    │                  │                 │ del usuario.
-   apellido         │ VARCHAR(60)      │    NOT NULL     │ Apellido del
-                    │                  │                 │ usuario.
-   email            │ VARCHAR(120)     │   UNIQUE, NOT   │ Correo
-                    │                  │      NULL       │ electrónico
-                    │                  │                 │ utilizado para
-                    │                  │                 │ autenticación.
-   contraseña_hash  │ VARCHAR(255)     │    NOT NULL     │ Contraseña
-                    │                  │                 │ cifrada con
-                    │                  │                 │ algoritmo seguro
-                    │                  │                 │ (BCrypt/Argon2).
-   rol              │ ENUM('Cliente',' │    NOT NULL     │ Determina el
-                    │ Admin')          │                 │ nivel de acceso y
-                    │                  │                 │ permisos.
-   estado_cuenta    │ ENUM('Activa','B │     DEFAULT     │ Estado de la
-                    │ loqueada')       │    'Activa'     │ cuenta (bloqueo
-                    │                  │                 │ tras intentos
-                    │                  │                 │ fallidos).
-   intentos_fallido │ INT              │    DEFAULT 0    │ Contador de
-   s                │                  │                 │ intentos erróneos
-                    │                  │                 │ consecutivos de
-                    │                  │                 │ login.
-   fecha_bloqueo    │ DATETIME         │      NULL       │ Marca de tiempo
-                    │                  │                 │ del bloqueo
-                    │                  │                 │ temporal (ventana
-                    │                  │                 │ de 15 min).
-  ──────                                                                     
+                                                                                                                                      
   #### 2. Tabla: HABITACION                                                  
                                                                              
   Catálogo de unidades de hospedaje del establecimiento.                     
-                                                                             
-   Campo         │ Tipo de Dato  │ Clave / Restricci… │ Descripción
-  ───────────────┼───────────────┼────────────────────┼──────────────────────
-   id_habitacion │ INT           │      PK (Auto      │ Identificador único
-                 │               │    Incremental)    │ de la habitación.
-   numero        │ VARCHAR(10)   │  UNIQUE, NOT NULL  │ Número o código
-                 │               │                    │ visible de la
-                 │               │                    │ habitación (ej:
-                 │               │                    │ '101', 'S-02').
-   tipo          │ VARCHAR(30)   │      NOT NULL      │ Categoría
-                 │               │                    │ (Individual, Doble,
-                 │               │                    │ Triple, Suite,
-                 │               │                    │ Compartida).
-   capacidad     │ INT           │      NOT NULL      │ Cantidad máxima de
-                 │               │                    │ huéspedes
-                 │               │                    │ permitidos.
-   precio_noche  │ DECIMAL(10,2) │      NOT NULL      │ Tarifa base por
-                 │               │                    │ noche de
-                 │               │                    │ alojamiento.
-   estado        │ VARCHAR(20)   │      DEFAULT       │ Estado operativo
-                 │               │    'Disponible'    │ (Disponible,
-                 │               │                    │ Ocupada,
-                 │               │                    │ Mantenimiento).
-  ──────                                                                     
+                                                                                                                                      
   #### 3. Tabla: RESERVA                                                     
                                                                              
   Registro central de transacciones y hospedajes del sistema.                
-                                                                             
-   Campo          │ Tipo… │ Clave / Restricción  │ Descripción
-  ────────────────┼───────┼──────────────────────┼───────────────────────────
-   id_reserva     │ INT   │       PK (Auto       │ Identificador único
-                  │       │     Incremental)     │ interno de la reserva.
-   numero_reserva │ VARCH │   UNIQUE, NOT NULL   │ Código alfanumérico
-                  │ AR(20 │                      │ visible de reserva (ej:
-                  │ )     │                      │ #BH-9921).
-   id_usuario     │ INT   │         FK →         │ Cliente que solicitó y
-                  │       │ USUARIO(id_usuario)  │ figura en la reserva.
-   id_habitacion  │ INT   │         FK →         │ Habitación reservada para
-                  │       │ HABITACION(id_habita │ la estadía.
-                  │       │        cion)         │
-   fecha_checkin  │ DATE  │       NOT NULL       │ Fecha pactada de ingreso.
-   fecha_checkout │ DATE  │       NOT NULL       │ Fecha pactada de egreso.
-   fecha_creacion │ DATET │       DEFAULT        │ Fecha y hora exacta de
-                  │ IME   │  CURRENT_TIMESTAMP   │ registro.
-   estado         │ VARCH │ DEFAULT 'Pendiente'  │ Pendiente, Confirmada, En
-                  │ AR(20 │                      │ curso, Cancelada,
-                  │ )     │                      │ Finalizada.
-   monto_total    │ DECIM │       NOT NULL       │ Importe total liquidado
-                  │ AL(10 │                      │ (estadía base +
-                  │ ,2)   │                      │ servicios).
-  ──────                                                                     
+                                                    
   #### 4. Tabla: SERVICIO                                                    
                                                                              
   Catálogo de amenidades y servicios extras disponibles.                     
-                                                                             
-   Campo       │ Tipo de Dato  │ Clave / Re… │ Descripción
-  ─────────────┼───────────────┼─────────────┼───────────────────────────────
-   id_servicio │ INT           │  PK (Auto   │ Identificador único del
-               │               │ Incremental │ servicio.
-               │               │      )      │
-   nombre      │ VARCHAR(60)   │  NOT NULL   │ Nombre del servicio (Desayuno
-               │               │             │ Buffet, Spa, Cochera,
-               │               │             │ Lavandería).
-   descripcion │ VARCHAR(255)  │    NULL     │ Detalle y alcances del
-               │               │             │ servicio ofrecido.
-   costo       │ DECIMAL(10,2) │  NOT NULL   │ Precio unitario o por noche
-               │               │             │ del servicio.
-  ──────                                                                     
+                                                                                                                                     
   #### 5. Tabla: RESERVA_SERVICIO (Tabla Intermedia N:M)                     
                                                                              
   Resuelve la relación muchos a muchos entre reservas y servicios            
   contratados.                                                               
-                                                                             
-   Campo       │ Tipo… │   Clave / Restricción    │ Descripción
-  ─────────────┼───────┼──────────────────────────┼──────────────────────────
-   id_reserva  │ INT   │         PK, FK →         │ Reserva a la que se
-               │       │   RESERVA(id_reserva)    │ imputa el consumo.
-   id_servicio │ INT   │         PK, FK →         │ Servicio adicional
-               │       │  SERVICIO(id_servicio)   │ contratado.
-   cantidad    │ INT   │   DEFAULT 1, NOT NULL    │ Unidades o días
-               │       │                          │ contratados del
-               │       │                          │ servicio.
-   subtotal    │ DECIM │         NOT NULL         │ Subtotal calculado
-               │ AL(10 │                          │ (cantidad * costo).
-               │ ,2)   │                          │
-  ──────                                                                     
+                                     
   #### 6. Tabla: LOG_AUDITORIA                                               
                                                                              
   Registro inmutable de trazabilidad y auditoría administrativa.             
-                                                                             
-   Campo      │ Tipo d… │   Clave / Restricción   │ Descripción
-  ────────────┼─────────┼─────────────────────────┼──────────────────────────
-   id_log     │ INT     │  PK (Auto Incremental)  │ Identificador único del
-              │         │                         │ evento de log.
-   id_usuario │ INT     │          FK →           │ Usuario (habitualmente
-              │         │   USUARIO(id_usuario)   │ Admin) responsable de la
-              │         │                         │ acción.
-   id_reserva │ INT     │          FK →           │ Reserva afectada (si la
-              │         │   RESERVA(id_reserva)   │ acción fue sobre una
-              │         │         (NULL)          │ reserva).
-   accion     │ VARCHAR │        NOT NULL         │ Operación realizada
-              │ (60)    │                         │ (Crear, Modificar, 
-              │         │                         │ Check-in, Cancelar).
-   fecha_hora │ DATETIM │         DEFAULT         │ Momento exacto de
-              │ E       │    CURRENT_TIMESTAMP    │ ejecución del evento.
-   detalle    │ VARCHAR │          NULL           │ Información
-              │ (255)   │                         │ complementaria del
-              │         │                         │ cambio aplicado.
-  ──────                                                                     
+
   #### 7. Tabla: NOTIFICACION                                                
                                                                              
   Historial de comunicaciones y avisos emitidos hacia los clientes.          
                                                                              
-   Campo           │ Tipo de D… │ Clave / Restricción │ Descripción
-  ─────────────────┼────────────┼─────────────────────┼──────────────────────
-   id_notificacion │ INT        │      PK (Auto       │ Identificador único
-                   │            │    Incremental)     │ de la notificación.
-   id_reserva      │ INT        │        FK →         │ Reserva asociada al
-                   │            │ RESERVA(id_reserva) │ mensaje.
-   id_usuario      │ INT        │        FK →         │ Cliente destinatario
-                   │            │ USUARIO(id_usuario) │ de la notificación.
-   tipo            │ VARCHAR(40 │      NOT NULL       │ Motivo:
-                   │ )          │                     │ Confirmación,
-                   │            │                     │ Modificación,
-                   │            │                     │ Cancelación,
-                   │            │                     │ Recupero.
-   fecha_envio     │ DATETIME   │       DEFAULT       │ Fecha y hora del
-                   │            │  CURRENT_TIMESTAMP  │ despacho del
-                   │            │                     │ mensaje.
-   estado_envio    │ VARCHAR(20 │  DEFAULT 'Enviado'  │ Estado de entrega
-                   │ )          │                     │ (Enviado, Pendiente,
-                   │            │                     │ Fallido).
-  ──────
+
   ### Trazabilidad con Casos de Uso e Historias de Usuario
   
   • HU01 / HU02 / FA-01 (Inicio de Sesión y Bloqueo de Cuenta): Mapeado en   
