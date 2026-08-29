@@ -14,7 +14,12 @@
             <a class="nav-link text-light fw-bold" routerLink="/quienes-somos">Quiénes Somos</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-white nav-dashboard d-flex align-items-center" routerLink="/dashboard/auth/login" title="Panel de Gestión" aria-label="Panel de Gestión">
+            <a class="nav-link text-warning fw-bold d-flex align-items-center" routerLink="/simular-error-404" title="Simular Error 404">
+              Test 404
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white nav-dashboard d-flex align-items-center" routerLink="/auth/login" title="Panel de Gestión" aria-label="Panel de Gestión">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
                 <line x1="3" y1="9" x2="21" y2="9"></line>
@@ -52,10 +57,10 @@
         </p>
 
         <ul class="list-group list-group-flush rounded-3 border">
-          <li class="list-group-item py-3">✓ Gestión de reservas.</li>
-          <li class="list-group-item py-3">✓ Consulta de habitaciones disponibles.</li>
-          <li class="list-group-item py-3">✓ Registro de servicios adicionales.</li>
-          <li class="list-group-item py-3">✓ Acceso según rol: Admin o Usuario.</li>
+          <li class="list-group-item py-3">&bull; Gestión de reservas.</li>
+          <li class="list-group-item py-3">&bull; Consulta de habitaciones disponibles.</li>
+          <li class="list-group-item py-3">&bull; Registro de servicios adicionales.</li>
+          <li class="list-group-item py-3">&bull; Acceso según rol: Admin o Usuario.</li>
         </ul>
       </div>
     </section>
@@ -92,7 +97,7 @@
     </section>
 
     <div class="d-flex justify-content-center gap-3 mt-4 flex-wrap">
-      <a routerLink="/dashboard/auth/login" class="btn-premium">Acceder al Panel de Gestión</a>
+      <a routerLink="/auth/login" class="btn-premium">Acceder al Panel de Gestión</a>
       <a routerLink="/quienes-somos" class="btn-outline">Conocer al Equipo</a>
     </div>
   </main>

@@ -1,0 +1,129 @@
+<section class="content-section mb-40">
+  <div class="flex-between mb-40 border-bottom-soft pb-24">
+    <div>
+      <h2 class="m-0 text-3xl font-weight-900">Módulo Operaciones & Limpieza</h2>
+      <p class="header-subtitle">Control de habitaciones, turnos de limpieza y mantenimiento edilicio</p>
+    </div>
+    <div class="d-flex flex-wrap gap-3">
+      <button type="button" class="btn-premium">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" class="me-2">
+          <polyline points="9 11 12 14 22 4"></polyline>
+          <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+        </svg>
+        Nueva Tarea
+      </button>
+    </div>
+  </div>
+
+  <!-- Métricas Operacionales -->
+  <div class="row g-4 mb-40">
+    <div class="col-xl-3 col-md-6">
+      <div class="metric-card bg-success text-white border-0 shadow-lg">
+        <h3 class="metric-title text-white opacity-06">Listas / Limpias</h3>
+        <div class="metric-value text-white">18</div>
+        <div class="metric-trend text-white">75% del total</div>
+      </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+      <div class="metric-card bg-warning text-dark border-0 shadow-lg">
+        <h3 class="metric-title text-dark opacity-06">En Proceso Limpieza</h3>
+        <div class="metric-value text-dark">4</div>
+        <div class="metric-trend font-bold">Tiempo prom: 22m</div>
+      </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+      <div class="metric-card bg-danger text-white border-0 shadow-lg">
+        <h3 class="metric-title text-white opacity-06">Mantenimiento Urgente</h3>
+        <div class="metric-value text-white">2</div>
+        <div class="metric-trend trend-down">Suite 204 y Baño 1</div>
+      </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+      <div class="metric-card bg-sidebar text-white border-0 shadow-lg">
+        <h3 class="metric-title text-white opacity-06">Personal en Turno</h3>
+        <div class="metric-value text-white">6</div>
+        <div class="metric-trend text-white">Turno Mañana (08-16h)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lista de Tareas y Estado de Habitaciones -->
+  <div class="row g-4">
+    <div class="col-lg-7">
+      <div class="card p-4 border-0 bg-light rounded-4 h-100">
+        <h3 class="text-lg font-weight-800 mb-20 m-0">Tareas Operativas del Día</h3>
+        <div class="flex-column gap-12">
+          <div class="p-3 bg-white rounded-3 border d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center gap-3">
+              <span class="badge bg-danger">Urgente</span>
+              <div>
+                <strong>Reparación de Grifería - Suite 204</strong>
+                <p class="text-xs text-secondary m-0">Asignado a: Mantenimiento General</p>
+              </div>
+            </div>
+            <span class="badge-status yellow">En curso</span>
+          </div>
+
+          <div class="p-3 bg-white rounded-3 border d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center gap-3">
+              <span class="badge bg-primary text-white">Limpieza</span>
+              <div>
+                <strong>Recambio de Blancos - Dormitorio Compartido 2</strong>
+                <p class="text-xs text-secondary m-0">Asignado a: Equipo Housekeeping A</p>
+              </div>
+            </div>
+            <span class="badge-status green">Completado</span>
+          </div>
+
+          <div class="p-3 bg-white rounded-3 border d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center gap-3">
+              <span class="badge bg-secondary text-white">Revisión</span>
+              <div>
+                <strong>Inspección de Aires Acondicionados - Planta Alta</strong>
+                <p class="text-xs text-secondary m-0">Asignado a: Técnico Externo</p>
+              </div>
+            </div>
+            <span class="badge-status yellow">Programado 14:00</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-5">
+      <div class="card p-4 border-0 bg-white shadow-sm rounded-4 h-100">
+        <h3 class="text-lg font-weight-800 mb-20 m-0">Estado de Suministros</h3>
+        <div class="flex-column gap-15">
+          <div>
+            <div class="flex-between mb-1">
+              <span class="text-sm font-semibold">Kits de Sábanas y Toallas</span>
+              <span class="text-xs font-bold text-success">85% Stock</span>
+            </div>
+            <div class="progress" style="height: 8px;">
+              <div class="progress-bar bg-success" style="width: 85%"></div>
+            </div>
+          </div>
+
+          <div>
+            <div class="flex-between mb-1">
+              <span class="text-sm font-semibold">Artículos de Higiene / Amenities</span>
+              <span class="text-xs font-bold text-warning">45% Stock</span>
+            </div>
+            <div class="progress" style="height: 8px;">
+              <div class="progress-bar bg-warning" style="width: 45%"></div>
+            </div>
+          </div>
+
+          <div>
+            <div class="flex-between mb-1">
+              <span class="text-sm font-semibold">Insumos de Desayuno & Café</span>
+              <span class="text-xs font-bold text-primary">90% Stock</span>
+            </div>
+            <div class="progress" style="height: 8px;">
+              <div class="progress-bar bg-primary" style="width: 90%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

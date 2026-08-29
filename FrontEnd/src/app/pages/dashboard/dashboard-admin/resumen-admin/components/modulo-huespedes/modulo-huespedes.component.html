@@ -1,0 +1,102 @@
+<section class="content-section mb-40">
+  <div class="flex-between mb-40 border-bottom-soft pb-24">
+    <div>
+      <h2 class="m-0 text-3xl font-weight-900">Módulo Huéspedes</h2>
+      <p class="header-subtitle">Historial de pasajeros, fidelización y preferencias de estadía</p>
+    </div>
+    <div class="d-flex flex-wrap gap-3">
+      <button type="button" class="btn-premium">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" class="me-2">
+          <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+          <circle cx="8.5" cy="7" r="4"></circle>
+          <line x1="20" y1="8" x2="20" y2="14"></line>
+          <line x1="23" y1="11" x2="17" y2="11"></line>
+        </svg>
+        Registrar Huésped
+      </button>
+    </div>
+  </div>
+
+  <!-- Tarjetas de Métricas de Huéspedes -->
+  <div class="row g-4 mb-40">
+    <div class="col-xl-3 col-md-6">
+      <div class="metric-card bg-sidebar text-white border-0 shadow-lg">
+        <h3 class="metric-title text-white opacity-06">Huéspedes Activos</h3>
+        <div class="metric-value text-white">24</div>
+        <div class="metric-trend trend-up">+ 100% capacidad</div>
+      </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+      <div class="metric-card bg-primary text-white border-0 shadow-lg">
+        <h3 class="metric-title text-white opacity-06">Frecuentes / VIP</h3>
+        <div class="metric-value text-white">12</div>
+        <div class="metric-trend trend-up">+ 3 nuevos</div>
+      </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+      <div class="metric-card bg-success text-white border-0 shadow-lg">
+        <h3 class="metric-title text-white opacity-06">Satisfacción General</h3>
+        <div class="metric-value text-white">4.8 / 5</div>
+        <div class="metric-trend trend-up">+ 0.2 vs mes ant.</div>
+      </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+      <div class="metric-card bg-info text-white border-0 shadow-lg">
+        <h3 class="metric-title text-white opacity-06">Nacionalidades</h3>
+        <div class="metric-value text-white">8 Países</div>
+        <div class="metric-trend font-semibold">AR, BR, CL, ES, FR...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabla de Huéspedes Destacados -->
+  <div class="table-responsive">
+    <table class="table table-hover align-middle mb-0">
+      <thead class="table-light">
+        <tr>
+          <th class="border-0">Huésped</th>
+          <th class="border-0">DNI / Pasaporte</th>
+          <th class="border-0">Origen</th>
+          <th class="border-0">Estadías Totales</th>
+          <th class="border-0">Nivel Fidelidad</th>
+          <th class="border-0 text-end">Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <div class="font-bold">Juan Manuel Pérez</div>
+            <div class="text-xs text-secondary">juan.perez&#64;email.com</div>
+          </td>
+          <td>20.345.678</td>
+          <td>Córdoba, Argentina</td>
+          <td>5 estadías</td>
+          <td><span class="badge bg-warning text-dark px-2 py-1">Oro VIP</span></td>
+          <td class="text-end"><span class="badge-status green">Hospedado</span></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="font-bold">María Cecilia García</div>
+            <div class="text-xs text-secondary">mgarcia&#64;gmail.com</div>
+          </td>
+          <td>35.123.456</td>
+          <td>San Pablo, Brasil</td>
+          <td>2 estadías</td>
+          <td><span class="badge bg-secondary text-white px-2 py-1">Plata</span></td>
+          <td class="text-end"><span class="badge-status green">Hospedado</span></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="font-bold">Lucas Martín Domínguez</div>
+            <div class="text-xs text-secondary">lucas.d&#64;hotmail.com</div>
+          </td>
+          <td>41.987.654</td>
+          <td>Santiago, Chile</td>
+          <td>1 estadía</td>
+          <td><span class="badge bg-light text-dark border px-2 py-1">Bronce</span></td>
+          <td class="text-end"><span class="badge-status yellow">Check-in Pendiente</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
