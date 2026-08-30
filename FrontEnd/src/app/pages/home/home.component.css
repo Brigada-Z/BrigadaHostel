@@ -1,0 +1,74 @@
+.public-page {
+  min-height: 100vh;
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #f4f4f4;
+  color: #222222;
+}
+
+.public-page .container {
+  max-width: 900px;
+}
+
+.public-page .encabezado {
+  background-color: #1f4e79;
+}
+
+.public-page .encabezado h1 {
+  font-weight: 700;
+}
+
+.public-page .encabezado h1,
+.public-page .encabezado p {
+  color: #ffffff;
+}
+
+.public-page .navbar-dark .navbar-nav .nav-link {
+  color: white;
+  font-weight: bold;
+  margin: 0 6px;
+}
+
+.public-page .navbar-dark .navbar-nav .nav-link:hover,
+.public-page .navbar-dark .navbar-nav .nav-link.active {
+  text-decoration: underline;
+  color: white;
+}
+
+.public-page .nav-dashboard svg {
+  stroke: white;
+}
+
+.public-page .card {
+  border: 1px solid #dddddd;
+}
+
+.public-page .card-title {
+  color: #1f4e79;
+}
+
+.public-page .table-primary th {
+  background-color: #d9eaf7;
+  color: #222222;
+}
+
+.public-page .integrante-card {
+  border: 1px solid #dddddd;
+  border-radius: 6px;
+  padding: 16px;
+  height: 100%;
+  background-color: #f8f9fa;
+}
+
+.public-page .pie {
+  background-color: #333333;
+}
+
+@media (max-width: 767px) {
+  .public-page .navbar-nav {
+    margin-top: 12px;
+  }
+
+  .public-page .navbar-dark .navbar-nav .nav-link {
+    margin: 4px 0;
+  }
+}
