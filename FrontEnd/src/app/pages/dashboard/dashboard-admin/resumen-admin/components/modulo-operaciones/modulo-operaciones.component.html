@@ -1,125 +1,100 @@
 <section class="content-section mb-40">
   <div class="flex-between mb-40 border-bottom-soft pb-24">
     <div>
-      <h2 class="m-0 text-3xl font-weight-900">Módulo Operaciones & Limpieza</h2>
-      <p class="header-subtitle">Control de habitaciones, turnos de limpieza y mantenimiento edilicio</p>
+      <h2 class="m-0 text-3xl font-weight-900">Módulo Operaciones</h2>
+      <p class="header-subtitle">Optimización de recursos, mantenimiento preventivo y limpieza</p>
     </div>
     <div class="d-flex flex-wrap gap-3">
-      <button type="button" class="btn-premium">
-        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" class="me-2">
-          <polyline points="9 11 12 14 22 4"></polyline>
-          <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
-        </svg>
-        Nueva Tarea
-      </button>
+      <button type="button" class="btn-outline">Ver Planilla Mensual</button>
+      <button type="button" class="btn-premium">+ Nueva Incidencia</button>
     </div>
   </div>
-
-  <!-- Métricas Operacionales -->
-  <div class="row g-4 mb-40">
-    <div class="col-xl-3 col-md-6">
-      <div class="metric-card bg-success text-white border-0 shadow-lg">
-        <h3 class="metric-title text-white opacity-06">Listas / Limpias</h3>
-        <div class="metric-value text-white">18</div>
-        <div class="metric-trend text-white">75% del total</div>
-      </div>
-    </div>
-    <div class="col-xl-3 col-md-6">
-      <div class="metric-card bg-warning text-dark border-0 shadow-lg">
-        <h3 class="metric-title text-dark opacity-06">En Proceso Limpieza</h3>
-        <div class="metric-value text-dark">4</div>
-        <div class="metric-trend font-bold">Tiempo prom: 22m</div>
-      </div>
-    </div>
-    <div class="col-xl-3 col-md-6">
-      <div class="metric-card bg-danger text-white border-0 shadow-lg">
-        <h3 class="metric-title text-white opacity-06">Mantenimiento Urgente</h3>
-        <div class="metric-value text-white">2</div>
-        <div class="metric-trend trend-down">Suite 204 y Baño 1</div>
-      </div>
-    </div>
-    <div class="col-xl-3 col-md-6">
-      <div class="metric-card bg-sidebar text-white border-0 shadow-lg">
-        <h3 class="metric-title text-white opacity-06">Personal en Turno</h3>
-        <div class="metric-value text-white">6</div>
-        <div class="metric-trend text-white">Turno Mañana (08-16h)</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Lista de Tareas y Estado de Habitaciones -->
-  <div class="row g-4">
-    <div class="col-lg-7">
-      <div class="card p-4 border-0 bg-light rounded-4 h-100">
-        <h3 class="text-lg font-weight-800 mb-20 m-0">Tareas Operativas del Día</h3>
+  <div class="row g-5">
+    <!-- Control de Limpieza Extendido -->
+    <div class="col-md-6">
+      <div class="card p-32 h-100 border-0 shadow-none bg-light">
+        <div class="flex-between mb-24">
+          <h3 class="text-lg font-weight-800 m-0">Estado de Habitaciones</h3>
+          <span class="text-xs font-weight-700 text-muted">ACTUALIZADO: 14:30 PM</span>
+        </div>
         <div class="flex-column gap-12">
-          <div class="p-3 bg-white rounded-3 border d-flex align-items-center justify-content-between">
-            <div class="d-flex align-items-center gap-3">
-              <span class="badge bg-danger">Urgente</span>
-              <div>
-                <strong>Reparación de Grifería - Suite 204</strong>
-                <p class="text-xs text-secondary m-0">Asignado a: Mantenimiento General</p>
+          <div class="flex-between p-16 bg-white rounded-4 border shadow-sm">
+            <div class="flex-align-center gap-12">
+              <div class="p-8 bg-success-soft rounded-3 d-flex align-items-center justify-content-center">
+                <svg width="18" height="18" fill="#10b981" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
               </div>
+              <div><strong>Hab 101</strong><p class="text-xs-muted mb-0">Suite - Limpia</p></div>
             </div>
-            <span class="badge-status yellow">En curso</span>
+            <span class="text-xs text-muted">Mucama: Rosa</span>
           </div>
-
-          <div class="p-3 bg-white rounded-3 border d-flex align-items-center justify-content-between">
-            <div class="d-flex align-items-center gap-3">
-              <span class="badge bg-primary text-white">Limpieza</span>
-              <div>
-                <strong>Recambio de Blancos - Dormitorio Compartido 2</strong>
-                <p class="text-xs text-secondary m-0">Asignado a: Equipo Housekeeping A</p>
+          <div class="flex-between p-16 bg-white rounded-4 border shadow-sm">
+            <div class="flex-align-center gap-12">
+              <div class="p-8 bg-warning-soft rounded-3 d-flex align-items-center justify-content-center">
+                <svg width="18" height="18" fill="#f59e0b" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
               </div>
+              <div><strong>Hab 102</strong><p class="text-xs-muted mb-0">Doble - En Limpieza</p></div>
             </div>
-            <span class="badge-status green">Completado</span>
+            <span class="text-xs text-muted">Mucama: Ana</span>
           </div>
-
-          <div class="p-3 bg-white rounded-3 border d-flex align-items-center justify-content-between">
-            <div class="d-flex align-items-center gap-3">
-              <span class="badge bg-secondary text-white">Revisión</span>
-              <div>
-                <strong>Inspección de Aires Acondicionados - Planta Alta</strong>
-                <p class="text-xs text-secondary m-0">Asignado a: Técnico Externo</p>
+          <div class="flex-between p-16 bg-white rounded-4 border shadow-sm border-danger-soft">
+            <div class="flex-align-center gap-12">
+              <div class="p-8 bg-danger-soft rounded-3 d-flex align-items-center justify-content-center">
+                <svg width="18" height="18" fill="#ef4444" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
               </div>
+              <div><strong>Dorm 4</strong><p class="text-xs-muted mb-0">8 Camas - Sucia</p></div>
             </div>
-            <span class="badge-status yellow">Programado 14:00</span>
+            <span class="text-xs text-danger font-bold">URGENTE</span>
           </div>
+          <div class="flex-between p-16 bg-white rounded-4 border shadow-sm">
+            <div class="flex-align-center gap-12">
+              <div class="p-8 bg-success-soft rounded-3 d-flex align-items-center justify-content-center">
+                <svg width="18" height="18" fill="#10b981" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+              </div>
+              <div><strong>Dorm 2</strong><p class="text-xs-muted mb-0">4 Camas - Limpia</p></div>
+            </div>
+            <span class="text-xs text-muted">Mucama: Rosa</span>
+          </div>
+        </div>
+        <div class="mt-32 p-24 bg-white rounded-4 border-dashed border-2">
+          <h4 class="text-sm font-weight-800 text-uppercase mb-12">Mantenimiento Pendiente</h4>
+          <ul class="list-unstyled flex-column gap-8 mb-0">
+            <li class="text-sm flex-align-center gap-8"><span class="badge bg-warning p-1 rounded-circle"> </span> Reparar grifería Hab 105</li>
+            <li class="text-sm flex-align-center gap-8"><span class="badge bg-danger p-1 rounded-circle"> </span> Aire acondicionado Dorm 1 (Falla)</li>
+          </ul>
         </div>
       </div>
     </div>
-
-    <div class="col-lg-5">
-      <div class="card p-4 border-0 bg-white shadow-sm rounded-4 h-100">
-        <h3 class="text-lg font-weight-800 mb-20 m-0">Estado de Suministros</h3>
-        <div class="flex-column gap-15">
-          <div>
-            <div class="flex-between mb-1">
-              <span class="text-sm font-semibold">Kits de Sábanas y Toallas</span>
-              <span class="text-xs font-bold text-success">85% Stock</span>
+    <!-- Inventario Crítico Extendido -->
+    <div class="col-md-6">
+      <div class="card p-32 h-100 border-0 shadow-none bg-light d-flex flex-column">
+        <h3 class="text-lg font-weight-800 mb-24 m-0">Control de Stock e Insumos</h3>
+        <div class="table-responsive flex-1">
+          <table class="table table-sm table-borderless align-middle mb-0">
+            <thead>
+              <tr class="text-xs-muted text-uppercase border-bottom">
+                <th class="pb-3">Insumo</th>
+                <th class="pb-3">Categoría</th>
+                <th class="pb-3 text-end">Existencia</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-bottom-soft"><td class="py-12"><strong>Sábanas Blancas</strong></td><td class="text-xs">Lencería</td><td class="text-end font-bold">42</td></tr>
+              <tr class="border-bottom-soft"><td class="py-12"><strong>Toallas de Baño</strong></td><td class="text-xs">Lencería</td><td class="text-end text-danger font-bold">12 <small>(Bajo)</small></td></tr>
+              <tr class="border-bottom-soft"><td class="py-12"><strong>Kits de Limpieza</strong></td><td class="text-xs">Químicos</td><td class="text-end font-bold">85</td></tr>
+              <tr class="border-bottom-soft"><td class="py-12"><strong>Papel Higiénico</strong></td><td class="text-xs">Descartables</td><td class="text-end font-bold">120</td></tr>
+              <tr class="border-bottom-soft"><td class="py-12"><strong>Café / Té (Cajas)</strong></td><td class="text-xs">Alimentos</td><td class="text-end text-warning font-bold">8</td></tr>
+              <tr class="border-bottom-soft"><td class="py-12"><strong>Detergente Ind.</strong></td><td class="text-xs">Químicos</td><td class="text-end font-bold">15 Lts</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="mt-auto pt-32">
+          <div class="bg-sidebar p-24 rounded-4 text-white">
+            <div class="flex-between mb-8">
+              <span class="text-sm opacity-08 text-white">Eficiencia Operativa</span>
+              <span class="font-bold text-white">92%</span>
             </div>
-            <div class="progress" style="height: 8px;">
-              <div class="progress-bar bg-success" style="width: 85%"></div>
-            </div>
-          </div>
-
-          <div>
-            <div class="flex-between mb-1">
-              <span class="text-sm font-semibold">Artículos de Higiene / Amenities</span>
-              <span class="text-xs font-bold text-warning">45% Stock</span>
-            </div>
-            <div class="progress" style="height: 8px;">
-              <div class="progress-bar bg-warning" style="width: 45%"></div>
-            </div>
-          </div>
-
-          <div>
-            <div class="flex-between mb-1">
-              <span class="text-sm font-semibold">Insumos de Desayuno & Café</span>
-              <span class="text-xs font-bold text-primary">90% Stock</span>
-            </div>
-            <div class="progress" style="height: 8px;">
-              <div class="progress-bar bg-primary" style="width: 90%"></div>
+            <div class="progress bg-white-soft" style="height: 8px;">
+              <div class="progress-bar bg-success" style="width: 92%;"></div>
             </div>
           </div>
         </div>
