@@ -234,51 +234,51 @@
       </div>
     </section>
 
-<section class="card mb-4 shadow-sm">
-  <div class="card-body">
-    <h2 class="card-title h4">Consultas registradas</h2>
-    <p>
-      Últimas consultas de reserva obtenidas desde la API de prueba con json-server.
-    </p>
+    <section class="card mb-4 shadow-sm">
+      <div class="card-body">
+        <h2 class="card-title h4">Consultas registradas</h2>
+        <p>
+          Últimas consultas de reserva obtenidas desde la API de prueba con json-server.
+        </p>
 
-    @if (reservas.length === 0) {
-      <div class="alert alert-info mb-0">
-        Todavía no hay consultas registradas.
+        @if (reservas.length === 0) {
+          <div class="alert alert-info mb-0">
+            Todavía no hay consultas registradas.
+          </div>
+        } @else {
+          <div class="table-responsive">
+            <table class="table table-bordered table-hover align-middle mb-0">
+              <thead class="table-primary">
+                <tr>
+                  <th>Nombre</th>
+                  <th>Ingreso</th>
+                  <th>Salida</th>
+                  <th>Huéspedes</th>
+                  <th>Habitación</th>
+                  <th>Estado</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (reserva of reservas; track reserva.id) {
+                  <tr>
+                    <td>{{ reserva.nombre }}</td>
+                    <td>{{ reserva.fechaIngreso }}</td>
+                    <td>{{ reserva.fechaSalida }}</td>
+                    <td>{{ reserva.huespedes }}</td>
+                    <td>{{ reserva.tipoHabitacion }}</td>
+                    <td>
+                      <span class="badge text-bg-warning">
+                        {{ reserva.estado }}
+                      </span>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        }
       </div>
-    } @else {
-      <div class="table-responsive">
-        <table class="table table-bordered table-hover align-middle mb-0">
-          <thead class="table-primary">
-            <tr>
-              <th>Nombre</th>
-              <th>Ingreso</th>
-              <th>Salida</th>
-              <th>Huéspedes</th>
-              <th>Habitación</th>
-              <th>Estado</th>
-            </tr>
-          </thead>
-          <tbody>
-            @for (reserva of reservas; track reserva.id) {
-              <tr>
-                <td>{{ reserva.nombre }}</td>
-                <td>{{ reserva.fechaIngreso }}</td>
-                <td>{{ reserva.fechaSalida }}</td>
-                <td>{{ reserva.huespedes }}</td>
-                <td>{{ reserva.tipoHabitacion }}</td>
-                <td>
-                  <span class="badge text-bg-warning">
-                    {{ reserva.estado }}
-                  </span>
-                </td>
-              </tr>
-            }
-          </tbody>
-        </table>
-      </div>
-    }
-  </div>
-</section>
+    </section>
 
     <section class="card mb-4 shadow-sm">
       <div class="card-body">
