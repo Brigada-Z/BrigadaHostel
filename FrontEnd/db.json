@@ -1,0 +1,53 @@
+{
+  "usuarios": [
+    {
+      "id": "1",
+      "nombre": "Administrador Brigada",
+      "email": "admin@brigadahostel.com",
+      "password": "admin123",
+      "rol": "admin"
+    },
+    {
+      "id": "2",
+      "nombre": "Usuario Demo",
+      "email": "huesped@brigada.com",
+      "password": "user123",
+      "rol": "usuario"
+    }
+  ],
+  "habitaciones": [
+    {
+      "id": "1",
+      "tipo": "Individual",
+      "precioPorNoche": 30000,
+      "capacidad": 1,
+      "disponible": true
+    },
+    {
+      "id": "2",
+      "tipo": "Doble",
+      "precioPorNoche": 45000,
+      "capacidad": 2,
+      "disponible": true
+    },
+    {
+      "id": "3",
+      "tipo": "Suite",
+      "precioPorNoche": 85000,
+      "capacidad": 3,
+      "disponible": false
+    }
+  ],
+  "reservas": [
+    {
+      "id": "1",
+      "nombre": "Juan Pérez",
+      "email": "juan@example.com",
+      "fechaIngreso": "2026-09-20",
+      "fechaSalida": "2026-09-23",
+      "huespedes": 2,
+      "tipoHabitacion": "Doble",
+      "estado": "pendiente"
+    }
+  ]
+}
