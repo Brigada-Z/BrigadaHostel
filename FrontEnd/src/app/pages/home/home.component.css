@@ -72,3 +72,23 @@
     margin: 4px 0;
   }
 }
+
+.public-page .form-label {
+  font-weight: 600;
+  color: #1f4e79;
+}
+
+.public-page .form-control,
+.public-page .form-select {
+  border-radius: 6px;
+}
+
+.public-page .btn-primary {
+  background-color: #1f4e79;
+  border-color: #1f4e79;
+}
+
+.public-page .btn-primary:hover {
+  background-color: #163b5d;
+  border-color: #163b5d;
+}
