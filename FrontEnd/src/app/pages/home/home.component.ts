@@ -1,318 +1,134 @@
-<div class="public-page d-flex flex-column min-vh-100">
-  <header class="encabezado text-white text-center py-4">
-    <div class="container">
-      <h1 class="mb-2">Brigada Hostel</h1>
-      <p class="mb-3">Sistema de gestión para hoteles pequeños y medianos</p>
+import { Component, OnInit, inject } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import {
+  AbstractControl,
+  ReactiveFormsModule,
+  ValidationErrors,
+  Validators
+} from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 
-      <nav class="navbar navbar-expand-md navbar-dark p-0">
-        <div class="container-fluid justify-content-center position-relative">
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#menuPrincipalHome"
-            aria-controls="menuPrincipalHome"
-            aria-expanded="false"
-            aria-label="Abrir menú"
-          >
-            <span class="navbar-toggler-icon"></span>
-          </button>
+import { ReservasService } from '../../services/reservas.service';
+import { HabitacionesService } from '../../services/habitaciones.service';
+import { Reserva } from '../../models/reserva.model';
+import { Habitacion } from '../../models/habitacion.model';
 
-          <div class="collapse navbar-collapse justify-content-center" id="menuPrincipalHome">
-            <ul class="navbar-nav align-items-center">
-              <li class="nav-item">
-                <a class="nav-link active" routerLink="/home">Inicio</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" routerLink="/quienes-somos">Quiénes Somos</a>
-              </li>
-              <li class="nav-item">
-                <a
-                  class="nav-link nav-dashboard"
-                  routerLink="/auth/login"
-                  title="Panel de Gestión"
-                  aria-label="Panel de Gestión"
-                >
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    aria-hidden="true"
-                    focusable="false"
-                  >
-                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                    <line x1="3" y1="9" x2="21" y2="9"></line>
-                    <line x1="9" y1="21" x2="9" y2="9"></line>
-                  </svg>
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
-    </div>
-  </header>
+@Component({
+  selector: 'app-home',
+  standalone: true,
+  imports: [RouterLink, ReactiveFormsModule],
+  templateUrl: './home.component.html',
+  styleUrl: './home.component.css'
+})
+export class HomeComponent implements OnInit {
+  private readonly fb = inject(FormBuilder);
+  private readonly reservasService = inject(ReservasService);
+  private readonly habitacionesService = inject(HabitacionesService);
 
-  <main class="container my-4 flex-grow-1">
-    <section class="card mb-4 shadow-sm">
-      <div class="card-body">
-        <h2 class="card-title h4">Bienvenido al sistema</h2>
-        <p>
-          Este proyecto propone una herramienta simple para ayudar en la gestión de hoteles
-          pequeños y medianos de la Ciudad de Córdoba.
-        </p>
-        <p class="mb-0">
-          La idea principal es centralizar la información de reservas, habitaciones y servicios
-          adicionales, evitando la dificultad de trabajar todo de forma manual.
-        </p>
-      </div>
-    </section>
+  habitaciones: Habitacion[] = [];
+  reservas: Reserva[] = [];
 
-    <section class="card mb-4 shadow-sm">
-      <div class="card-body">
-        <h2 class="card-title h4">Propuesta de valor</h2>
-        <p>
-          El sistema busca que la administración diaria del hotel sea más ordenada,
-          rápida y fácil de consultar.
-        </p>
+  isSubmitting = false;
+  mensajeExito = '';
+  mensajeError = '';
 
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item">Gestión de reservas.</li>
-          <li class="list-group-item">Consulta de habitaciones disponibles.</li>
-          <li class="list-group-item">Registro de servicios adicionales.</li>
-          <li class="list-group-item">Acceso según rol: Admin o Usuario.</li>
-        </ul>
-      </div>
-    </section>
-
-    <section class="card mb-4 shadow-sm">
-      <div class="card-body">
-        <h2 class="card-title h4">Consultar disponibilidad</h2>
-        <p>
-          Completá el formulario para registrar una consulta de reserva. La solicitud quedará
-          guardada como pendiente en el sistema.
-        </p>
-
-        <form [formGroup]="consultaReservaForm" (ngSubmit)="registrarConsulta()" novalidate>
-          <div class="row g-3">
-            <div class="col-12 col-md-6">
-              <label for="nombre" class="form-label">Nombre completo</label>
-              <input
-                id="nombre"
-                type="text"
-                class="form-control"
-                formControlName="nombre"
-                placeholder="Ej: Juan Pérez"
-              >
-
-              @if (f.nombre.touched && f.nombre.hasError('required')) {
-                <div class="text-danger small mt-1">El nombre es obligatorio.</div>
-              }
-
-              @if (f.nombre.touched && f.nombre.hasError('minlength')) {
-                <div class="text-danger small mt-1">El nombre debe tener al menos 3 caracteres.</div>
-              }
-            </div>
-
-            <div class="col-12 col-md-6">
-              <label for="email" class="form-label">Correo electrónico</label>
-              <input
-                id="email"
-                type="email"
-                class="form-control"
-                formControlName="email"
-                placeholder="Ej: correo@email.com"
-              >
-
-              @if (f.email.touched && f.email.hasError('required')) {
-                <div class="text-danger small mt-1">El correo es obligatorio.</div>
-              }
-
-              @if (f.email.touched && f.email.hasError('email')) {
-                <div class="text-danger small mt-1">Ingresá un correo válido.</div>
-              }
-            </div>
-
-            <div class="col-12 col-md-6">
-              <label for="fechaIngreso" class="form-label">Fecha de ingreso</label>
-              <input
-                id="fechaIngreso"
-                type="date"
-                class="form-control"
-                formControlName="fechaIngreso"
-              >
-
-              @if (f.fechaIngreso.touched && f.fechaIngreso.hasError('required')) {
-                <div class="text-danger small mt-1">La fecha de ingreso es obligatoria.</div>
-              }
-            </div>
-
-            <div class="col-12 col-md-6">
-              <label for="fechaSalida" class="form-label">Fecha de salida</label>
-              <input
-                id="fechaSalida"
-                type="date"
-                class="form-control"
-                formControlName="fechaSalida"
-              >
-
-              @if (f.fechaSalida.touched && f.fechaSalida.hasError('required')) {
-                <div class="text-danger small mt-1">La fecha de salida es obligatoria.</div>
-              }
-
-              @if (consultaReservaForm.touched && consultaReservaForm.hasError('fechaSalidaInvalida')) {
-                <div class="text-danger small mt-1">
-                  La fecha de salida debe ser posterior a la fecha de ingreso.
-                </div>
-              }
-            </div>
-
-            <div class="col-12 col-md-6">
-              <label for="huespedes" class="form-label">Cantidad de huéspedes</label>
-              <input
-                id="huespedes"
-                type="number"
-                class="form-control"
-                formControlName="huespedes"
-                min="1"
-                max="8"
-              >
-
-              @if (f.huespedes.touched && f.huespedes.hasError('required')) {
-                <div class="text-danger small mt-1">La cantidad de huéspedes es obligatoria.</div>
-              }
-
-              @if (f.huespedes.touched && (f.huespedes.hasError('min') || f.huespedes.hasError('max'))) {
-                <div class="text-danger small mt-1">La cantidad debe estar entre 1 y 8.</div>
-              }
-            </div>
-
-            <div class="col-12 col-md-6">
-              <label for="tipoHabitacion" class="form-label">Tipo de habitación</label>
-              <select
-                id="tipoHabitacion"
-                class="form-select"
-                formControlName="tipoHabitacion"
-              >
-                <option value="">Seleccionar tipo</option>
-                @for (habitacion of habitaciones; track habitacion.id) {
-                  <option [value]="habitacion.tipo">
-                    {{ habitacion.tipo }} - Capacidad {{ habitacion.capacidad }} - ${{ habitacion.precioPorNoche }}
-                  </option>
-                }
-              </select>
-
-              @if (f.tipoHabitacion.touched && f.tipoHabitacion.hasError('required')) {
-                <div class="text-danger small mt-1">Seleccioná un tipo de habitación.</div>
-              }
-            </div>
-          </div>
-
-          @if (mensajeExito) {
-            <div class="alert alert-success mt-3 mb-0">
-              {{ mensajeExito }}
-            </div>
-          }
-
-          @if (mensajeError) {
-            <div class="alert alert-danger mt-3 mb-0">
-              {{ mensajeError }}
-            </div>
-          }
-
-          <div class="mt-4">
-            <button type="submit" class="btn btn-primary" [disabled]="isSubmitting">
-              {{ isSubmitting ? 'Enviando...' : 'Registrar consulta' }}
-            </button>
-          </div>
-        </form>
-      </div>
-    </section>
-
-<section class="card mb-4 shadow-sm">
-  <div class="card-body">
-    <h2 class="card-title h4">Consultas registradas</h2>
-    <p>
-      Últimas consultas de reserva obtenidas desde la API de prueba con json-server.
-    </p>
-
-    @if (reservas.length === 0) {
-      <div class="alert alert-info mb-0">
-        Todavía no hay consultas registradas.
-      </div>
-    } @else {
-      <div class="table-responsive">
-        <table class="table table-bordered table-hover align-middle mb-0">
-          <thead class="table-primary">
-            <tr>
-              <th>Nombre</th>
-              <th>Ingreso</th>
-              <th>Salida</th>
-              <th>Huéspedes</th>
-              <th>Habitación</th>
-              <th>Estado</th>
-            </tr>
-          </thead>
-          <tbody>
-            @for (reserva of reservas; track reserva.id) {
-              <tr>
-                <td>{{ reserva.nombre }}</td>
-                <td>{{ reserva.fechaIngreso }}</td>
-                <td>{{ reserva.fechaSalida }}</td>
-                <td>{{ reserva.huespedes }}</td>
-                <td>{{ reserva.tipoHabitacion }}</td>
-                <td>
-                  <span class="badge text-bg-warning">
-                    {{ reserva.estado }}
-                  </span>
-                </td>
-              </tr>
-            }
-          </tbody>
-        </table>
-      </div>
+  consultaReservaForm = this.fb.nonNullable.group(
+    {
+      nombre: ['', [Validators.required, Validators.minLength(3)]],
+      email: ['', [Validators.required, Validators.email]],
+      fechaIngreso: ['', Validators.required],
+      fechaSalida: ['', Validators.required],
+      huespedes: [1, [Validators.required, Validators.min(1), Validators.max(8)]],
+      tipoHabitacion: ['', Validators.required]
+    },
+    {
+      validators: this.fechaSalidaPosteriorValidator
     }
-  </div>
-</section>
+  );
 
-    <section class="card mb-4 shadow-sm">
-      <div class="card-body">
-        <h2 class="card-title h4">Resumen visual</h2>
+  ngOnInit(): void {
+    this.cargarHabitaciones();
+    this.cargarReservas();
+  }
 
-        <div class="table-responsive">
-          <table class="table table-bordered table-hover align-middle mb-0">
-            <thead class="table-primary">
-              <tr>
-                <th>Área</th>
-                <th>Ejemplo de información</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Reservas</td>
-                <td>Reservas activas y próximas llegadas</td>
-              </tr>
-              <tr>
-                <td>Habitaciones</td>
-                <td>Disponibles, ocupadas o en mantenimiento</td>
-              </tr>
-              <tr>
-                <td>Servicios</td>
-                <td>Desayuno, cochera, lavandería u otros</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </section>
-  </main>
+  get f() {
+    return this.consultaReservaForm.controls;
+  }
 
-  <footer class="pie text-white text-center py-3 mt-auto">
-    <p class="mb-0">Proyecto académico - Módulo Full Stack I - 2026</p>
-  </footer>
-</div>
+  registrarConsulta(): void {
+    this.mensajeExito = '';
+    this.mensajeError = '';
+
+    if (this.consultaReservaForm.invalid) {
+      this.consultaReservaForm.markAllAsTouched();
+      return;
+    }
+
+    const formValue = this.consultaReservaForm.getRawValue();
+
+    const nuevaReserva: Reserva = {
+      nombre: formValue.nombre,
+      email: formValue.email,
+      fechaIngreso: formValue.fechaIngreso,
+      fechaSalida: formValue.fechaSalida,
+      huespedes: formValue.huespedes,
+      tipoHabitacion: formValue.tipoHabitacion,
+      estado: 'pendiente'
+    };
+
+    this.isSubmitting = true;
+
+    this.reservasService.crearReserva(nuevaReserva).subscribe({
+      next: (reservaCreada) => {
+        this.mensajeExito = `Consulta registrada correctamente. Número de reserva: ${reservaCreada.id}.`;
+        this.consultaReservaForm.reset({
+          nombre: '',
+          email: '',
+          fechaIngreso: '',
+          fechaSalida: '',
+          huespedes: 1,
+          tipoHabitacion: ''
+        });
+        this.isSubmitting = false;
+        this.cargarReservas();
+      },
+      error: () => {
+        this.mensajeError = 'No se pudo registrar la consulta. Verificá que json-server esté funcionando.';
+        this.isSubmitting = false;
+      }
+    });
+  }
+
+  private cargarHabitaciones(): void {
+    this.habitacionesService.obtenerHabitaciones().subscribe({
+      next: (habitaciones) => {
+        this.habitaciones = habitaciones.filter((habitacion) => habitacion.disponible);
+      },
+      error: () => {
+        this.mensajeError = 'No se pudieron cargar las habitaciones disponibles.';
+      }
+    });
+  }
+
+  private cargarReservas(): void {
+    this.reservasService.obtenerReservas().subscribe({
+      next: (reservas) => {
+        this.reservas = reservas.slice(-5).reverse();
+      },
+      error: () => {
+        this.mensajeError = 'No se pudieron cargar las reservas registradas.';
+      }
+    });
+  }
+
+  private fechaSalidaPosteriorValidator(control: AbstractControl): ValidationErrors | null {
+    const fechaIngreso = control.get('fechaIngreso')?.value;
+    const fechaSalida = control.get('fechaSalida')?.value;
+
+    if (!fechaIngreso || !fechaSalida) {
+      return null;
+    }
+
+    return fechaSalida > fechaIngreso ? null : { fechaSalidaInvalida: true };
+  }
+}
