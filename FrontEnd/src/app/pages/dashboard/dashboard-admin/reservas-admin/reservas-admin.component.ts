@@ -1,85 +1,180 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
-export interface AdminReservation {
-  code: string;
-  guestName: string;
-  dni: string;
-  period: string;
-  room: string;
-  status: 'Pendiente' | 'Check-in' | 'Cancelada';
-}
+import { ReservasService } from '../../../../services/reservas.service';
+import { Reserva } from '../../../../models/reserva.model';
 
 @Component({
   selector: 'app-reservas-admin',
   standalone: true,
-  imports: [FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './reservas-admin.component.html',
   styleUrl: './reservas-admin.component.css'
 })
-export class ReservasAdminComponent {
+export class ReservasAdminComponent implements OnInit {
+  private readonly reservasService = inject(ReservasService);
+  private readonly cdr = inject(ChangeDetectorRef);
+
   searchQuery = '';
   selectedPeriod = 'all';
   selectedStatus = 'all';
 
-  showErrorModal = false;
-  showCancelConfirm = false;
-  toastMessage: string | null = null;
+  isLoading = true;
+  hasError = false;
+  errorMessage = '';
 
-  activeDrawerReservation: AdminReservation | null = null;
+  showCancelConfirm = false;
+  showDeleteConfirm = false;
+  toastMessage: string | null = null;
+  toastType: 'success' | 'danger' | 'info' = 'success';
+
+  activeDrawerReservation: Reserva | null = null;
   activeDrawerTab: 'edit' | 'audit' = 'edit';
 
-  reservations: AdminReservation[] = [
-    { code: '#BH-9921', guestName: 'Juan Pérez', dni: '20.345.678', period: '15/06 - 18/06', room: 'Suite 101', status: 'Pendiente' },
-    { code: '#BH-8840', guestName: 'María García', dni: '35.123.456', period: '14/06 - 16/06', room: 'Doble 102', status: 'Check-in' },
-    { code: '#BH-7730', guestName: 'Carlos Ruiz', dni: '12.888.444', period: '10/06 - 12/06', room: 'Cama 4', status: 'Cancelada' }
-  ];
+  reservas: Reserva[] = [];
+  filteredList: Reserva[] = [];
 
-  filteredList: AdminReservation[] = [...this.reservations];
+  ngOnInit(): void {
+    this.cargarReservas();
+  }
 
-  filterReservations(): void {
-    this.filteredList = this.reservations.filter(item => {
-      const matchesQuery = 
-        item.code.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
-        item.guestName.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
-        item.dni.includes(this.searchQuery);
+  cargarReservas(): void {
+    this.isLoading = true;
+    this.hasError = false;
+    this.errorMessage = '';
 
-      const matchesStatus = this.selectedStatus === 'all' || item.status === this.selectedStatus;
-      return matchesQuery && matchesStatus;
+    this.reservasService.getReservas().subscribe({
+      next: (data) => {
+        this.reservas = data;
+        this.filterReservations();
+        this.isLoading = false;
+        this.cdr.markForCheck();
+      },
+      error: (err) => {
+        console.error('Error al obtener reservas desde json-server:', err);
+        this.hasError = true;
+        this.errorMessage = 'No se pudo conectar con el servidor (json-server en puerto 3000). Verificá que la API esté corriendo.';
+        this.isLoading = false;
+        this.cdr.markForCheck();
+      }
     });
   }
 
-  openDrawer(item: AdminReservation): void {
+  filterReservations(): void {
+    const query = this.searchQuery.trim().toLowerCase();
+
+    this.filteredList = this.reservas.filter((item) => {
+      const codeMatch = item.id ? `#bh-${String(item.id).toLowerCase()}`.includes(query) || String(item.id).toLowerCase().includes(query) : false;
+      const guestMatch = item.nombre ? item.nombre.toLowerCase().includes(query) : false;
+      const emailMatch = item.email ? item.email.toLowerCase().includes(query) : false;
+      const dniMatch = item.dni ? item.dni.toLowerCase().includes(query) : false;
+      const roomMatch = item.tipoHabitacion ? item.tipoHabitacion.toLowerCase().includes(query) : false;
+
+      const matchesQuery = query === '' || codeMatch || guestMatch || emailMatch || dniMatch || roomMatch;
+      const matchesStatus = this.selectedStatus === 'all' || item.estado === this.selectedStatus;
+
+      let matchesPeriod = true;
+      if (this.selectedPeriod === 'today' && item.fechaIngreso) {
+        const todayStr = new Date().toISOString().split('T')[0];
+        matchesPeriod = item.fechaIngreso === todayStr;
+      }
+
+      return matchesQuery && matchesStatus && matchesPeriod;
+    });
+    this.cdr.markForCheck();
+  }
+
+  openDrawer(item: Reserva): void {
     this.activeDrawerReservation = { ...item };
     this.activeDrawerTab = 'edit';
+    this.cdr.markForCheck();
   }
 
   closeDrawer(): void {
     this.activeDrawerReservation = null;
+    this.showCancelConfirm = false;
+    this.showDeleteConfirm = false;
+    this.cdr.markForCheck();
   }
 
   saveChanges(): void {
-    if (!this.activeDrawerReservation) return;
-    const index = this.reservations.findIndex(r => r.code === this.activeDrawerReservation!.code);
-    if (index !== -1) {
-      this.reservations[index] = { ...this.activeDrawerReservation };
-      this.filterReservations();
-    }
-    this.showToast('Cambios guardados correctamente');
-    this.closeDrawer();
+    if (!this.activeDrawerReservation || !this.activeDrawerReservation.id) return;
+
+    const id = this.activeDrawerReservation.id;
+    this.reservasService.actualizarReserva(id, this.activeDrawerReservation).subscribe({
+      next: (updated) => {
+        this.showToast(`Reserva #BH-${updated.id} actualizada correctamente.`, 'success');
+        this.closeDrawer();
+        this.cargarReservas();
+      },
+      error: (err) => {
+        console.error('Error al guardar cambios de reserva:', err);
+        this.showToast('Error al actualizar en json-server.', 'danger');
+        this.cdr.markForCheck();
+      }
+    });
+  }
+
+  cambiarEstadoDirecto(item: Reserva, nuevoEstado: 'pendiente' | 'confirmada' | 'cancelada'): void {
+    if (!item.id) return;
+
+    this.reservasService.actualizarEstado(item.id, nuevoEstado).subscribe({
+      next: () => {
+        this.showToast(`Reserva #BH-${item.id} marcada como ${nuevoEstado}.`, 'success');
+        this.cargarReservas();
+      },
+      error: (err) => {
+        console.error('Error al cambiar estado:', err);
+        this.showToast('Error al actualizar estado en json-server.', 'danger');
+        this.cdr.markForCheck();
+      }
+    });
   }
 
   executeCancel(): void {
-    if (!this.activeDrawerReservation) return;
-    this.activeDrawerReservation.status = 'Cancelada';
-    this.saveChanges();
-    this.showCancelConfirm = false;
+    if (!this.activeDrawerReservation || !this.activeDrawerReservation.id) return;
+
+    this.reservasService.actualizarEstado(this.activeDrawerReservation.id, 'cancelada').subscribe({
+      next: () => {
+        this.showToast(`Reserva #BH-${this.activeDrawerReservation?.id} cancelada.`, 'info');
+        this.showCancelConfirm = false;
+        this.closeDrawer();
+        this.cargarReservas();
+      },
+      error: (err) => {
+        console.error('Error al cancelar reserva:', err);
+        this.showToast('Error al cancelar en el servidor.', 'danger');
+        this.cdr.markForCheck();
+      }
+    });
   }
 
-  showToast(msg: string): void {
+  executeDelete(): void {
+    if (!this.activeDrawerReservation || !this.activeDrawerReservation.id) return;
+
+    const id = this.activeDrawerReservation.id;
+    this.reservasService.eliminarReserva(id).subscribe({
+      next: () => {
+        this.showToast(`Reserva #BH-${id} eliminada de db.json.`, 'info');
+        this.showDeleteConfirm = false;
+        this.closeDrawer();
+        this.cargarReservas();
+      },
+      error: (err) => {
+        console.error('Error al eliminar reserva:', err);
+        this.showToast('Error al eliminar en json-server.', 'danger');
+        this.cdr.markForCheck();
+      }
+    });
+  }
+
+  showToast(msg: string, type: 'success' | 'danger' | 'info' = 'success'): void {
     this.toastMessage = msg;
+    this.toastType = type;
+    this.cdr.markForCheck();
     setTimeout(() => {
       this.toastMessage = null;
-    }, 3000);
+      this.cdr.markForCheck();
+    }, 3500);
   }
 }

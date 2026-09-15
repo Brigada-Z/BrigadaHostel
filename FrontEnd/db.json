@@ -21,33 +21,69 @@
       "tipo": "Individual",
       "precioPorNoche": 30000,
       "capacidad": 1,
-      "disponible": true
+      "disponible": true,
+      "descripcion": "Habitación individual privada con escritorio, WiFi de alta velocidad y baño compartido."
     },
     {
       "id": "2",
       "tipo": "Doble",
       "precioPorNoche": 45000,
       "capacidad": 2,
-      "disponible": true
+      "disponible": true,
+      "descripcion": "Espacio confortable para 2 personas con cama matrimonial, aire acondicionado y baño privado."
     },
     {
       "id": "3",
       "tipo": "Suite",
       "precioPorNoche": 85000,
-      "capacidad": 3,
-      "disponible": false
+      "capacidad": 4,
+      "disponible": true,
+      "descripcion": "Suite superior con vista panorámica, cama king size, sala de estar y minibar."
+    },
+    {
+      "id": "4",
+      "tipo": "Compartida (Dorm)",
+      "precioPorNoche": 18000,
+      "capacidad": 6,
+      "disponible": true,
+      "descripcion": "Cama en dormitorio compartido con cortina de privacidad, luz de lectura y locker individual."
     }
   ],
   "reservas": [
     {
-      "id": "1",
-      "nombre": "Juan Pérez",
-      "email": "juan@example.com",
-      "fechaIngreso": "2026-09-20",
-      "fechaSalida": "2026-09-23",
-      "huespedes": 2,
-      "tipoHabitacion": "Doble",
-      "estado": "pendiente"
+      "id": "2",
+      "nombre": "María García",
+      "email": "maria.garcia@email.com",
+      "dni": "35.123.456",
+      "telefono": "+54 9 11 876-5432",
+      "fechaIngreso": "2026-09-22",
+      "fechaSalida": "2026-09-25",
+      "huespedes": 1,
+      "tipoHabitacion": "Individual",
+      "precioTotal": 90000,
+      "serviciosExtra": [
+        "Desayuno Buffet Diario",
+        "Traslado Aeropuerto / Terminal"
+      ],
+      "estado": "confirmada",
+      "notas": "Requiere factura A.",
+      "fechaCreacion": "2026-09-12"
+    },
+    {
+      "id": "3",
+      "nombre": "Carlos Ruiz",
+      "email": "carlos.ruiz@email.com",
+      "dni": "12.888.444",
+      "telefono": "+54 9 261 456-7890",
+      "fechaIngreso": "2026-09-15",
+      "fechaSalida": "2026-09-18",
+      "huespedes": 3,
+      "tipoHabitacion": "Suite",
+      "precioTotal": 255000,
+      "serviciosExtra": [],
+      "estado": "cancelada",
+      "notas": "Canceló por motivos de viaje imprevistos.",
+      "fechaCreacion": "2026-09-08"
     }
   ],
   "integrantes": [
@@ -81,5 +117,6 @@
       "nombre": "Oscar Alberto",
       "apellido": "QUEVEDO"
     }
-  ]
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }

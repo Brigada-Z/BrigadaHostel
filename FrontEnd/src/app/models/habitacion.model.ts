@@ -4,4 +4,5 @@ export interface Habitacion {
   precioPorNoche: number;
   capacidad: number;
   disponible: boolean;
+  descripcion?: string;
 }

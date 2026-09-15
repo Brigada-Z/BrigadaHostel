@@ -17,6 +17,7 @@
 8. Sistema de Branching y Organización
 9. About & Contributors
 10. Traspaso a Angular
+11. Evidencia 5 - Dashboard Dinámico con HttpClient, Formularios Reactivos y json-server
 
 ---
 
@@ -951,5 +952,102 @@ Un error común es abrir el archivo `.component.html` directamente en el navegad
   colaborativa.
     * **Mermaid.js:** Diagramado interactivo de entidades, relaciones y      
   arquitectura conceptual.
+    * **json-server (v1.0.0-beta.15):** API REST simulada local para pruebas de integración continua y consumo reactivo con HttpClient.
 
-                                                  
+---
+
+# Evidencia 5 - Dashboard Dinámico con HttpClient, Formularios Reactivos y json-server
+
+Para la **Evidencia de Aprendizaje 5**, el módulo **Dashboard** (`/dashboard/admin` y `/dashboard/usuario`) fue migrado por completo desde datos simulados fijos (mocks estáticos en TypeScript) hacia una arquitectura **100% dinámica, reactiva y asíncrona**, conectada a una API REST mock mediante `HttpClient` y gestionada con `ReactiveFormsModule`.
+
+## 1. Arquitectura de Servicios y Consumo de APIs
+
+Se implementaron e inyectaron servicios Angular standalone basados en `HttpClient` y `Observable<T>`:
+
+* **`ReservasService` (`src/app/services/reservas.service.ts`):**
+  * `getReservas(): Observable<Reserva[]>`: Consulta `GET http://localhost:3000/reservas` para obtener el listado maestro.
+  * `obtenerReservas(): Observable<Reserva[]>`: Alias de compatibilidad transversal.
+  * `getReservaPorId(id: string): Observable<Reserva>`: Obtiene el detalle de una reserva específica.
+  * `crearReserva(reserva: Reserva): Observable<Reserva>`: Envío `POST http://localhost:3000/reservas` para persistir nuevas solicitudes en `FrontEnd/db.json`.
+  * `actualizarReserva(id: string, cambios: Partial<Reserva>): Observable<Reserva>`: Modificación `PATCH` de datos de huésped, habitaciones o notas.
+  * `actualizarEstado(id: string, estado: 'pendiente' | 'confirmada' | 'cancelada'): Observable<Reserva>`: Actualización del estado operativo en tiempo real.
+  * `eliminarReserva(id: string): Observable<void>`: Eliminación `DELETE` permanente de registros en `db.json`.
+
+* **`HabitacionesService` (`src/app/services/habitaciones.service.ts`):**
+  * `getHabitaciones(): Observable<Habitacion[]>`: Catálogo dinámico `GET http://localhost:3000/habitaciones`.
+  * `obtenerHabitacionesDisponibles(): Observable<Habitacion[]>`: Filtrado reactivo de habitaciones con cupo disponible.
+
+## 2. Formularios Reactivos con Validaciones (`ReservasUsuarioComponent`)
+
+En la vista de reservas de usuario (`ReservasUsuarioComponent`), se implementó un flujo guiado mediante **Formularios Reactivos (`FormGroup` / `FormBuilder`)**:
+
+* **Controles y Validaciones Reactivas:**
+  * `nombre`: Requerido, longitud mínima de 3 caracteres.
+  * `email`: Requerido con validador de formato de correo electrónico (`Validators.email`).
+  * `dni`: Requerido, validación numérica con expresión regular (`^[0-9]{7,10}$`).
+  * `telefono`: Requerido, mínimo 6 caracteres.
+  * `fechaIngreso` y `fechaSalida`: Requeridos.
+  * `huespedes`: Requerido, valor numérico entre 1 y 8 huéspedes.
+  * `tipoHabitacion`: Selección obligatoria desde el catálogo dinámico cargado desde `HabitacionesService`.
+  * `desayuno` y `traslado`: Controles booleanos para el cálculo dinámico de servicios extras.
+  * **Validador Personalizado Cross-Field (`fechaSalidaPosteriorValidator`):** Asegura que la fecha de check-out sea estrictamente posterior a la fecha de check-in.
+* **Cálculo de Precios en Tiempo Real:** Noches calculadas dinámicamente según la diferencia de fechas elegidas multiplicadas por el precio por noche de la habitación seleccionada + costos de servicios adicionales.
+* **Persistencia Directa:** Al presionar "Confirmar y Guardar Reserva", se ejecuta el `POST` a json-server y se genera el código de reserva oficial `#BH-{id}` con feedback en un modal interactivo.
+
+## 3. Listado Maestro Dinámico y Operacional (`ReservasAdminComponent`)
+
+En el panel de administración (`ReservasAdminComponent`):
+
+* **Suscripción a Observables en `ngOnInit()`:** Se obtienen las reservas en vivo desde `reservasService.getReservas()`.
+* **Estados de Carga y Manejo de Errores:**
+  * Indicador de carga animado (`spinner-border`) durante la petición asíncrona.
+  * Alerta de error de conexión con botón interactivo de reintento en caso de falla del servidor.
+  * Mensaje de lista vacía (`@empty`) con sugerencia de restablecimiento de filtros.
+* **Filtros Dinámicos en Tiempo Real:** Búsqueda textual (por nombre de huésped, código `#BH-{id}`, DNI, email o tipo de habitación), filtro por estado (*Pendiente*, *Confirmada*, *Cancelada*) y filtro de estadía.
+* **Drawer Lateral de Gestión y Auditoría:** Permite al administrador editar datos del huésped, actualizar el estado de la reserva (`PATCH`), confirmar o cancelar la estadía y eliminar registros (`DELETE`), impactando de inmediato en `db.json`.
+
+## 4. Trazabilidad con el Caso de Uso BPMN ("Gestión de Reservas")
+
+El flujo implementado refleja fielmente el proceso modelado en BPMN:
+
+```mermaid
+flowchart TD
+    A([Inicio: Huésped inicia solicitud]) --> B[Seleccionar Fechas y Huéspedes]
+    B --> C[Consultar Habitaciones Disponibles en json-server]
+    C --> D{¿Hay cupo disponible?}
+    D -- No --> E[Mostrar estado 'Sin Disponibilidad' y reintentar fechas]
+    E --> B
+    D -- Sí --> F[Completar Formulario Reactivo con Datos Personales]
+    F --> G{¿Datos y Fechas Válidos?}
+    G -- No --> H[Mostrar errores de validación reactiva en pantalla]
+    H --> F
+    G -- Sí --> I[POST a /reservas en json-server: db.json]
+    I --> J[Generar Código #BH-ID y Confirmación al Huésped]
+    J --> K[Administrador visualiza la reserva en GET /reservas]
+    K --> L{Revisión del Administrador}
+    L -- Confirmar --> M[PATCH /reservas/ID estado='confirmada']
+    L -- Cancelar --> N[PATCH /reservas/ID estado='cancelada']
+    M --> O([Fin del Proceso de Reserva])
+    N --> O
+```
+
+## 5. Instrucciones para Ejecutar la API de Prueba y la SPA
+
+1. **Iniciar la API REST Mock (json-server):**
+   ```bash
+   cd FrontEnd
+   npm run api
+   ```
+   *Servidor ejecutándose en:* `http://localhost:3000` (Endpoints: `/reservas`, `/habitaciones`, `/usuarios`, `/integrantes`).
+
+2. **Iniciar la Aplicación Angular:**
+   ```bash
+   npm start
+   ```
+   *Aplicación disponible en:* `http://localhost:4200`
+
+3. **Ejecutar Pruebas Unitarias:**
+   ```bash
+   npm test
+   ```
+
