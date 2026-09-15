@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HabitacionesService } from '../../../../../../services/habitaciones.service';
 import { Habitacion } from '../../../../../../models/habitacion.model';
@@ -12,6 +12,7 @@ import { Habitacion } from '../../../../../../models/habitacion.model';
 })
 export class ModuloOperacionesComponent implements OnInit {
   private readonly habitacionesService = inject(HabitacionesService);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   habitaciones: Habitacion[] = [];
   isLoading = true;
@@ -26,10 +27,12 @@ export class ModuloOperacionesComponent implements OnInit {
       next: (data) => {
         this.habitaciones = data;
         this.isLoading = false;
+        this.cdr.markForCheck();
       },
       error: (err) => {
         console.error('Error al cargar habitaciones en módulo operaciones:', err);
         this.isLoading = false;
+        this.cdr.markForCheck();
       }
     });
   }

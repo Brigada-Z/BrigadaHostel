@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ReservasService } from '../../../../services/reservas.service';
@@ -13,6 +13,7 @@ import { Reserva } from '../../../../models/reserva.model';
 })
 export class ReservasAdminComponent implements OnInit {
   private readonly reservasService = inject(ReservasService);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   searchQuery = '';
   selectedPeriod = 'all';
@@ -47,12 +48,14 @@ export class ReservasAdminComponent implements OnInit {
         this.reservas = data;
         this.filterReservations();
         this.isLoading = false;
+        this.cdr.markForCheck();
       },
       error: (err) => {
         console.error('Error al obtener reservas desde json-server:', err);
         this.hasError = true;
         this.errorMessage = 'No se pudo conectar con el servidor (json-server en puerto 3000). Verificá que la API esté corriendo.';
         this.isLoading = false;
+        this.cdr.markForCheck();
       }
     });
   }
@@ -61,7 +64,7 @@ export class ReservasAdminComponent implements OnInit {
     const query = this.searchQuery.trim().toLowerCase();
 
     this.filteredList = this.reservas.filter((item) => {
-      const codeMatch = item.id ? `#bh-${item.id.toLowerCase()}`.includes(query) || item.id.toLowerCase().includes(query) : false;
+      const codeMatch = item.id ? `#bh-${String(item.id).toLowerCase()}`.includes(query) || String(item.id).toLowerCase().includes(query) : false;
       const guestMatch = item.nombre ? item.nombre.toLowerCase().includes(query) : false;
       const emailMatch = item.email ? item.email.toLowerCase().includes(query) : false;
       const dniMatch = item.dni ? item.dni.toLowerCase().includes(query) : false;
@@ -78,17 +81,20 @@ export class ReservasAdminComponent implements OnInit {
 
       return matchesQuery && matchesStatus && matchesPeriod;
     });
+    this.cdr.markForCheck();
   }
 
   openDrawer(item: Reserva): void {
     this.activeDrawerReservation = { ...item };
     this.activeDrawerTab = 'edit';
+    this.cdr.markForCheck();
   }
 
   closeDrawer(): void {
     this.activeDrawerReservation = null;
     this.showCancelConfirm = false;
     this.showDeleteConfirm = false;
+    this.cdr.markForCheck();
   }
 
   saveChanges(): void {
@@ -104,6 +110,7 @@ export class ReservasAdminComponent implements OnInit {
       error: (err) => {
         console.error('Error al guardar cambios de reserva:', err);
         this.showToast('Error al actualizar en json-server.', 'danger');
+        this.cdr.markForCheck();
       }
     });
   }
@@ -119,6 +126,7 @@ export class ReservasAdminComponent implements OnInit {
       error: (err) => {
         console.error('Error al cambiar estado:', err);
         this.showToast('Error al actualizar estado en json-server.', 'danger');
+        this.cdr.markForCheck();
       }
     });
   }
@@ -136,6 +144,7 @@ export class ReservasAdminComponent implements OnInit {
       error: (err) => {
         console.error('Error al cancelar reserva:', err);
         this.showToast('Error al cancelar en el servidor.', 'danger');
+        this.cdr.markForCheck();
       }
     });
   }
@@ -154,6 +163,7 @@ export class ReservasAdminComponent implements OnInit {
       error: (err) => {
         console.error('Error al eliminar reserva:', err);
         this.showToast('Error al eliminar en json-server.', 'danger');
+        this.cdr.markForCheck();
       }
     });
   }
@@ -161,8 +171,10 @@ export class ReservasAdminComponent implements OnInit {
   showToast(msg: string, type: 'success' | 'danger' | 'info' = 'success'): void {
     this.toastMessage = msg;
     this.toastType = type;
+    this.cdr.markForCheck();
     setTimeout(() => {
       this.toastMessage = null;
+      this.cdr.markForCheck();
     }, 3500);
   }
 }

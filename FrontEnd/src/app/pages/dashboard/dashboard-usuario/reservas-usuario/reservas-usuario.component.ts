@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   AbstractControl,
@@ -25,6 +25,7 @@ export class ReservasUsuarioComponent implements OnInit {
   private readonly fb = inject(FormBuilder);
   private readonly reservasService = inject(ReservasService);
   private readonly habitacionesService = inject(HabitacionesService);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   currentStep = 1;
   showNoAvailability = false;
@@ -81,10 +82,12 @@ export class ReservasUsuarioComponent implements OnInit {
         if (primeraDisponible) {
           this.seleccionarHabitacion(primeraDisponible);
         }
+        this.cdr.markForCheck();
       },
       error: (err) => {
         console.error('Error al cargar habitaciones desde json-server:', err);
         this.isLoadingHabitaciones = false;
+        this.cdr.markForCheck();
       }
     });
   }
@@ -195,11 +198,13 @@ export class ReservasUsuarioComponent implements OnInit {
         this.reservaConfirmada = creada;
         this.bookingSuccess = true;
         this.isSubmitting = false;
+        this.cdr.markForCheck();
       },
       error: (err) => {
         console.error('Error al guardar reserva en json-server:', err);
         this.submitError = 'No se pudo guardar la reserva en el servidor. Verificá que json-server esté corriendo en el puerto 3000.';
         this.isSubmitting = false;
+        this.cdr.markForCheck();
       }
     });
   }
@@ -227,6 +232,7 @@ export class ReservasUsuarioComponent implements OnInit {
     if (this.habitaciones.length > 0) {
       this.seleccionarHabitacion(this.habitaciones[0]);
     }
+    this.cdr.markForCheck();
   }
 
   private fechaSalidaPosteriorValidator(control: AbstractControl): ValidationErrors | null {

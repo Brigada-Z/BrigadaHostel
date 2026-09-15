@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import {
   AbstractControl,
@@ -24,6 +24,7 @@ export class HomeComponent implements OnInit {
   private readonly fb = inject(FormBuilder);
   private readonly reservasService = inject(ReservasService);
   private readonly habitacionesService = inject(HabitacionesService);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   habitaciones: Habitacion[] = [];
   reservas: Reserva[] = [];
@@ -91,10 +92,12 @@ export class HomeComponent implements OnInit {
         });
         this.isSubmitting = false;
         this.cargarReservas();
+        this.cdr.markForCheck();
       },
       error: () => {
         this.mensajeError = 'No se pudo registrar la consulta. Verificá que json-server esté funcionando.';
         this.isSubmitting = false;
+        this.cdr.markForCheck();
       }
     });
   }
@@ -103,9 +106,11 @@ export class HomeComponent implements OnInit {
     this.habitacionesService.obtenerHabitaciones().subscribe({
       next: (habitaciones) => {
         this.habitaciones = habitaciones.filter((habitacion) => habitacion.disponible);
+        this.cdr.markForCheck();
       },
       error: () => {
         this.mensajeError = 'No se pudieron cargar las habitaciones disponibles.';
+        this.cdr.markForCheck();
       }
     });
   }
@@ -114,9 +119,11 @@ export class HomeComponent implements OnInit {
     this.reservasService.obtenerReservas().subscribe({
       next: (reservas) => {
         this.reservas = reservas.slice(-5).reverse();
+        this.cdr.markForCheck();
       },
       error: () => {
         this.mensajeError = 'No se pudieron cargar las reservas registradas.';
+        this.cdr.markForCheck();
       }
     });
   }

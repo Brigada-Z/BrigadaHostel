@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReservasService } from '../../../../../../services/reservas.service';
 import { Reserva } from '../../../../../../models/reserva.model';
@@ -12,6 +12,7 @@ import { Reserva } from '../../../../../../models/reserva.model';
 })
 export class ModuloHuespedesComponent implements OnInit {
   private readonly reservasService = inject(ReservasService);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   huespedes: Reserva[] = [];
   isLoading = true;
@@ -26,10 +27,12 @@ export class ModuloHuespedesComponent implements OnInit {
       next: (data) => {
         this.huespedes = data;
         this.isLoading = false;
+        this.cdr.markForCheck();
       },
       error: (err) => {
         console.error('Error al cargar huéspedes:', err);
         this.isLoading = false;
+        this.cdr.markForCheck();
       }
     });
   }

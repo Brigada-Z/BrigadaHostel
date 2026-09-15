@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ReservasService } from '../../../../services/reservas.service';
@@ -13,6 +13,7 @@ import { Reserva } from '../../../../models/reserva.model';
 })
 export class ResumenUsuarioComponent implements OnInit {
   private readonly reservasService = inject(ReservasService);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   reservas: Reserva[] = [];
   reservasActivas: Reserva[] = [];
@@ -41,10 +42,12 @@ export class ResumenUsuarioComponent implements OnInit {
         }
 
         this.isLoading = false;
+        this.cdr.markForCheck();
       },
       error: (err) => {
         console.error('Error al cargar reservas de usuario:', err);
         this.isLoading = false;
+        this.cdr.markForCheck();
       }
     });
   }

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectorRef } from '@angular/core';
 import { RouterLink, Router } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -20,6 +20,7 @@ import {
 export class SignupComponent {
   private fb = inject(FormBuilder);
   private router = inject(Router);
+  private cdr = inject(ChangeDetectorRef);
 
   isSubmitted = false;
   isRegistered = false;
@@ -59,6 +60,7 @@ export class SignupComponent {
     setTimeout(() => {
       this.isLoading = false;
       this.isRegistered = true;
+      this.cdr.markForCheck();
       setTimeout(() => {
         this.router.navigate(['/auth/login']);
       }, 1500);
