@@ -58,6 +58,12 @@
   padding: 16px;
   height: 100%;
   background-color: #f8f9fa;
+  display: flex;
+  align-items: center;
+}
+
+.public-page .integrante-card strong {
+  color: #222222;
   font-size: 0.95rem;
 }
 

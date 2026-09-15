@@ -49,5 +49,37 @@
       "tipoHabitacion": "Doble",
       "estado": "pendiente"
     }
+  ],
+  "integrantes": [
+    {
+      "id": "1",
+      "nombre": "Giuliano",
+      "apellido": "BATISTELLA"
+    },
+    {
+      "id": "2",
+      "nombre": "Alejo Nicolas",
+      "apellido": "CAMOLOTTO"
+    },
+    {
+      "id": "3",
+      "nombre": "Mauricio Emiliano",
+      "apellido": "FERREYRA"
+    },
+    {
+      "id": "4",
+      "nombre": "Agustin Nicolas",
+      "apellido": "GALLARDO"
+    },
+    {
+      "id": "5",
+      "nombre": "Jorge Francisco",
+      "apellido": "QUEVEDO"
+    },
+    {
+      "id": "6",
+      "nombre": "Oscar Alberto",
+      "apellido": "QUEVEDO"
+    }
   ]
 }
