@@ -1,0 +1,8 @@
+export interface Habitacion {
+  id: string;
+  tipo: string;
+  precioPorNoche: number;
+  capacidad: number;
+  disponible: boolean;
+  descripcion?: string;
+}
