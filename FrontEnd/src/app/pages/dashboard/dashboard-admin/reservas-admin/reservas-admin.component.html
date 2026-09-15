@@ -1,0 +1,372 @@
+<div class="admin-wrapper">
+  
+  <!-- Módulo de Búsqueda y Filtros Dinámicos -->
+  <section class="admin-search-module mb-40">
+    <div class="row g-3 align-items-center">
+      <div class="col-lg-6">
+        <div class="search-premium-box">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2.5">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input 
+            type="text" 
+            class="search-input" 
+            placeholder="Buscar por Huésped, DNI, Email, Habitación o Código #BH..."
+            [(ngModel)]="searchQuery"
+            (input)="filterReservations()">
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="d-flex gap-2 flex-wrap flex-sm-nowrap">
+          <select class="form-select height-52" [(ngModel)]="selectedPeriod" (change)="filterReservations()">
+            <option value="all">Estadía: Todas</option>
+            <option value="today">Estadía: Llegan Hoy</option>
+          </select>
+          <select class="form-select height-52" [(ngModel)]="selectedStatus" (change)="filterReservations()">
+            <option value="all">Estado: Todos</option>
+            <option value="pendiente">Pendientes</option>
+            <option value="confirmada">Confirmadas</option>
+            <option value="cancelada">Canceladas</option>
+          </select>
+          <button 
+            type="button" 
+            class="btn btn-outline-secondary flex-shrink-0 d-flex align-items-center gap-2" 
+            (click)="cargarReservas()" 
+            title="Recargar desde servidor">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M23 4v6h-6"></path>
+              <path d="M1 20v-6h6"></path>
+              <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+            </svg>
+            <span class="d-none d-md-inline">Sincronizar</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mensaje de Error de Servidor -->
+  @if (hasError) {
+    <div class="alert alert-danger d-flex align-items-center justify-content-between p-3 rounded-4 mb-4 shadow-sm" role="alert">
+      <div class="d-flex align-items-center gap-3">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="8" x2="12" y2="12"></line>
+          <line x1="12" y1="16" x2="12.01" y2="16"></line>
+        </svg>
+        <div>
+          <strong>Error de Conexión:</strong> {{ errorMessage }}
+        </div>
+      </div>
+      <button type="button" class="btn btn-danger btn-sm rounded-pill px-3" (click)="cargarReservas()">
+        Reintentar
+      </button>
+    </div>
+  }
+
+  <!-- Data Grid Maestro de Reservas Dinámicas -->
+  <section class="admin-results-grid content-section">
+    <div class="flex-between mb-32 flex-wrap gap-2">
+      <div>
+        <h2 class="m-0 text-2xl font-weight-800">Listado Maestro de Reservas</h2>
+        <p class="text-secondary text-xs m-0">Datos en vivo conectados a json-server (GET /reservas)</p>
+      </div>
+      <div class="d-flex align-items-center gap-2">
+        @if (isLoading) {
+          <span class="badge bg-secondary">Cargando...</span>
+        } @else {
+          <span class="status-badge status-reserva-activa">
+            {{ filteredList.length }} {{ filteredList.length === 1 ? 'Reserva Encontrada' : 'Reservas Encontradas' }}
+          </span>
+        }
+      </div>
+    </div>
+
+    <!-- Indicador de Carga -->
+    @if (isLoading) {
+      <div class="text-center py-5">
+        <div class="spinner-border text-primary mb-3" role="status" style="width: 3rem; height: 3rem;">
+          <span class="visually-hidden">Cargando reservas...</span>
+        </div>
+        <p class="text-secondary font-weight-600">Consultando datos en tiempo real desde json-server...</p>
+      </div>
+    } @else {
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+          <thead class="table-light">
+            <tr>
+              <th class="border-0">Código</th>
+              <th class="border-0">Huésped</th>
+              <th class="border-0">Periodo</th>
+              <th class="border-0">Habitación</th>
+              <th class="border-0">Total</th>
+              <th class="border-0">Estado</th>
+              <th class="border-0 text-end">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of filteredList; track item.id) {
+              <tr>
+                <td data-label="Código" class="font-bold text-accent">#BH-{{ item.id }}</td>
+                <td data-label="Huésped">
+                  <div class="font-bold">{{ item.nombre }}</div>
+                  <div class="text-xs text-secondary">{{ item.email }} · DNI: {{ item.dni || 'S/D' }}</div>
+                </td>
+                <td data-label="Periodo">
+                  <div>{{ item.fechaIngreso }} al {{ item.fechaSalida }}</div>
+                  <div class="text-xs text-secondary">{{ item.huespedes }} {{ item.huespedes === 1 ? 'huésped' : 'huéspedes' }}</div>
+                </td>
+                <td data-label="Habitación">
+                  <span class="badge bg-light text-dark border px-2 py-1">{{ item.tipoHabitacion }}</span>
+                  @if (item.serviciosExtra && item.serviciosExtra.length > 0) {
+                    <div class="text-xs text-muted mt-1">+{{ item.serviciosExtra.length }} extra(s)</div>
+                  }
+                </td>
+                <td data-label="Total" class="font-semibold text-dark">
+                  {{ item.precioTotal ? ('$' + (item.precioTotal | number)) : '-' }}
+                </td>
+                <td data-label="Estado">
+                  <span 
+                    class="badge-status"
+                    [class.yellow]="item.estado === 'pendiente'"
+                    [class.green]="item.estado === 'confirmada'"
+                    [class.red]="item.estado === 'cancelada'">
+                    {{ item.estado === 'pendiente' ? 'Pendiente' : (item.estado === 'confirmada' ? 'Confirmada' : 'Cancelada') }}
+                  </span>
+                </td>
+                <td data-label="Acciones" class="text-end">
+                  <div class="d-inline-flex gap-1">
+                    @if (item.estado === 'pendiente') {
+                      <button 
+                        type="button" 
+                        class="btn btn-sm btn-outline-success" 
+                        title="Confirmar reserva"
+                        (click)="cambiarEstadoDirecto(item, 'confirmada')">
+                        ✓
+                      </button>
+                    }
+                    <button type="button" class="btn-premium btn-small" (click)="openDrawer(item)">
+                      Gestionar
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="7" class="text-center py-5 text-secondary">
+                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="1.5" class="mb-2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="8" y1="12" x2="16" y2="12"></line>
+                  </svg>
+                  <p class="m-0 font-weight-600">No se encontraron reservas con los criterios especificados.</p>
+                  <button type="button" class="btn btn-link btn-sm text-decoration-none mt-2" (click)="searchQuery = ''; selectedStatus = 'all'; selectedPeriod = 'all'; filterReservations()">
+                    Restablecer Filtros
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </section>
+
+  <!-- Slide-Over Drawer de Gestión de Reserva -->
+  @if (activeDrawerReservation) {
+    <div class="admin-side-panel-backdrop" (click)="closeDrawer()">
+      <div class="panel-content-wrapper" (click)="$event.stopPropagation()">
+        <div class="panel-top-bar flex-between">
+          <div>
+            <h3 class="m-0 font-weight-800">Gestionar Reserva #BH-{{ activeDrawerReservation.id }}</h3>
+            <p class="text-secondary text-xs m-0">Detalles del huésped y actualización en vivo en json-server</p>
+          </div>
+          <button type="button" class="btn-close" (click)="closeDrawer()"></button>
+        </div>
+
+        <div class="panel-main-body">
+          <div class="d-flex gap-3 mb-4 border-bottom pb-2">
+            <button 
+              type="button" 
+              class="btn p-0 pb-2 font-weight-800 text-sm border-0"
+              [class.text-dark]="activeDrawerTab === 'edit'"
+              [class.border-bottom]="activeDrawerTab === 'edit'"
+              (click)="activeDrawerTab = 'edit'">
+              Información y Edición
+            </button>
+            <button 
+              type="button" 
+              class="btn p-0 pb-2 font-weight-800 text-sm border-0"
+              [class.text-dark]="activeDrawerTab === 'audit'"
+              [class.border-bottom]="activeDrawerTab === 'audit'"
+              (click)="activeDrawerTab = 'audit'">
+              Detalles de Estadía
+            </button>
+          </div>
+
+          @if (activeDrawerTab === 'edit') {
+            <div>
+              <div class="form-group mb-3">
+                <label class="auth-label">Huésped</label>
+                <input type="text" class="input-field" [(ngModel)]="activeDrawerReservation.nombre">
+              </div>
+
+              <div class="form-group mb-3">
+                <label class="auth-label">Correo Electrónico</label>
+                <input type="email" class="input-field" [(ngModel)]="activeDrawerReservation.email">
+              </div>
+
+              <div class="row g-2 mb-3">
+                <div class="col-6">
+                  <label class="auth-label">DNI / Documento</label>
+                  <input type="text" class="input-field" [(ngModel)]="activeDrawerReservation.dni">
+                </div>
+                <div class="col-6">
+                  <label class="auth-label">Teléfono</label>
+                  <input type="text" class="input-field" [(ngModel)]="activeDrawerReservation.telefono">
+                </div>
+              </div>
+
+              <div class="row g-2 mb-3">
+                <div class="col-6">
+                  <label class="auth-label">Tipo Habitación</label>
+                  <input type="text" class="input-field" [(ngModel)]="activeDrawerReservation.tipoHabitacion">
+                </div>
+                <div class="col-6">
+                  <label class="auth-label">Huéspedes</label>
+                  <input type="number" class="input-field" min="1" [(ngModel)]="activeDrawerReservation.huespedes">
+                </div>
+              </div>
+
+              <div class="form-group mb-3">
+                <label class="auth-label">Estado de la Reserva</label>
+                <select class="form-select input-field" [(ngModel)]="activeDrawerReservation.estado">
+                  <option value="pendiente">Pendiente</option>
+                  <option value="confirmada">Confirmada</option>
+                  <option value="cancelada">Cancelada</option>
+                </select>
+              </div>
+
+              <div class="form-group mb-3">
+                <label class="auth-label">Notas Adicionales</label>
+                <textarea class="input-field" rows="2" [(ngModel)]="activeDrawerReservation.notas" placeholder="Observaciones de recepción..."></textarea>
+              </div>
+
+              <div class="d-flex flex-column gap-2 mt-4 pt-3 border-top">
+                <button type="button" class="btn-premium w-full" (click)="saveChanges()">
+                  Guardar Cambios en Servidor
+                </button>
+                <div class="d-flex gap-2">
+                  <button 
+                    type="button" 
+                    class="btn btn-outline-warning flex-1" 
+                    (click)="showCancelConfirm = true"
+                    [disabled]="activeDrawerReservation.estado === 'cancelada'">
+                    Cancelar Reserva
+                  </button>
+                  <button 
+                    type="button" 
+                    class="btn btn-outline-danger flex-1" 
+                    (click)="showDeleteConfirm = true">
+                    Eliminar
+                  </button>
+                </div>
+              </div>
+            </div>
+          } @else {
+            <div class="timeline">
+              <div class="p-3 bg-light rounded-3 mb-2 border">
+                <strong class="text-xs text-secondary d-block">Fechas de Estadía</strong>
+                <span class="text-sm font-semibold">{{ activeDrawerReservation.fechaIngreso }} al {{ activeDrawerReservation.fechaSalida }}</span>
+              </div>
+              <div class="p-3 bg-light rounded-3 mb-2 border">
+                <strong class="text-xs text-secondary d-block">Precio Total Registrado</strong>
+                <span class="text-sm font-bold text-success">${{ activeDrawerReservation.precioTotal ? (activeDrawerReservation.precioTotal | number) : '0' }}</span>
+              </div>
+              @if (activeDrawerReservation.serviciosExtra && activeDrawerReservation.serviciosExtra.length > 0) {
+                <div class="p-3 bg-light rounded-3 mb-2 border">
+                  <strong class="text-xs text-secondary d-block">Servicios Extras Contratados</strong>
+                  <ul class="mb-0 ps-3 text-sm">
+                    @for (s of activeDrawerReservation.serviciosExtra; track s) {
+                      <li>{{ s }}</li>
+                    }
+                  </ul>
+                </div>
+              }
+              <div class="p-3 bg-light rounded-3 mb-2 border">
+                <strong class="text-xs text-secondary d-block">Fecha de Registro</strong>
+                <span class="text-sm">{{ activeDrawerReservation.fechaCreacion || 'Automática' }}</span>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Modal Confirmación de Cancelación -->
+  @if (showCancelConfirm) {
+    <div class="modal-backdrop-custom">
+      <div class="modal-content-premium">
+        <div class="text-warning mb-3">
+          <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+        </div>
+        <h3 class="font-weight-800 mb-2">¿Confirmar Cancelación?</h3>
+        <p class="text-secondary mb-4 text-sm">Esta acción cambiará el estado de la reserva a Cancelada en json-server.</p>
+        <div class="d-flex gap-2">
+          <button type="button" class="btn-outline flex-1" (click)="showCancelConfirm = false">Volver</button>
+          <button type="button" class="btn btn-warning flex-1 rounded-3 font-weight-800" (click)="executeCancel()">Sí, Cancelar</button>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Modal Confirmación de Eliminación -->
+  @if (showDeleteConfirm) {
+    <div class="modal-backdrop-custom">
+      <div class="modal-content-premium">
+        <div class="text-danger mb-3">
+          <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2">
+            <polyline points="3 6 5 6 21 6"></polyline>
+            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+          </svg>
+        </div>
+        <h3 class="font-weight-800 mb-2">¿Eliminar Reserva?</h3>
+        <p class="text-secondary mb-4 text-sm">Esta acción eliminará de forma permanente el registro en db.json.</p>
+        <div class="d-flex gap-2">
+          <button type="button" class="btn-outline flex-1" (click)="showDeleteConfirm = false">Volver</button>
+          <button type="button" class="btn btn-danger flex-1 rounded-3 font-weight-800" (click)="executeDelete()">Sí, Eliminar</button>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Toast Notificación -->
+  @if (toastMessage) {
+    <div class="toast-fixed-stack">
+      <div class="toast-item-premium" [class.border-danger]="toastType === 'danger'">
+        <div 
+          class="rounded-circle d-flex align-items-center justify-content-center text-white" 
+          [class.bg-success]="toastType === 'success'"
+          [class.bg-danger]="toastType === 'danger'"
+          [class.bg-primary]="toastType === 'info'"
+          style="width:28px;height:28px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+            @if (toastType === 'danger') {
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            } @else {
+              <polyline points="20 6 9 17 4 12"></polyline>
+            }
+          </svg>
+        </div>
+        <span>{{ toastMessage }}</span>
+      </div>
+    </div>
+  }
+
+</div>

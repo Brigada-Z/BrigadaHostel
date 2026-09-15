@@ -1,0 +1,124 @@
+<div class="auth-body">
+  <div class="auth-wrapper">
+    <div class="auth-card">
+      <div class="brand-logo">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+          <polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg>
+      </div>
+
+      <div class="auth-header">
+        <h1>Acceso al Panel</h1>
+        <p>Ingresa tus credenciales para continuar</p>
+      </div>
+
+      <!-- Selector de Rol Demo -->
+      <div class="mb-4">
+        <label class="auth-label">Rol de Acceso Demo</label>
+        <div class="d-flex gap-2">
+          <button 
+            type="button" 
+            class="btn flex-1 py-2 rounded-3 text-sm font-weight-800"
+            [class.btn-dark]="selectedRole === 'admin'"
+            [class.btn-outline-secondary]="selectedRole !== 'admin'"
+            (click)="selectRole('admin')">
+            Administrador
+          </button>
+          <button 
+            type="button" 
+            class="btn flex-1 py-2 rounded-3 text-sm font-weight-800"
+            [class.btn-dark]="selectedRole === 'usuario'"
+            [class.btn-outline-secondary]="selectedRole !== 'usuario'"
+            (click)="selectRole('usuario')">
+            Usuario Huésped
+          </button>
+        </div>
+      </div>
+
+      <!-- Formulario Reactivo de Inicio de Sesión -->
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate>
+        <!-- Campo Usuario -->
+        <div class="form-group">
+          <label class="auth-label" for="username">Usuario o Email</label>
+          <div class="input-container">
+            <input 
+              id="username"
+              type="text" 
+              class="input-field" 
+              [class.is-invalid]="(f['username'].invalid && (f['username'].touched || isSubmitted))"
+              placeholder="Ingresa tu usuario o correo" 
+              formControlName="username">
+          </div>
+          @if (f['username'].invalid && (f['username'].touched || isSubmitted)) {
+            <div class="invalid-feedback-custom">
+              @if (f['username'].errors?.['required'] || f['username'].errors?.['whitespace']) {
+                <span>El usuario o correo electrónico es requerido.</span>
+              }
+              @if (f['username'].errors?.['minlength']) {
+                <span>Debe contener al menos 3 caracteres.</span>
+              }
+            </div>
+          }
+        </div>
+
+        <!-- Campo Contraseña -->
+        <div class="form-group mt-20">
+          <label class="auth-label" for="password">Contraseña</label>
+          <div class="input-container">
+            <input 
+              id="password"
+              type="password" 
+              class="input-field" 
+              [class.is-invalid]="(f['password'].invalid && (f['password'].touched || isSubmitted))"
+              placeholder="••••••••" 
+              formControlName="password">
+          </div>
+          @if (f['password'].invalid && (f['password'].touched || isSubmitted)) {
+            <div class="invalid-feedback-custom">
+              @if (f['password'].errors?.['required']) {
+                <span>La contraseña es requerida.</span>
+              }
+              @if (f['password'].errors?.['minlength']) {
+                <span>La contraseña debe tener al menos 4 caracteres.</span>
+              }
+            </div>
+          }
+          <a routerLink="/auth/forgot-password" class="forgot-password">¿Olvidaste tu contraseña?</a>
+        </div>
+
+        <!-- Checkbox Recordarme -->
+        <div class="form-check-custom mt-16">
+          <label class="checkbox-label">
+            <input type="checkbox" formControlName="rememberMe">
+            <span>Recordar mis credenciales</span>
+          </label>
+        </div>
+
+        <!-- Botón de Envío -->
+        <button type="submit" class="btn-submit mt-24" [disabled]="isLoading">
+          @if (isLoading) {
+            <span>Ingresando al sistema...</span>
+          } @else {
+            <span>Iniciar sesión</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          }
+        </button>
+      </form>
+
+      <div class="auth-footer">
+        ¿No tienes cuenta? <a routerLink="/auth/signup">Crear una ahora</a>
+      </div>
+    </div>
+  </div>
+
+  <a routerLink="/home" class="back-home" title="Volver al inicio">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+      <polyline points="9 22 9 12 15 12 15 22"></polyline>
+    </svg>
+  </a>
+</div>

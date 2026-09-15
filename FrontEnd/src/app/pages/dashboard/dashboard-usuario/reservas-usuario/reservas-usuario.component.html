@@ -1,0 +1,410 @@
+<div class="booking-wizard-container">
+  
+  <!-- Indicador de Pasos del Wizard -->
+  <div class="d-flex justify-content-center gap-2 mb-4 flex-wrap">
+    <button 
+      type="button" 
+      class="btn rounded-pill text-xs font-weight-800 px-3 py-2"
+      [class.btn-dark]="currentStep === 1"
+      [class.btn-outline-secondary]="currentStep !== 1"
+      (click)="currentStep = 1">
+      1. Fechas y Habitación
+    </button>
+    <button 
+      type="button" 
+      class="btn rounded-pill text-xs font-weight-800 px-3 py-2"
+      [class.btn-dark]="currentStep === 2"
+      [class.btn-outline-secondary]="currentStep !== 2"
+      (click)="avanzarPaso2()">
+      2. Huésped y Servicios
+    </button>
+    <button 
+      type="button" 
+      class="btn rounded-pill text-xs font-weight-800 px-3 py-2"
+      [class.btn-dark]="currentStep === 3"
+      [class.btn-outline-secondary]="currentStep !== 3"
+      (click)="avanzarPaso3()">
+      3. Confirmación
+    </button>
+  </div>
+
+  <form [formGroup]="reservaForm" (ngSubmit)="confirmarReserva()">
+    
+    <!-- PASO 1: BÚSQUEDA, FECHAS Y HABITACIONES DINÁMICAS -->
+    @if (currentStep === 1) {
+      <section class="content-section">
+        <div class="text-center mb-40">
+          <h2 class="text-3xl font-weight-900 mb-12">Planifica tu próxima estadía</h2>
+          <p class="header-subtitle">Paso 1: Elige tus fechas de viaje y tipo de alojamiento (Datos desde API)</p>
+        </div>
+        
+        <div class="user-booking-flow-grid">
+          <div class="booking-form-box">
+            <div class="row g-3 mb-32">
+              <div class="col-md-6 form-group">
+                <label class="auth-label">Fecha de Check-in *</label>
+                <input 
+                  type="date" 
+                  class="input-field" 
+                  formControlName="fechaIngreso"
+                  [class.is-invalid]="f['fechaIngreso'].invalid && f['fechaIngreso'].touched">
+                @if (f['fechaIngreso'].invalid && f['fechaIngreso'].touched) {
+                  <small class="text-danger d-block mt-1 font-semibold">La fecha de check-in es obligatoria.</small>
+                }
+              </div>
+
+              <div class="col-md-6 form-group">
+                <label class="auth-label">Fecha de Check-out *</label>
+                <input 
+                  type="date" 
+                  class="input-field" 
+                  formControlName="fechaSalida"
+                  [class.is-invalid]="(f['fechaSalida'].invalid || reservaForm.hasError('fechaSalidaInvalida')) && f['fechaSalida'].touched">
+                @if (f['fechaSalida'].hasError('required') && f['fechaSalida'].touched) {
+                  <small class="text-danger d-block mt-1 font-semibold">La fecha de check-out es obligatoria.</small>
+                }
+                @if (reservaForm.hasError('fechaSalidaInvalida') && f['fechaSalida'].touched) {
+                  <small class="text-danger d-block mt-1 font-semibold">La fecha de check-out debe ser posterior al check-in.</small>
+                }
+              </div>
+
+              <div class="col-12 form-group">
+                <label class="auth-label">Cantidad de Huéspedes *</label>
+                <div class="d-flex align-items-center gap-2">
+                  <input 
+                    type="number" 
+                    class="input-field" 
+                    min="1" 
+                    max="8" 
+                    formControlName="huespedes"
+                    [class.is-invalid]="f['huespedes'].invalid && f['huespedes'].touched">
+                  <span class="text-secondary text-sm">persona(s)</span>
+                </div>
+                @if (f['huespedes'].invalid && f['huespedes'].touched) {
+                  <small class="text-danger d-block mt-1 font-semibold">Ingresá entre 1 y 8 huéspedes.</small>
+                }
+              </div>
+            </div>
+
+            <!-- Catálogo Dinámico de Habitaciones desde db.json -->
+            <div class="room-selector-box">
+              <div class="flex-between mb-20">
+                <h3 class="m-0 font-weight-800 text-base">Elige tu tipo de habitación</h3>
+                <span class="badge bg-light text-dark border">Cargadas desde json-server</span>
+              </div>
+
+              @if (isLoadingHabitaciones) {
+                <div class="text-center py-4">
+                  <div class="spinner-border spinner-border-sm text-primary mb-2" role="status"></div>
+                  <p class="text-xs text-secondary mb-0">Cargando catálogo de habitaciones...</p>
+                </div>
+              } @else {
+                <div class="flex-column gap-12">
+                  @for (room of habitaciones; track room.id) {
+                    <div 
+                      class="room-option-card"
+                      [class.selected]="habitacionSeleccionada?.id === room.id"
+                      [class.opacity-50]="!room.disponible"
+                      (click)="seleccionarHabitacion(room)">
+                      <input 
+                        type="radio" 
+                        [checked]="habitacionSeleccionada?.id === room.id" 
+                        [disabled]="!room.disponible"
+                        name="roomRadioSelect">
+                      <div class="flex-1">
+                        <div class="d-flex align-items-center gap-2">
+                          <strong>{{ room.tipo }}</strong>
+                          @if (!room.disponible) {
+                            <span class="badge bg-danger text-white text-xs">Sin cupo</span>
+                          } @else {
+                            <span class="badge bg-success text-white text-xs">Disponible (Cap: {{ room.capacidad }})</span>
+                          }
+                        </div>
+                        <p class="text-secondary text-xs m-0 mt-1">{{ room.descripcion }}</p>
+                      </div>
+                      <span class="font-weight-800 text-dark">\${{ room.precioPorNoche | number }}/noche</span>
+                    </div>
+                  }
+                </div>
+              }
+
+              @if (f['tipoHabitacion'].invalid && f['tipoHabitacion'].touched) {
+                <small class="text-danger d-block mt-2 font-semibold">Debes seleccionar una habitación disponible.</small>
+              }
+            </div>
+          </div>
+
+          <!-- Resumen Lateral de Disponibilidad -->
+          <div class="availability-check-sidebar">
+            <div class="card p-4 rounded-4 shadow-sm border">
+              @if (!showNoAvailability) {
+                <div>
+                  <h3 class="mb-16 font-weight-800">Verificación de Reserva</h3>
+                  <p class="text-secondary mb-3 text-sm">
+                    Estadía calculada: <strong>{{ calcularNoches() }} noche(s)</strong>
+                  </p>
+                  @if (habitacionSeleccionada) {
+                    <div class="bg-light p-3 rounded-3 mb-3 border">
+                      <span class="text-xs text-secondary d-block">Seleccionada:</span>
+                      <strong>{{ habitacionSeleccionada.tipo }}</strong>
+                      <div class="text-xs text-muted mt-1">\${{ habitacionSeleccionada.precioPorNoche | number }} por noche</div>
+                    </div>
+                  }
+                  <button 
+                    type="button" 
+                    class="btn-premium w-full flex-center height-56 font-weight-800 cursor-pointer"
+                    (click)="avanzarPaso2()">
+                    CONTINUAR A DATOS DEL HUÉSPED →
+                  </button>
+                  <button 
+                    type="button" 
+                    class="bg-transparent border-0 text-secondary cursor-pointer mt-16 w-full text-decoration-underline text-xs"
+                    (click)="showNoAvailability = true">
+                    Simular Validación Sin Cupo (BPMN)
+                  </button>
+                </div>
+              } @else {
+                <div>
+                  <div class="text-danger mb-2">
+                    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2.5">
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <line x1="12" y1="8" x2="12" y2="12"></line>
+                      <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                    </svg>
+                  </div>
+                  <h3 class="text-danger mb-2 font-weight-800">Sin Disponibilidad</h3>
+                  <p class="text-secondary mb-3 text-sm">
+                    Compuerta BPMN: La disponibilidad para las fechas elegidas fue rechazada. Ajuste las fechas o seleccione otra habitación.
+                  </p>
+                  <button type="button" class="btn-outline flex-center text-sm w-full" (click)="showNoAvailability = false">
+                    Volver a Elegir Fechas
+                  </button>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+      </section>
+    }
+
+    <!-- PASO 2: FORMULARIO REACTIVO DE DATOS DEL HUÉSPED Y EXTRAS -->
+    @if (currentStep === 2) {
+      <section class="content-section">
+        <div class="text-center mb-40">
+          <h2 class="text-3xl font-weight-900 mb-12">Información del Huésped y Servicios</h2>
+          <p class="header-subtitle">Paso 2: Completa tus datos de contacto validados reactivamente</p>
+        </div>
+
+        <div class="card p-4 rounded-4 shadow-sm border max-w-700 mx-auto mb-4" style="max-width: 750px;">
+          <h3 class="font-weight-800 text-lg mb-3">Datos Personales</h3>
+          <div class="row g-3 mb-4">
+            <div class="col-md-6 form-group">
+              <label class="auth-label">Nombre y Apellido Completo *</label>
+              <input 
+                type="text" 
+                class="input-field" 
+                placeholder="Ej: Juan Pérez"
+                formControlName="nombre"
+                [class.is-invalid]="f['nombre'].invalid && f['nombre'].touched">
+              @if (f['nombre'].invalid && f['nombre'].touched) {
+                <small class="text-danger d-block mt-1 font-semibold">El nombre debe tener al menos 3 caracteres.</small>
+              }
+            </div>
+
+            <div class="col-md-6 form-group">
+              <label class="auth-label">Correo Electrónico *</label>
+              <input 
+                type="email" 
+                class="input-field" 
+                placeholder="juan@correo.com"
+                formControlName="email"
+                [class.is-invalid]="f['email'].invalid && f['email'].touched">
+              @if (f['email'].invalid && f['email'].touched) {
+                <small class="text-danger d-block mt-1 font-semibold">Ingresá un correo electrónico válido.</small>
+              }
+            </div>
+
+            <div class="col-md-6 form-group">
+              <label class="auth-label">DNI / Documento *</label>
+              <input 
+                type="text" 
+                class="input-field" 
+                placeholder="Ej: 35123456"
+                formControlName="dni"
+                [class.is-invalid]="f['dni'].invalid && f['dni'].touched">
+              @if (f['dni'].invalid && f['dni'].touched) {
+                <small class="text-danger d-block mt-1 font-semibold">Ingresá un DNI numérico válido (7 a 10 dígitos).</small>
+              }
+            </div>
+
+            <div class="col-md-6 form-group">
+              <label class="auth-label">Teléfono de Contacto *</label>
+              <input 
+                type="tel" 
+                class="input-field" 
+                placeholder="+54 9 351 123-4567"
+                formControlName="telefono"
+                [class.is-invalid]="f['telefono'].invalid && f['telefono'].touched">
+              @if (f['telefono'].invalid && f['telefono'].touched) {
+                <small class="text-danger d-block mt-1 font-semibold">El teléfono es obligatorio (mínimo 6 caracteres).</small>
+              }
+            </div>
+          </div>
+
+          <h3 class="font-weight-800 text-lg mb-3">Servicios Adicionales (Extras)</h3>
+          <div class="row g-3 mb-4">
+            <div class="col-md-6">
+              <div class="card p-3 rounded-4 d-flex flex-row align-items-center gap-3 border h-100">
+                <input 
+                  type="checkbox" 
+                  formControlName="desayuno" 
+                  id="extraBreakfast" 
+                  style="width: 20px; height: 20px; cursor: pointer;">
+                <label for="extraBreakfast" class="cursor-pointer flex-1 m-0">
+                  <strong>Desayuno Buffet Diario</strong>
+                  <p class="text-secondary text-xs m-0">Café, frutas, panadería artesanal y jugos.</p>
+                </label>
+                <span class="font-weight-800 text-sm">+$8.000 / noche</span>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="card p-3 rounded-4 d-flex flex-row align-items-center gap-3 border h-100">
+                <input 
+                  type="checkbox" 
+                  formControlName="traslado" 
+                  id="extraTransfer" 
+                  style="width: 20px; height: 20px; cursor: pointer;">
+                <label for="extraTransfer" class="cursor-pointer flex-1 m-0">
+                  <strong>Traslado Aeropuerto / Terminal</strong>
+                  <p class="text-secondary text-xs m-0">Pick-up exclusivo con chofer y climatización.</p>
+                </label>
+                <span class="font-weight-800 text-sm">+$15.000 Único</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group mb-2">
+            <label class="auth-label">Peticiones Especiales u Observaciones (Opcional)</label>
+            <textarea 
+              class="input-field" 
+              rows="2" 
+              formControlName="notas" 
+              placeholder="Ej: Horario estimado de llegada, cama matrimonial, dieta celíaca..."></textarea>
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-between pt-3 border-top max-w-700 mx-auto" style="max-width: 750px;">
+          <button type="button" class="btn-outline" (click)="currentStep = 1">← Volver a Fechas</button>
+          <button type="button" class="btn-premium" (click)="avanzarPaso3()">Siguiente: Resumen y Confirmación →</button>
+        </div>
+      </section>
+    }
+
+    <!-- PASO 3: CONFIRMACIÓN Y ENVÍO A JSON-SERVER (POST) -->
+    @if (currentStep === 3) {
+      <section class="content-section text-center">
+        <div class="mb-40">
+          <h2 class="text-3xl font-weight-900 mb-12">Resumen de tu Reserva</h2>
+          <p class="header-subtitle">Paso 3: Confirma la información antes de registrar en el servidor</p>
+        </div>
+
+        @if (submitError) {
+          <div class="alert alert-danger max-w-600 mx-auto text-start mb-4 rounded-4" style="max-width: 650px;">
+            <strong>Error al guardar:</strong> {{ submitError }}
+          </div>
+        }
+
+        <div class="card p-4 rounded-4 max-w-600 mx-auto text-start mb-4 shadow-sm border" style="max-width: 650px;">
+          <div class="d-flex justify-content-between border-bottom pb-3 mb-3">
+            <span class="text-secondary">Huésped Titular:</span>
+            <strong>{{ f['nombre'].value }} (DNI: {{ f['dni'].value }})</strong>
+          </div>
+
+          <div class="d-flex justify-content-between border-bottom pb-3 mb-3">
+            <span class="text-secondary">Contacto:</span>
+            <span>{{ f['email'].value }} · {{ f['telefono'].value }}</span>
+          </div>
+
+          <div class="d-flex justify-content-between border-bottom pb-3 mb-3">
+            <span class="text-secondary">Alojamiento:</span>
+            <strong>{{ habitacionSeleccionada?.tipo || f['tipoHabitacion'].value }} ({{ f['huespedes'].value }} huésped/es)</strong>
+          </div>
+
+          <div class="d-flex justify-content-between border-bottom pb-3 mb-3">
+            <span class="text-secondary">Periodo de Estadía:</span>
+            <strong>{{ f['fechaIngreso'].value }} al {{ f['fechaSalida'].value }} ({{ calcularNoches() }} noche/s)</strong>
+          </div>
+
+          <div class="d-flex justify-content-between border-bottom pb-3 mb-3">
+            <span class="text-secondary">Servicios Extras:</span>
+            <span>
+              {{ f['desayuno'].value ? 'Desayuno Buffet Diario' : '' }}
+              {{ f['traslado'].value ? (f['desayuno'].value ? ' + Traslado' : 'Traslado Aeropuerto') : '' }}
+              {{ !f['desayuno'].value && !f['traslado'].value ? 'Ninguno' : '' }}
+            </span>
+          </div>
+
+          @if (f['notas'].value) {
+            <div class="d-flex justify-content-between border-bottom pb-3 mb-3">
+              <span class="text-secondary">Notas:</span>
+              <span class="text-muted text-sm">{{ f['notas'].value }}</span>
+            </div>
+          }
+
+          <div class="d-flex justify-content-between fs-4 font-weight-800 pt-2 text-dark">
+            <span>Total a Pagar:</span>
+            <span class="text-success">\${{ calcularTotal() | number }}</span>
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-center gap-3">
+          <button type="button" class="btn-outline" (click)="currentStep = 2" [disabled]="isSubmitting">
+            ← Modificar Datos
+          </button>
+          <button 
+            type="submit" 
+            class="btn-premium d-flex align-items-center gap-2"
+            [disabled]="isSubmitting">
+            @if (isSubmitting) {
+              <span class="spinner-border spinner-border-sm" role="status"></span>
+              <span>Guardando en json-server...</span>
+            } @else {
+              <span>Confirmar y Guardar Reserva</span>
+            }
+          </button>
+        </div>
+      </section>
+    }
+
+  </form>
+
+  <!-- Modal Confirmación Éxito (Conectado a json-server) -->
+  @if (bookingSuccess && reservaConfirmada) {
+    <div class="modal-backdrop-custom">
+      <div class="modal-content-premium">
+        <div class="text-success mb-3">
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+          </svg>
+        </div>
+        <h2 class="text-2xl font-weight-800 mb-2">¡Reserva Registrada con Éxito!</h2>
+        <p class="text-secondary mb-2">Código asignado por el servidor: <strong>#BH-{{ reservaConfirmada.id }}</strong></p>
+        <p class="text-xs text-muted mb-4">
+          La reserva de <strong>{{ reservaConfirmada.nombre }}</strong> fue guardada en el archivo <code>FrontEnd/db.json</code> y ya se encuentra disponible para su confirmación en el Dashboard de Administración.
+        </p>
+
+        <div class="d-flex gap-3 flex-wrap">
+          <button type="button" class="btn-outline flex-1" (click)="resetWizard()">
+            Hacer Otra Reserva
+          </button>
+          <a routerLink="/dashboard/admin/reservas" class="btn-premium flex-1 text-center text-decoration-none">
+            Ver en Panel de Reservas
+          </a>
+        </div>
+      </div>
+    </div>
+  }
+
+</div>
