@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Diagrama BPMN — Gestión de Reserva Hotelera (BrigadaHostel)</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --text-primary: #1f2937;
+    --text-secondary: #4b5563;
+    --border: #d1d5db;
+
+    --lane1-fill: #eaf3fb;
+    --lane1-label: #0c447c;
+    --lane2-fill: #eafaf1;
+    --lane2-label: #085041;
+    --lane3-fill: #fdf3e3;
+    --lane3-label: #854f0b;
+
+    --task-fill: #ffffff;
+    --task-border: #6b7280;
+    --task-text: #1f2937;
+
+    --gateway-fill: #faf0d6;
+    --gateway-border: #ba7517;
+    --gateway-text: #633806;
+
+    --start-fill: #d9f2e3;
+    --start-border: #0f6e56;
+    --end-confirm-fill: #d9f2e3;
+    --end-confirm-border: #0f6e56;
+    --end-cancel-fill: #fbe2e2;
+    --end-cancel-border: #a32d2d;
+
+    --line-color: #4b5563;
+    --branch-yes: #0f6e56;
+    --branch-no: #a32d2d;
+    --branch-label-fill: #fff;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #17181c;
+      --text-primary: #e6e6e6;
+      --text-secondary: #b3b3b3;
+      --border: #3a3a3e;
+
+      --lane1-fill: #16283a;
+      --lane1-label: #9cc9f2;
+      --lane2-fill: #16332a;
+      --lane2-label: #8fd6b8;
+      --lane3-fill: #3a2e18;
+      --lane3-label: #f2cf8f;
+
+      --task-fill: #22232a;
+      --task-border: #8a8a90;
+      --task-text: #eaeaea;
+
+      --gateway-fill: #3a2e14;
+      --gateway-border: #f2b84c;
+      --gateway-text: #f7dca0;
+
+      --start-fill: #12362a;
+      --start-border: #4fcf9d;
+      --end-confirm-fill: #12362a;
+      --end-confirm-border: #4fcf9d;
+      --end-cancel-fill: #3a1616;
+      --end-cancel-border: #e08a8a;
+
+      --line-color: #a8a8ae;
+      --branch-yes: #4fcf9d;
+      --branch-no: #e08a8a;
+      --branch-label-fill: #22232a;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #17181c;
+    --text-primary: #e6e6e6;
+    --text-secondary: #b3b3b3;
+    --border: #3a3a3e;
+
+    --lane1-fill: #16283a;
+    --lane1-label: #9cc9f2;
+    --lane2-fill: #16332a;
+    --lane2-label: #8fd6b8;
+    --lane3-fill: #3a2e18;
+    --lane3-label: #f2cf8f;
+
+    --task-fill: #22232a;
+    --task-border: #8a8a90;
+    --task-text: #eaeaea;
+
+    --gateway-fill: #3a2e14;
+    --gateway-border: #f2b84c;
+    --gateway-text: #f7dca0;
+
+    --start-fill: #12362a;
+    --start-border: #4fcf9d;
+    --end-confirm-fill: #12362a;
+    --end-confirm-border: #4fcf9d;
+    --end-cancel-fill: #3a1616;
+    --end-cancel-border: #e08a8a;
+
+    --line-color: #a8a8ae;
+    --branch-yes: #4fcf9d;
+    --branch-no: #e08a8a;
+    --branch-label-fill: #22232a;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 24px 16px 48px;
+    background: var(--bg);
+    color: var(--text-primary);
+    font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  .wrap { max-width: 1200px; margin: 0 auto; }
+  h1 { font-size: 20px; font-weight: 600; margin: 0 0 4px; }
+  p.sub { color: var(--text-secondary); font-size: 14px; margin: 0 0 20px; line-height: 1.5; }
+  .diagram-scroll {
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg);
+  }
+  svg { display: block; }
+  .legend {
+    margin-top: 18px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    font-size: 13px;
+    color: var(--text-secondary);
+  }
+  .legend .item { display: flex; align-items: center; gap: 6px; }
+  .legend .swatch { width: 14px; height: 14px; border-radius: 3px; flex-shrink: 0; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Diagrama BPMN — Gestión de Reserva Hotelera (BrigadaHostel)</h1>
+  <p class="sub">Flujo completo: solicitud del huésped, validación de datos y disponibilidad, revisión del administrador y cierre de la reserva (confirmada o cancelada/rechazada). Desplazar horizontalmente para ver el diagrama completo.</p>
+
+  <div class="diagram-scroll">
+<svg viewBox="0 0 3400 820" width="3400" height="820" xmlns="http://www.w3.org/2000/svg" role="img">
+<title>Diagrama BPMN del proceso de Gestión de Reserva Hotelera</title>
+<desc>Pool "Proceso de Reserva BrigadaHostel" con tres lanes (Huésped, Sistema BrigadaHostel, Administrador). El huésped inicia una solicitud, el sistema valida datos y disponibilidad (gateway 1), si es válida el administrador revisa y decide aprobar o rechazar (gateway 2), terminando en Reserva Confirmada o Reserva Cancelada/Rechazada. Si los datos no son válidos, el huésped corrige y el flujo vuelve a la validación.</desc>
+
+<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M1 1L8 5L1 9" fill="none" stroke="context-stroke" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+</defs>
+
+<!-- ===================== POOL / LANES ===================== -->
+<rect x="10" y="10" width="3380" height="780" rx="4" fill="none" stroke="var(--border)" stroke-width="1.5"/>
+<text x="30" y="34" font-size="14" font-weight="600" fill="var(--text-primary)">Pool: Proceso de Reserva Hotelera — BrigadaHostel</text>
+
+<!-- Lane 1: Huesped -->
+<rect x="10" y="50" width="3380" height="240" fill="var(--lane1-fill)" stroke="var(--border)" stroke-width="1"/>
+<text x="30" y="76" font-size="13.5" font-weight="600" fill="var(--lane1-label)">Lane: Huésped / Cliente</text>
+
+<!-- Lane 2: Sistema -->
+<rect x="10" y="290" width="3380" height="240" fill="var(--lane2-fill)" stroke="var(--border)" stroke-width="1"/>
+<text x="30" y="316" font-size="13.5" font-weight="600" fill="var(--lane2-label)">Lane: Sistema BrigadaHostel</text>
+
+<!-- Lane 3: Administrador -->
+<rect x="10" y="530" width="3380" height="260" fill="var(--lane3-fill)" stroke="var(--border)" stroke-width="1"/>
+<text x="30" y="556" font-size="13.5" font-weight="600" fill="var(--lane3-label)">Lane: Administrador</text>
+
+<!-- ===================== SEQUENCE FLOWS (drawn first so nodes sit on top) ===================== -->
+<g stroke="var(--line-color)" fill="none" stroke-width="1.8">
+  <!-- Start -> T1 -->
+  <line x1="285" y1="180" x2="390" y2="180" marker-end="url(#arrow)"/>
+  <!-- T1 -> T2 -->
+  <line x1="595" y1="180" x2="630" y2="180" marker-end="url(#arrow)"/>
+  <!-- T2 -> T3 (lane1 -> lane2) -->
+  <line x1="730" y1="216" x2="970" y2="384" marker-end="url(#arrow)"/>
+  <!-- T3 -> T4 -->
+  <line x1="1075" y1="420" x2="1110" y2="420" marker-end="url(#arrow)"/>
+  <!-- T4 -> D1 -->
+  <line x1="1315" y1="420" x2="1385" y2="420" marker-end="url(#arrow)"/>
+  <!-- D1 -> T5 (No, up) -->
+  <line x1="1450" y1="355" x2="1450" y2="216" marker-end="url(#arrow)"/>
+  <!-- T5 -> loop back to T3 -->
+  <path d="M 1450 145 L 1450 95 L 970 95 L 970 384" marker-end="url(#arrow)"/>
+  <!-- D1 -> T6 (Si, right) -->
+  <line x1="1515" y1="420" x2="1585" y2="420" marker-end="url(#arrow)"/>
+  <!-- T6 -> T7 (lane2 -> lane3) -->
+  <line x1="1690" y1="456" x2="1930" y2="624" marker-end="url(#arrow)"/>
+  <!-- T7 -> D2 -->
+  <line x1="2035" y1="660" x2="2105" y2="660" marker-end="url(#arrow)"/>
+  <!-- D2 -> T8 (Aprueba, up) -->
+  <line x1="2210" y1="605" x2="2360" y2="380" marker-end="url(#arrow)"/>
+  <!-- D2 -> T11 (Rechaza, up, shorter) -->
+  <line x1="2200" y1="625" x2="2350" y2="500" marker-end="url(#arrow)"/>
+  <!-- T8 -> T9 -->
+  <line x1="2515" y1="350" x2="2545" y2="350" marker-end="url(#arrow)"/>
+  <!-- T11 -> T12 (lane2 -> lane1) -->
+  <line x1="2410" y1="454" x2="2610" y2="256" marker-end="url(#arrow)"/>
+  <!-- T9 -> T10 (lane2 -> lane1) -->
+  <line x1="2650" y1="314" x2="2840" y2="176" marker-end="url(#arrow)"/>
+  <!-- T12 -> End2 -->
+  <line x1="2755" y1="230" x2="2830" y2="230" marker-end="url(#arrow)"/>
+  <!-- T10 -> End1 -->
+  <line x1="2995" y1="140" x2="3060" y2="140" marker-end="url(#arrow)"/>
+</g>
+
+<!-- Branch labels -->
+<text x="1462" y="285" font-size="12.5" font-weight="600" fill="var(--branch-no)">No</text>
+<text x="1547" y="410" font-size="12.5" font-weight="600" fill="var(--branch-yes)">Sí</text>
+<text x="1400" y="115" font-size="12" fill="var(--text-secondary)">retorna a "Validar datos" (reintento)</text>
+<text x="2230" y="470" font-size="12.5" font-weight="600" fill="var(--branch-yes)">Aprueba</text>
+<text x="2130" y="600" font-size="12.5" font-weight="600" fill="var(--branch-no)">Rechaza</text>
+
+<!-- ===================== START EVENT ===================== -->
+<g>
+  <circle cx="255" cy="180" r="30" fill="var(--start-fill)" stroke="var(--start-border)" stroke-width="2"/>
+  <text x="255" y="230" font-size="13" text-anchor="middle" fill="var(--text-primary)">
+    <tspan x="255" dy="0">Huésped inicia</tspan>
+    <tspan x="255" dy="15">solicitud de reserva</tspan>
+  </text>
+</g>
+
+<!-- ===================== TASKS ===================== -->
+<!-- T1 -->
+<g>
+  <rect x="390" y="145" width="205" height="70" rx="10" fill="var(--task-fill)" stroke="var(--task-border)" stroke-width="1.4"/>
+  <text x="492" y="163" font-size="13.5" text-anchor="middle" fill="var(--task-text)">
+    <tspan x="492" dy="0">Seleccionar fechas de</tspan>
+    <tspan x="492" dy="17">check-in/check-out y</tspan>
+    <tspan x="492" dy="17">cantidad de huéspedes</tspan>
+  </text>
+</g>
+
+<!-- T2 -->
+<g>
+  <rect x="630" y="145" width="200" height="70" rx="10" fill="var(--task-fill)" stroke="var(--task-border)" stroke-width="1.4"/>
+  <text x="730" y="172" font-size="13.5" text-anchor="middle" fill="var(--task-text)">
+    <tspan x="730" dy="0">Enviar solicitud</tspan>
+    <tspan x="730" dy="18">de reserva</tspan>
+  </text>
+</g>
+
+<!-- T3 -->
+<g>
+  <rect x="870" y="385" width="205" height="70" rx="10" fill="var(--task-fill)" stroke="var(--task-border)" stroke-width="1.4"/>
+  <text x="972" y="412" font-size="13.5" text-anchor="middle" fill="var(--task-text)">
+    <tspan x="972" dy="0">Validar datos</tspan>
+    <tspan x="972" dy="18">ingresados</tspan>
+  </text>
+</g>
+
+<!-- T4 -->
+<g>
+  <rect x="1110" y="385" width="205" height="70" rx="10" fill="var(--task-fill)" stroke="var(--task-border)" stroke-width="1.4"/>
+  <text x="1212" y="403" font-size="13.5" text-anchor="middle" fill="var(--task-text)">
+    <tspan x="1212" dy="0">Verificar</tspan>
+    <tspan x="1212" dy="17">disponibilidad de</tspan>
+    <tspan x="1212" dy="17">habitaciones</tspan>
+  </text>
+</g>
+
+<!-- T5 -->
+<g>
+  <rect x="1345" y="145" width="205" height="70" rx="10" fill="var(--task-fill)" stroke="var(--task-border)" stroke-width="1.4"/>
+  <text x="1447" y="172" font-size="13.5" text-anchor="middle" fill="var(--task-text)">
+    <tspan x="1447" dy="0">Corregir datos en</tspan>
+    <tspan x="1447" dy="18">el formulario</tspan>
+  </text>
+</g>
+
+<!-- T6 -->
+<g>
+  <rect x="1585" y="385" width="205" height="70" rx="10" fill="var(--task-fill)" stroke="var(--task-border)" stroke-width="1.4"/>
+  <text x="1687" y="412" font-size="13.5" text-anchor="middle" fill="var(--task-text)">
+    <tspan x="1687" dy="0">Registrar solicitud</tspan>
+    <tspan x="1687" dy="18">como pendiente</tspan>
+  </text>
+</g>
+
+<!-- T7 -->
+<g>
+  <rect x="1825" y="625" width="210" height="70" rx="10" fill="var(--task-fill)" stroke="var(--task-border)" stroke-width="1.4"/>
+  <text x="1930" y="652" font-size="13.5" text-anchor="middle" fill="var(--task-text)">
+    <tspan x="1930" dy="0">Revisar solicitud</tspan>
+    <tspan x="1930" dy="18">de reserva</tspan>
+  </text>
+</g>
+
+<!-- T8 (aprueba) -->
+<g>
+  <rect x="2310" y="315" width="210" height="70" rx="10" fill="var(--task-fill)" stroke="var(--task-border)" stroke-width="1.4"/>
+  <text x="2415" y="342" font-size="13.5" text-anchor="middle" fill="var(--task-text)">
+    <tspan x="2415" dy="0">Generar código de</tspan>
+    <tspan x="2415" dy="18">reserva #BH-{id}</tspan>
+  </text>
+</g>
+
+<!-- T11 (rechaza) -->
+<g>
+  <rect x="2295" y="455" width="230" height="70" rx="10" fill="var(--task-fill)" stroke="var(--task-border)" stroke-width="1.4"/>
+  <text x="2410" y="474" font-size="13" text-anchor="middle" fill="var(--task-text)">
+    <tspan x="2410" dy="0">Actualizar estado a</tspan>
+    <tspan x="2410" dy="17">"Cancelada /</tspan>
+    <tspan x="2410" dy="17">Rechazada"</tspan>
+  </text>
+</g>
+
+<!-- T9 -->
+<g>
+  <rect x="2545" y="315" width="210" height="70" rx="10" fill="var(--task-fill)" stroke="var(--task-border)" stroke-width="1.4"/>
+  <text x="2650" y="342" font-size="13.5" text-anchor="middle" fill="var(--task-text)">
+    <tspan x="2650" dy="0">Actualizar estado a</tspan>
+    <tspan x="2650" dy="18">"Confirmada"</tspan>
+  </text>
+</g>
+
+<!-- T12 -->
+<g>
+  <rect x="2610" y="195" width="210" height="70" rx="10" fill="var(--task-fill)" stroke="var(--task-border)" stroke-width="1.4"/>
+  <text x="2715" y="222" font-size="13.5" text-anchor="middle" fill="var(--task-text)">
+    <tspan x="2715" dy="0">Notificar rechazo</tspan>
+    <tspan x="2715" dy="18">al huésped</tspan>
+  </text>
+</g>
+
+<!-- T10 -->
+<g>
+  <rect x="2840" y="105" width="220" height="70" rx="10" fill="var(--task-fill)" stroke="var(--task-border)" stroke-width="1.4"/>
+  <text x="2950" y="132" font-size="13.5" text-anchor="middle" fill="var(--task-text)">
+    <tspan x="2950" dy="0">Notificar confirmación</tspan>
+    <tspan x="2950" dy="18">al huésped</tspan>
+  </text>
+</g>
+
+<!-- ===================== GATEWAYS ===================== -->
+<!-- D1 -->
+<g>
+  <text x="1450" y="330" font-size="13" text-anchor="middle" fill="var(--gateway-text)" font-weight="600">¿Datos válidos y hay</text>
+  <text x="1450" y="347" font-size="13" text-anchor="middle" fill="var(--gateway-text)" font-weight="600">disponibilidad? (D1)</text>
+  <rect x="1385" y="365" width="130" height="110" rx="6" fill="var(--gateway-fill)" stroke="var(--gateway-border)" stroke-width="1.6" transform="rotate(45 1450 420)"/>
+  <text x="1450" y="425" font-size="18" text-anchor="middle" fill="var(--gateway-border)" font-weight="700">X</text>
+</g>
+
+<!-- D2 -->
+<g>
+  <text x="2160" y="570" font-size="13" text-anchor="middle" fill="var(--gateway-text)" font-weight="600">¿Administrador aprueba</text>
+  <text x="2160" y="587" font-size="13" text-anchor="middle" fill="var(--gateway-text)" font-weight="600">la solicitud? (D2)</text>
+  <rect x="2095" y="605" width="130" height="110" rx="6" fill="var(--gateway-fill)" stroke="var(--gateway-border)" stroke-width="1.6" transform="rotate(45 2160 660)"/>
+  <text x="2160" y="665" font-size="18" text-anchor="middle" fill="var(--gateway-border)" font-weight="700">X</text>
+</g>
+
+<!-- ===================== END EVENTS ===================== -->
+<!-- End 1: Confirmada -->
+<g>
+  <circle cx="3095" cy="140" r="32" fill="var(--end-confirm-fill)" stroke="var(--end-confirm-border)" stroke-width="3.5"/>
+  <text x="3095" y="196" font-size="13" text-anchor="middle" fill="var(--text-primary)">
+    <tspan x="3095" dy="0">Reserva Confirmada</tspan>
+    <tspan x="3095" dy="15">#BH-{id}</tspan>
+  </text>
+</g>
+
+<!-- End 2: Cancelada / Rechazada -->
+<g>
+  <circle cx="2865" cy="230" r="32" fill="var(--end-cancel-fill)" stroke="var(--end-cancel-border)" stroke-width="3.5"/>
+  <text x="2865" y="286" font-size="13" text-anchor="middle" fill="var(--text-primary)">
+    <tspan x="2865" dy="0">Reserva Cancelada /</tspan>
+    <tspan x="2865" dy="15">Rechazada</tspan>
+  </text>
+</g>
+
+</svg>
+  </div>
+
+  <div class="legend">
+    <div class="item"><span class="swatch" style="background:var(--lane1-fill); border:1px solid var(--lane1-label);"></span>Lane Huésped / Cliente</div>
+    <div class="item"><span class="swatch" style="background:var(--lane2-fill); border:1px solid var(--lane2-label);"></span>Lane Sistema BrigadaHostel</div>
+    <div class="item"><span class="swatch" style="background:var(--lane3-fill); border:1px solid var(--lane3-label);"></span>Lane Administrador</div>
+    <div class="item"><span class="swatch" style="background:var(--gateway-fill); border:1px solid var(--gateway-border);"></span>Gateway exclusivo (XOR)</div>
+    <div class="item"><span class="swatch" style="background:var(--start-fill); border:1px solid var(--start-border); border-radius:50%;"></span>Evento de inicio</div>
+    <div class="item"><span class="swatch" style="background:var(--end-confirm-fill); border:1px solid var(--end-confirm-border); border-radius:50%;"></span>Evento de fin — Confirmada</div>
+    <div class="item"><span class="swatch" style="background:var(--end-cancel-fill); border:1px solid var(--end-cancel-border); border-radius:50%;"></span>Evento de fin — Cancelada/Rechazada</div>
+  </div>
+</div>
+</body>
+</html>
