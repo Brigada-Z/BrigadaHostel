@@ -526,6 +526,62 @@ Ejemplo:
 git commit -m "feat: agregar sección de contribuyentes en README"
 ```
 
+## Flujo de trabajo aplicado
+
+El equipo aplica Git Flow de la siguiente manera en BrigadaHostel:
+
+1. Cada integrante toma una tarea y crea su rama desde `develop` actualizado:
+
+```bash
+   git switch develop
+   git pull origin develop
+   git switch -c feature/modulo-huespedes-dinamico
+```
+
+2. Trabaja con commits siguiendo la convención del proyecto:
+
+```bash
+   git commit -m "feat(huespedes): renderizar tabla desde db.json"
+   git push -u origin feature/modulo-huespedes-dinamico
+```
+
+3. Abre un Pull Request hacia `develop` con descripción, cambios realizados y pruebas. Otro integrante lo revisa y aprueba antes del merge.
+
+4. Al cerrar una evidencia, se crea `release/X.Y.Z` desde `develop`, se integra a `main` mediante PR y se etiqueta la versión (`vX.Y.Z`). Luego `main` se integra de vuelta en `develop`.
+
+### Ejemplos de ramas del proyecto
+
+| Rama | Propósito |
+| --- | --- |
+| `develop` | Integración de funcionalidades terminadas. |
+| `feature/modulo-huespedes-dinamico` | Migración del Módulo Huéspedes a datos dinámicos con HttpClient (Evidencia 5). |
+| `feature/reservas-formulario-reactivo` | Formulario reactivo de reservas del usuario (Evidencia 5). |
+| `fix/badge-estado-reserva` | Corrección del color del badge según estado. |
+
+### Ejemplo de Pull Request
+
+**Título:** `feat(huespedes): directorio de huéspedes dinámico desde db.json`
+
+**Descripción:** Reemplaza las filas fijas del Módulo Huéspedes por datos obtenidos desde json-server mediante `ReservasService`.
+
+**Cambios realizados:**
+- Renderizado de la tabla con `@for` y `track h.id`.
+- Spinner de carga (`isLoading`) y mensaje `@empty` sin registros.
+- Badge de estado por color (pendiente, confirmada, cancelada).
+- Se eliminaron las columnas Origen, Visitas y Acción del prototipo.
+
+**Pruebas realizadas:**
+- Con `npm run api` activo → la tabla muestra las reservas de `db.json`.
+- Con `db.json` vacío → se muestra el mensaje de lista vacía.
+- Reserva sin DNI → la columna Documento muestra `S/D`.
+
+**Checklist:**
+- [ ] Revisado por al menos un integrante.
+- [ ] Commits según la convención (`feat:`, `fix:`, etc.).
+- [ ] `npm run build` y `npm test` sin errores.
+- [ ] README actualizado.
+
+
 ## Consideración importante
 
 El repositorio ya incluye la rama `develop`, por lo que el documento debe reflejar este flujo real.
