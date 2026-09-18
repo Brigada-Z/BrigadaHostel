@@ -1006,7 +1006,20 @@ En el panel de administración (`ReservasAdminComponent`):
 * **Filtros Dinámicos en Tiempo Real:** Búsqueda textual (por nombre de huésped, código `#BH-{id}`, DNI, email o tipo de habitación), filtro por estado (*Pendiente*, *Confirmada*, *Cancelada*) y filtro de estadía.
 * **Drawer Lateral de Gestión y Auditoría:** Permite al administrador editar datos del huésped, actualizar el estado de la reserva (`PATCH`), confirmar o cancelar la estadía y eliminar registros (`DELETE`), impactando de inmediato en `db.json`.
 
-## 4. Trazabilidad con el Caso de Uso BPMN ("Gestión de Reservas")
+## 4. Módulo Huéspedes Dinámico (`ModuloHuespedesComponent`)
+
+Ubicación: `resumen-admin/components/modulo-huespedes` (embebido en `/dashboard/admin/resumen`).
+
+El directorio de huéspedes dejó de usar filas fijas en el HTML y ahora se construye a partir de las reservas almacenadas en `db.json`:
+
+* **Renderizado dinámico:** la tabla se genera con `@for` (con `track h.id`) sobre los datos obtenidos del servidor.
+* **Estados de la vista:** spinner de carga (`isLoading`) durante la petición y mensaje `@empty` cuando no hay registros.
+* **Columnas:** Huésped (nombre + email), Documento (DNI, con `S/D` si falta), Habitación, Gasto Total (`precioTotal` con pipe `number`) y Estado.
+* **Badge de estado:** color según el estado de la reserva (*pendiente* → amarillo, *confirmada* → verde, *cancelada* → rojo).
+* **Contador total:** calculado a partir de la cantidad de registros cargados.
+* **Eliminado respecto al prototipo:** columnas *Origen*, *Visitas* y *Acción* (botón "Ver Perfil"), y el contador de huéspedes frecuentes.
+
+## 5. Trazabilidad con el Caso de Uso BPMN ("Gestión de Reservas")
 
 El flujo implementado refleja fielmente el proceso modelado en BPMN:
 
@@ -1031,7 +1044,7 @@ flowchart TD
     N --> O
 ```
 
-## 5. Instrucciones para Ejecutar la API de Prueba y la SPA
+## 6. Instrucciones para Ejecutar la API de Prueba y la SPA
 
 1. **Iniciar la API REST Mock (json-server):**
    ```bash
