@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
@@ -17,6 +17,7 @@ import {
 })
 export class ConfiguracionAdminComponent {
   private fb = inject(FormBuilder);
+  private cdr = inject(ChangeDetectorRef);
 
   toastMessage: string | null = null;
   profileSubmitted = false;
@@ -87,8 +88,10 @@ export class ConfiguracionAdminComponent {
 
   notify(msg: string): void {
     this.toastMessage = msg;
+    this.cdr.markForCheck();
     setTimeout(() => {
       this.toastMessage = null;
+      this.cdr.markForCheck();
     }, 3000);
   }
 }

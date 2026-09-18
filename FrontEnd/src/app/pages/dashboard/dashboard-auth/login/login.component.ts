@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectorRef } from '@angular/core';
 import { RouterLink, Router } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -16,6 +16,7 @@ export class LoginComponent {
   private fb = inject(FormBuilder);
   private router = inject(Router);
   private dashboardService = inject(DashboardService);
+  private cdr = inject(ChangeDetectorRef);
 
   selectedRole: UserRole = 'admin';
   isSubmitted = false;
@@ -63,6 +64,7 @@ export class LoginComponent {
     setTimeout(() => {
       this.dashboardService.setRole(this.selectedRole);
       this.isLoading = false;
+      this.cdr.markForCheck();
       if (this.selectedRole === 'admin') {
         this.router.navigate(['/dashboard/admin/resumen']);
       } else {

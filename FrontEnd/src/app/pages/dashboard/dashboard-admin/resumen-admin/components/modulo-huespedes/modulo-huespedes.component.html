@@ -5,8 +5,8 @@
       <p class="header-subtitle">Gestión de fidelización, demografía y perfiles detallados</p>
     </div>
     <div class="d-flex flex-column align-items-end gap-2 text-end">
-      <span class="status-badge status-badge-blue">Total: 1,240 Huéspedes</span>
-      <span class="text-xs text-muted">Huéspedes frecuentes: 340</span>
+      <span class="status-badge status-badge-blue">Total Registrado: {{ huespedes.length }} Huéspedes</span>
+      <span class="text-xs text-muted">Sincronizado con db.json</span>
     </div>
   </div>
   <div class="row g-5">
@@ -17,48 +17,54 @@
           <thead class="table-light">
             <tr>
               <th class="border-0">Huésped</th>
-              <th class="border-0">Origen</th>
-              <th class="border-0">Visitas</th>
+              <th class="border-0">Documento</th>
+              <th class="border-0">Habitación</th>
               <th class="border-0">Gasto Total</th>
-              <th class="border-0 text-end">Acción</th>
+              <th class="border-0 text-end">Estado</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td data-label="Huésped"><strong>Carlos Mendoza</strong><div class="text-xs-muted">carlos.m&#64;email.com</div></td>
-              <td data-label="Origen"><span class="flex-align-center gap-8">🇦🇷 Argentina</span></td>
-              <td data-label="Visitas"><span class="badge rounded-pill bg-primary">5 veces</span></td>
-              <td data-label="Gasto Total" class="font-bold">$850.00</td>
-              <td data-label="Acción" class="text-end"><button type="button" class="btn-premium btn-small">Ver Perfil</button></td>
-            </tr>
-            <tr>
-              <td data-label="Huésped"><strong>Emily Watson</strong><div class="text-xs-muted">e.watson&#64;travel.co</div></td>
-              <td data-label="Origen"><span class="flex-align-center gap-8">🇬🇧 Reino Unido</span></td>
-              <td data-label="Visitas"><span class="badge rounded-pill bg-light text-dark border">1 vez</span></td>
-              <td data-label="Gasto Total" class="font-bold">$120.00</td>
-              <td data-label="Acción" class="text-end"><button type="button" class="btn-premium btn-small">Ver Perfil</button></td>
-            </tr>
-            <tr>
-              <td data-label="Huésped"><strong>Jean Pierre</strong><div class="text-xs-muted">jp.fr&#64;hostmail.fr</div></td>
-              <td data-label="Origen"><span class="flex-align-center gap-8">🇫🇷 Francia</span></td>
-              <td data-label="Visitas"><span class="badge rounded-pill bg-accent text-white">2 veces</span></td>
-              <td data-label="Gasto Total" class="font-bold">$340.50</td>
-              <td data-label="Acción" class="text-end"><button type="button" class="btn-premium btn-small">Ver Perfil</button></td>
-            </tr>
-            <tr>
-              <td data-label="Huésped"><strong>Sofia Rossi</strong><div class="text-xs-muted">s.rossi&#64;italia.it</div></td>
-              <td data-label="Origen"><span class="flex-align-center gap-8">🇮🇹 Italia</span></td>
-              <td data-label="Visitas"><span class="badge rounded-pill bg-primary">3 veces</span></td>
-              <td data-label="Gasto Total" class="font-bold">$510.00</td>
-              <td data-label="Acción" class="text-end"><button type="button" class="btn-premium btn-small">Ver Perfil</button></td>
-            </tr>
-            <tr>
-              <td data-label="Huésped"><strong>Lars Jensen</strong><div class="text-xs-muted">lars.j&#64;nordic.com</div></td>
-              <td data-label="Origen"><span class="flex-align-center gap-8">🇩🇰 Dinamarca</span></td>
-              <td data-label="Visitas"><span class="badge rounded-pill bg-light text-dark border">1 vez</span></td>
-              <td data-label="Gasto Total" class="font-bold">$180.00</td>
-              <td data-label="Acción" class="text-end"><button type="button" class="btn-premium btn-small">Ver Perfil</button></td>
-            </tr>
+            @if (isLoading) {
+              <tr>
+                <td colspan="5" class="text-center py-4 text-secondary">
+                  <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                  Cargando directorio de huéspedes...
+                </td>
+              </tr>
+            } @else {
+              @for (h of huespedes; track h.id) {
+                <tr>
+                  <td data-label="Huésped">
+                    <strong>{{ h.nombre }}</strong>
+                    <div class="text-xs-muted">{{ h.email }}</div>
+                  </td>
+                  <td data-label="Documento">
+                    <span class="flex-align-center gap-8">DNI: {{ h.dni || 'S/D' }}</span>
+                  </td>
+                  <td data-label="Habitación">
+                    <span class="badge rounded-pill bg-primary">{{ h.tipoHabitacion }}</span>
+                  </td>
+                  <td data-label="Gasto Total" class="font-bold">
+                    {{ h.precioTotal ? ('$' + (h.precioTotal | number)) : '-' }}
+                  </td>
+                  <td data-label="Estado" class="text-end">
+                    <span 
+                      class="badge-status"
+                      [class.yellow]="h.estado === 'pendiente'"
+                      [class.green]="h.estado === 'confirmada'"
+                      [class.red]="h.estado === 'cancelada'">
+                      {{ h.estado }}
+                    </span>
+                  </td>
+                </tr>
+              } @empty {
+                <tr>
+                  <td colspan="5" class="text-center py-4 text-secondary">
+                    No hay huéspedes registrados en el servidor.
+                  </td>
+                </tr>
+              }
+            }
           </tbody>
         </table>
       </div>

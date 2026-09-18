@@ -92,6 +92,196 @@
 
     <section class="card mb-4 shadow-sm">
       <div class="card-body">
+        <h2 class="card-title h4">Consultar disponibilidad</h2>
+        <p>
+          Completá el formulario para registrar una consulta de reserva. La solicitud quedará
+          guardada como pendiente en el sistema.
+        </p>
+
+        <form [formGroup]="consultaReservaForm" (ngSubmit)="registrarConsulta()" novalidate>
+          <div class="row g-3">
+            <div class="col-12 col-md-6">
+              <label for="nombre" class="form-label">Nombre completo</label>
+              <input
+                id="nombre"
+                type="text"
+                class="form-control"
+                formControlName="nombre"
+                placeholder="Ej: Juan Pérez"
+              >
+
+              @if (f.nombre.touched && f.nombre.hasError('required')) {
+                <div class="text-danger small mt-1">El nombre es obligatorio.</div>
+              }
+
+              @if (f.nombre.touched && f.nombre.hasError('minlength')) {
+                <div class="text-danger small mt-1">El nombre debe tener al menos 3 caracteres.</div>
+              }
+            </div>
+
+            <div class="col-12 col-md-6">
+              <label for="email" class="form-label">Correo electrónico</label>
+              <input
+                id="email"
+                type="email"
+                class="form-control"
+                formControlName="email"
+                placeholder="Ej: correo@email.com"
+              >
+
+              @if (f.email.touched && f.email.hasError('required')) {
+                <div class="text-danger small mt-1">El correo es obligatorio.</div>
+              }
+
+              @if (f.email.touched && f.email.hasError('email')) {
+                <div class="text-danger small mt-1">Ingresá un correo válido.</div>
+              }
+            </div>
+
+            <div class="col-12 col-md-6">
+              <label for="fechaIngreso" class="form-label">Fecha de ingreso</label>
+              <input
+                id="fechaIngreso"
+                type="date"
+                class="form-control"
+                formControlName="fechaIngreso"
+              >
+
+              @if (f.fechaIngreso.touched && f.fechaIngreso.hasError('required')) {
+                <div class="text-danger small mt-1">La fecha de ingreso es obligatoria.</div>
+              }
+            </div>
+
+            <div class="col-12 col-md-6">
+              <label for="fechaSalida" class="form-label">Fecha de salida</label>
+              <input
+                id="fechaSalida"
+                type="date"
+                class="form-control"
+                formControlName="fechaSalida"
+              >
+
+              @if (f.fechaSalida.touched && f.fechaSalida.hasError('required')) {
+                <div class="text-danger small mt-1">La fecha de salida es obligatoria.</div>
+              }
+
+              @if (consultaReservaForm.touched && consultaReservaForm.hasError('fechaSalidaInvalida')) {
+                <div class="text-danger small mt-1">
+                  La fecha de salida debe ser posterior a la fecha de ingreso.
+                </div>
+              }
+            </div>
+
+            <div class="col-12 col-md-6">
+              <label for="huespedes" class="form-label">Cantidad de huéspedes</label>
+              <input
+                id="huespedes"
+                type="number"
+                class="form-control"
+                formControlName="huespedes"
+                min="1"
+                max="8"
+              >
+
+              @if (f.huespedes.touched && f.huespedes.hasError('required')) {
+                <div class="text-danger small mt-1">La cantidad de huéspedes es obligatoria.</div>
+              }
+
+              @if (f.huespedes.touched && (f.huespedes.hasError('min') || f.huespedes.hasError('max'))) {
+                <div class="text-danger small mt-1">La cantidad debe estar entre 1 y 8.</div>
+              }
+            </div>
+
+            <div class="col-12 col-md-6">
+              <label for="tipoHabitacion" class="form-label">Tipo de habitación</label>
+              <select
+                id="tipoHabitacion"
+                class="form-select"
+                formControlName="tipoHabitacion"
+              >
+                <option value="">Seleccionar tipo</option>
+                @for (habitacion of habitaciones; track habitacion.id) {
+                  <option [value]="habitacion.tipo">
+                    {{ habitacion.tipo }} - Capacidad {{ habitacion.capacidad }} - ${{ habitacion.precioPorNoche }}
+                  </option>
+                }
+              </select>
+
+              @if (f.tipoHabitacion.touched && f.tipoHabitacion.hasError('required')) {
+                <div class="text-danger small mt-1">Seleccioná un tipo de habitación.</div>
+              }
+            </div>
+          </div>
+
+          @if (mensajeExito) {
+            <div class="alert alert-success mt-3 mb-0">
+              {{ mensajeExito }}
+            </div>
+          }
+
+          @if (mensajeError) {
+            <div class="alert alert-danger mt-3 mb-0">
+              {{ mensajeError }}
+            </div>
+          }
+
+          <div class="mt-4">
+            <button type="submit" class="btn btn-primary" [disabled]="isSubmitting">
+              {{ isSubmitting ? 'Enviando...' : 'Registrar consulta' }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <section class="card mb-4 shadow-sm">
+      <div class="card-body">
+        <h2 class="card-title h4">Consultas registradas</h2>
+        <p>
+          Últimas consultas de reserva obtenidas desde la API de prueba con json-server.
+        </p>
+
+        @if (reservas.length === 0) {
+          <div class="alert alert-info mb-0">
+            Todavía no hay consultas registradas.
+          </div>
+        } @else {
+          <div class="table-responsive">
+            <table class="table table-bordered table-hover align-middle mb-0">
+              <thead class="table-primary">
+                <tr>
+                  <th>Nombre</th>
+                  <th>Ingreso</th>
+                  <th>Salida</th>
+                  <th>Huéspedes</th>
+                  <th>Habitación</th>
+                  <th>Estado</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (reserva of reservas; track reserva.id) {
+                  <tr>
+                    <td>{{ reserva.nombre }}</td>
+                    <td>{{ reserva.fechaIngreso }}</td>
+                    <td>{{ reserva.fechaSalida }}</td>
+                    <td>{{ reserva.huespedes }}</td>
+                    <td>{{ reserva.tipoHabitacion }}</td>
+                    <td>
+                      <span class="badge text-bg-warning">
+                        {{ reserva.estado }}
+                      </span>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        }
+      </div>
+    </section>
+
+    <section class="card mb-4 shadow-sm">
+      <div class="card-body">
         <h2 class="card-title h4">Resumen visual</h2>
 
         <div class="table-responsive">

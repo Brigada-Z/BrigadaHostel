@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectorRef } from '@angular/core';
 import { RouterLink, Router } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -14,6 +14,7 @@ import { noWhitespaceValidator, customEmailValidator } from '../../../../validat
 export class ForgotPasswordComponent {
   private fb = inject(FormBuilder);
   private router = inject(Router);
+  private cdr = inject(ChangeDetectorRef);
 
   isSubmitted = false;
   isSent = false;
@@ -40,6 +41,7 @@ export class ForgotPasswordComponent {
     setTimeout(() => {
       this.isLoading = false;
       this.isSent = true;
+      this.cdr.markForCheck();
       setTimeout(() => {
         this.router.navigate(['/auth/login']);
       }, 2500);

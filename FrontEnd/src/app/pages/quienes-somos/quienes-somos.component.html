@@ -73,37 +73,39 @@
       </div>
     </section>
 
-    <section class="card mb-4 shadow-sm">
-      <div class="card-body">
-        <h2 class="card-title h4">Integrantes del equipo</h2>
-        <p>
-          Nuestro equipo está comprometido con brindar una mejor experiencia en la gestión hotelera,
-          ofreciendo una propuesta moderna y organizada para facilitar la administración de reservas,
-          habitaciones y servicios adicionales.
-        </p>
+<section class="card mb-4 shadow-sm">
+  <div class="card-body">
+    <h2 class="card-title h4">Integrantes del equipo</h2>
 
+    <p>
+      Nuestro equipo está comprometido con brindar una mejor experiencia en la gestión hotelera,
+      ofreciendo una propuesta moderna y organizada para facilitar la administración de reservas,
+      habitaciones y servicios adicionales.
+    </p>
+
+    @if (integrantes$ | async; as integrantes) {
+      @if (integrantes.length > 0) {
         <div class="row g-3">
-          <div class="col-12 col-md-6 col-lg-4">
-            <div class="integrante-card">Giuliano, BATISTELLA</div>
-          </div>
-          <div class="col-12 col-md-6 col-lg-4">
-            <div class="integrante-card">Alejo Nicolas, CAMOLOTTO</div>
-          </div>
-          <div class="col-12 col-md-6 col-lg-4">
-            <div class="integrante-card">Mauricio Emiliano, FERREYRA</div>
-          </div>
-          <div class="col-12 col-md-6 col-lg-4">
-            <div class="integrante-card">Agustin Nicolas, GALLARDO</div>
-          </div>
-          <div class="col-12 col-md-6 col-lg-4">
-            <div class="integrante-card">Jorge Francisco, QUEVEDO</div>
-          </div>
-          <div class="col-12 col-md-6 col-lg-4">
-            <div class="integrante-card">Oscar Alberto, QUEVEDO</div>
-          </div>
+          @for (integrante of integrantes; track integrante.id) {
+            <div class="col-12 col-md-6 col-lg-4">
+              <div class="integrante-card">
+                <strong>{{ integrante.nombre }}, {{ integrante.apellido }}</strong>
+              </div>
+            </div>
+          }
         </div>
+      } @else {
+        <div class="alert alert-warning">
+          No hay integrantes cargados.
+        </div>
+      }
+    } @else {
+      <div class="alert alert-info">
+        Cargando integrantes del equipo...
       </div>
-    </section>
+    }
+  </div>
+</section>
   </main>
 
   <footer class="pie text-white text-center py-3 mt-auto">
