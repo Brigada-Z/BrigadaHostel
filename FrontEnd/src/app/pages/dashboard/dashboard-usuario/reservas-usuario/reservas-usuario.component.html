@@ -90,7 +90,7 @@
             <div class="room-selector-box">
               <div class="flex-between mb-20">
                 <h3 class="m-0 font-weight-800 text-base">Elige tu tipo de habitación</h3>
-                <span class="badge bg-light text-dark border">Cargadas desde json-server</span>
+                <span class="badge bg-light text-dark border">Cargadas desde la API Backend</span>
               </div>
 
               @if (isLoadingHabitaciones) {
@@ -368,7 +368,7 @@
             [disabled]="isSubmitting">
             @if (isSubmitting) {
               <span class="spinner-border spinner-border-sm" role="status"></span>
-              <span>Guardando en json-server...</span>
+              <span>Guardando en el servidor...</span>
             } @else {
               <span>Confirmar y Guardar Reserva</span>
             }

@@ -93,7 +93,7 @@ export class HomeComponent implements OnInit {
         this.cargarReservas();
       },
       error: () => {
-        this.mensajeError = 'No se pudo registrar la consulta. Verificá que json-server esté funcionando.';
+        this.mensajeError = 'No se pudo registrar la consulta. Verificá que el servidor backend esté funcionando.';
         this.isSubmitting = false;
       }
     });

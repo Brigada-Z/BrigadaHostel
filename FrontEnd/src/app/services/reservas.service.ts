@@ -3,15 +3,17 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Reserva } from '../models/reserva.model';
 
+import { environment } from '../../environments/environment';
+
 @Injectable({
   providedIn: 'root'
 })
 export class ReservasService {
   private readonly http = inject(HttpClient);
-  private readonly apiUrl = 'http://localhost:3000/reservas';
+  private readonly apiUrl = `${environment.apiUrl}/reservas`;
 
   /**
-   * Obtiene todas las reservas registradas desde json-server
+   * Obtiene todas las reservas registradas desde la API REST (Django REST Framework)
    */
   getReservas(): Observable<Reserva[]> {
     return this.http.get<Reserva[]>(this.apiUrl);

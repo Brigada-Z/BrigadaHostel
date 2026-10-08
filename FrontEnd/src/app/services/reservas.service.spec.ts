@@ -3,6 +3,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { ReservasService } from './reservas.service';
 import { Reserva } from '../models/reserva.model';
+import { environment } from '../../environments/environment';
 
 describe('ReservasService', () => {
   let service: ReservasService;
@@ -48,7 +49,7 @@ describe('ReservasService', () => {
       expect(reservas[0].nombre).toBe('Juan Pérez');
     });
 
-    const req = httpTesting.expectOne('http://localhost:3000/reservas');
+    const req = httpTesting.expectOne(`${environment.apiUrl}/reservas`);
     expect(req.request.method).toBe('GET');
     req.flush(mockReservas);
   });
@@ -69,7 +70,7 @@ describe('ReservasService', () => {
       expect(reserva.nombre).toBe('Carlos Ruiz');
     });
 
-    const req = httpTesting.expectOne('http://localhost:3000/reservas');
+    const req = httpTesting.expectOne(`${environment.apiUrl}/reservas`);
     expect(req.request.method).toBe('POST');
     expect(req.request.body).toEqual(nuevaReserva);
     req.flush({ ...nuevaReserva, id: '2' });
@@ -80,7 +81,7 @@ describe('ReservasService', () => {
       expect(reserva.estado).toBe('confirmada');
     });
 
-    const req = httpTesting.expectOne('http://localhost:3000/reservas/1');
+    const req = httpTesting.expectOne(`${environment.apiUrl}/reservas/1`);
     expect(req.request.method).toBe('PATCH');
     expect(req.request.body).toEqual({ estado: 'confirmada' });
     req.flush({ ...mockReservas[0], estado: 'confirmada' });

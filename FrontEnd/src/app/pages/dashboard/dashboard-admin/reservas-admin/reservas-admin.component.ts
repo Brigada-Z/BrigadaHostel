@@ -51,9 +51,9 @@ export class ReservasAdminComponent implements OnInit {
         this.cdr.markForCheck();
       },
       error: (err) => {
-        console.error('Error al obtener reservas desde json-server:', err);
+        console.error('Error al obtener reservas desde el backend:', err);
         this.hasError = true;
-        this.errorMessage = 'No se pudo conectar con el servidor (json-server en puerto 3000). Verificá que la API esté corriendo.';
+        this.errorMessage = 'No se pudo conectar con el servidor backend (Django REST Framework en puerto 8000). Verificá que la API esté corriendo.';
         this.isLoading = false;
         this.cdr.markForCheck();
       }
@@ -109,7 +109,7 @@ export class ReservasAdminComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error al guardar cambios de reserva:', err);
-        this.showToast('Error al actualizar en json-server.', 'danger');
+        this.showToast('Error al actualizar en el servidor.', 'danger');
         this.cdr.markForCheck();
       }
     });
@@ -125,7 +125,7 @@ export class ReservasAdminComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error al cambiar estado:', err);
-        this.showToast('Error al actualizar estado en json-server.', 'danger');
+        this.showToast('Error al actualizar estado en el servidor.', 'danger');
         this.cdr.markForCheck();
       }
     });
@@ -155,14 +155,14 @@ export class ReservasAdminComponent implements OnInit {
     const id = this.activeDrawerReservation.id;
     this.reservasService.eliminarReserva(id).subscribe({
       next: () => {
-        this.showToast(`Reserva #BH-${id} eliminada de db.json.`, 'info');
+        this.showToast(`Reserva #BH-${id} eliminada correctamente.`, 'info');
         this.showDeleteConfirm = false;
         this.closeDrawer();
         this.cargarReservas();
       },
       error: (err) => {
         console.error('Error al eliminar reserva:', err);
-        this.showToast('Error al eliminar en json-server.', 'danger');
+        this.showToast('Error al eliminar en el servidor.', 'danger');
         this.cdr.markForCheck();
       }
     });
