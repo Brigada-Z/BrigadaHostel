@@ -3,12 +3,14 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { Habitacion } from '../models/habitacion.model';
 
+import { environment } from '../../environments/environment';
+
 @Injectable({
   providedIn: 'root'
 })
 export class HabitacionesService {
   private readonly http = inject(HttpClient);
-  private readonly apiUrl = 'http://localhost:3000/habitaciones';
+  private readonly apiUrl = `${environment.apiUrl}/habitaciones`;
 
   /**
    * Obtiene la lista completa de habitaciones

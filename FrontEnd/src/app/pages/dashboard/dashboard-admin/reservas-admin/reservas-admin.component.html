@@ -70,7 +70,7 @@
     <div class="flex-between mb-32 flex-wrap gap-2">
       <div>
         <h2 class="m-0 text-2xl font-weight-800">Listado Maestro de Reservas</h2>
-        <p class="text-secondary text-xs m-0">Datos en vivo conectados a json-server (GET /reservas)</p>
+        <p class="text-secondary text-xs m-0">Datos en vivo conectados a API REST Backend (GET /api/reservas)</p>
       </div>
       <div class="d-flex align-items-center gap-2">
         @if (isLoading) {
@@ -89,7 +89,7 @@
         <div class="spinner-border text-primary mb-3" role="status" style="width: 3rem; height: 3rem;">
           <span class="visually-hidden">Cargando reservas...</span>
         </div>
-        <p class="text-secondary font-weight-600">Consultando datos en tiempo real desde json-server...</p>
+        <p class="text-secondary font-weight-600">Consultando datos en tiempo real desde la API Backend...</p>
       </div>
     } @else {
       <div class="table-responsive">
@@ -179,7 +179,7 @@
         <div class="panel-top-bar flex-between">
           <div>
             <h3 class="m-0 font-weight-800">Gestionar Reserva #BH-{{ activeDrawerReservation.id }}</h3>
-            <p class="text-secondary text-xs m-0">Detalles del huésped y actualización en vivo en json-server</p>
+            <p class="text-secondary text-xs m-0">Detalles del huésped y actualización en vivo en el servidor</p>
           </div>
           <button type="button" class="btn-close" (click)="closeDrawer()"></button>
         </div>
@@ -316,7 +316,7 @@
           </svg>
         </div>
         <h3 class="font-weight-800 mb-2">¿Confirmar Cancelación?</h3>
-        <p class="text-secondary mb-4 text-sm">Esta acción cambiará el estado de la reserva a Cancelada en json-server.</p>
+        <p class="text-secondary mb-4 text-sm">Esta acción cambiará el estado de la reserva a Cancelada en el servidor.</p>
         <div class="d-flex gap-2">
           <button type="button" class="btn-outline flex-1" (click)="showCancelConfirm = false">Volver</button>
           <button type="button" class="btn btn-warning flex-1 rounded-3 font-weight-800" (click)="executeCancel()">Sí, Cancelar</button>

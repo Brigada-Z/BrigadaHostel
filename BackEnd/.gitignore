@@ -1,0 +1,26 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Virtual environment
+venv/
+env/
+ENV/
+
+# Environment variables (credentials)
+.env
+
+# SQLite temporary/journal files
+*.sqlite3-journal
+*.sqlite3-wal
+*.sqlite3-shm
+
+# Pytest / coverage
+.cache
+.pytest_cache/
+htmlcov/
+.coverage
