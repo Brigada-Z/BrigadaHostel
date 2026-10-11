@@ -1120,3 +1120,51 @@ flowchart TD
    npm test
    ```
 
+---
+
+## Migración del Módulo Huéspedes a Backend Django (DRF)
+
+El módulo deja de consumir la API mock (json-server, `localhost:3000`) y pasa a
+consumir el backend real en **Django REST Framework**.
+
+## Módulo Huéspedes sobre Django (`ModuloHuespedesComponent`)
+
+Ubicación: `resumen-admin/components/modulo-huespedes` (embebido en
+`/dashboard/admin/resumen`).
+
+El directorio de huéspedes se construye a partir de las **reservas** (una fila por
+reserva), ahora obtenidas desde Django mediante `ReservasService`, que apunta a
+`environment.apiUrl` (`http://127.0.0.1:8000/api`) en lugar de json-server.
+
+### Endpoints consumidos
+| Método | Ruta                      | Uso en el módulo                          |
+|--------|---------------------------|-------------------------------------------|
+| GET    | /api/reservas/            | Listado que alimenta el directorio        |
+| GET    | /api/reservas/{id}/       | Detalle de una reserva                    |
+| PATCH  | /api/reservas/{id}/estado/| Cambio de estado (pendiente/confirmada/cancelada) |
+
+> No existe `/api/huespedes/`. El directorio no es un recurso propio del backend:
+> se arma en el cliente a partir de `/api/reservas/`.
+
+### Render de la tabla
+- `@for (h of huespedes; track h.id)` sobre los datos del backend; sin filas fijas.
+- Estados de vista: spinner (`isLoading`) durante la petición y `@empty` sin registros.
+- Columnas: Huésped (nombre + email), Documento (DNI, `S/D` si falta),
+  Habitación (`tipoHabitacion`), Gasto Total (`precioTotal` con pipe `number`) y Estado.
+- Badge de estado por color: pendiente → amarillo, confirmada → verde, cancelada → rojo.
+- Contador total derivado de `huespedes.length`.
+
+### Modelos y validaciones (entregable backend)
+En `dashboard/models.py`, el modelo `Reserva` que respalda el directorio incorpora:
+- **DNI**: `RegexValidator(r'^\d{7,8}$')` — numérico de 7 a 8 dígitos, coherente con
+  el validador del frontend.
+- **`precio_total`**: `MinValueValidator(0)` (sin montos negativos).
+- **`huespedes`**: `MinValueValidator(1)`.
+- **`nombre`**: `MinLengthValidator(3)`.
+- **`email`** único a nivel `Usuario` (`unique=True`); **`estado`** restringido por
+  `choices` (pendiente / confirmada / cancelada).
+
+Los validadores se propagan automáticamente al serializer de DRF: un POST/PATCH con
+datos inválidos devuelve `400 BAD REQUEST`.
+
+
