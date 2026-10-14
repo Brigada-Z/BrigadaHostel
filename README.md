@@ -18,8 +18,7 @@
 9. About & Contributors
 10. Traspaso a Angular
 11. Evidencia 5 - Dashboard Dinámico con HttpClient, Formularios Reactivos y json-server
-12. Backend Django REST Framework (DRF) con Base de Datos MariaDB
-13. Guía Integral: Cómo Correr el Frontend (Angular) con el Backend (Django + MariaDB)
+12. Evidencia 6 - Backend Django REST Framework (DRF) con Base de Datos MariaDB
 
 ---
 
