@@ -1126,7 +1126,9 @@ flowchart TD
 
 ---
 
-# 12. Backend Django REST Framework (DRF) con Base de Datos MariaDB
+
+
+# EVIDENCIA 6 - Migracion a Backend Django REST Framework (DRF) con Base de Datos MariaDB
 
 A partir de esta versión, BrigadaHostel cuenta con un backend empresarial desarrollado en **Django 5** y **Django REST Framework (DRF)**, reemplazando la base de datos prototipo SQLite por una infraestructura relacional robusta en **MariaDB** (`brigada_hostel_db`).
 
@@ -1316,7 +1318,7 @@ En `dashboard/models.py`, el modelo `Reserva` que respalda el directorio incorpo
 
 ---
 
-# 13. Guía Integral: Cómo Correr el Frontend (Angular) con el Backend (Django + MariaDB)
+## Guía Integral: Cómo Correr el Frontend (Angular) con el Backend (Django + MariaDB)
 
 Esta guía detalla paso a paso cómo iniciar y sincronizar todo el ecosistema de BrigadaHostel de manera simultánea en una computadora de desarrollo.
 
@@ -1370,7 +1372,7 @@ FLUSH PRIVILEGES;
 EXIT;
 ```
 
-> 💡 **Opción rápida:** Podés importar directamente toda la estructura y datos de prueba desde el archivo SQL provisto:
+> **Opción rápida:** Podés importar directamente toda la estructura y datos de prueba desde el archivo SQL provisto:
 > ```bash
 > cd BackEnd
 > mariadb -u root -p < database/init_db.sql
@@ -1503,7 +1505,7 @@ Application bundle generation complete.
 ```
 
 Abrí tu navegador web en:
-👉 **`http://localhost:4200/`**
+**`http://localhost:4200/`**
 
 ---
 
@@ -1547,7 +1549,7 @@ npm test
 
 ---
 
-## 🛠️ Preguntas Frecuentes y Solución de Problemas
+## Preguntas Frecuentes y Solución de Problemas
 
 ### 1. Error: `OperationalError: (2002, "Can't connect to server on '127.0.0.1'")`
 * **Causa:** El servicio de MariaDB no está iniciado.
@@ -1571,4 +1573,35 @@ npm test
   Django conmutará automáticamente al motor SQLite local (`database/brigada_hostel.sqlite3`). Sin embargo, para entregas y producción se debe utilizar `DB_ENGINE=mariadb`.
 
 
+## Diagrama de Secuencia del Sistema (Flujo de Reservas)
 
+El flujo del sistema se divide principalmente en dos fases operativas: la **Solicitud de Reserva** realizada por el huésped y la **Resolución de la Reserva** gestionada por el administrador.
+
+### Fase 1: Solicitud de Reserva (Rol Huésped)
+
+1. **Petición Inicial:** El cliente (`SPA Angular`) envía una solicitud HTTP `POST /reservas` con los datos de fechas (`checkIn`, `checkOut`) y la cantidad de huéspedes a través del `ReservaController`.
+2. **Autenticación y Validación:** 
+   - El controlador consulta al `AuthService` para validar que el token y el rol de usuario sean correctos.
+   - Se procesan las validaciones de formato mediante el `ValidacionService`. Si los datos son inválidos, se interrumpe el flujo devolviendo un error `400 Bad Request`.
+3. **Control de Disponibilidad:**
+   - Si los datos son válidos, el `ReservaService` solicita al `DisponibilidadService` comprobar los cupos.
+   - Este servicio consulta las habitaciones existentes en el repositorio y recorre las habitaciones candidatas verificando contra las reservas ya existentes (`ReserveRepository`).
+   - Si no hay disponibilidad, se responde con un código `409 Conflict` indicando que las fechas se superponen.
+4. **Persistencia y Creación:**
+   - Si hay disponibilidad, se registra la reserva con estado inicial `Pendiente` en la base de datos y se sincroniza con el servicio externo (`BrigadaHostel`).
+   - Finalmente, se devuelve una respuesta exitosa `201 Created` al cliente.
+
+---
+
+### Fase 2: Resolución de la Reserva (Rol Administrador)
+
+1. **Acción de Revisión:** El administrador (`SPA Angular`) envía una petición HTTP `PATCH /reservas/{id}` incluyendo la decisión tomada (aprobar o rechazar).
+2. **Validación de Permisos:** 
+   - Se valida la sesión y los privilegios de administrador mediante el `AuthService`. Si no cuenta con permisos, se deniega el acceso (`401 / 403`).
+3. **Procesamiento del Estado:**
+   - El sistema busca la reserva por su ID. Si el estado actual es distinto de `Pendiente`, se rechaza la operación con un `409 Conflict`.
+   - **Si el Administrador aprueba:** Se genera un código único de confirmación (`B-id`), se actualiza el estado a `Confirmada` y se comunica con el sistema externo.
+   - **Si el Administrador rechaza:** Se actualiza el estado de la reserva a `Cancelada` o `Rechazada`.
+4. **Notificación al Huésped:**
+   - Una vez actualizado el estado, el `NotificacionService` registra la notificación correspondiente en el sistema y, en caso de que el huésped tenga un correo registrado, se le envía un email informando el resultado.
+   - El flujo concluye devolviendo al cliente un código `200 OK` con el estado final y el código asociado.
