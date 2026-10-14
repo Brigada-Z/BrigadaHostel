@@ -18,6 +18,8 @@
 9. About & Contributors
 10. Traspaso a Angular
 11. Evidencia 5 - Dashboard Dinámico con HttpClient, Formularios Reactivos y json-server
+12. Backend Django REST Framework (DRF) con Base de Datos MariaDB
+13. Guía Integral: Cómo Correr el Frontend (Angular) con el Backend (Django + MariaDB)
 
 ---
 
@@ -1122,49 +1124,451 @@ flowchart TD
 
 ---
 
-## Migración del Módulo Huéspedes a Backend Django (DRF)
+---
 
-El módulo deja de consumir la API mock (json-server, `localhost:3000`) y pasa a
-consumir el backend real en **Django REST Framework**.
+# 12. Backend Django REST Framework (DRF) con Base de Datos MariaDB
 
-## Módulo Huéspedes sobre Django (`ModuloHuespedesComponent`)
+A partir de esta versión, BrigadaHostel cuenta con un backend empresarial desarrollado en **Django 5** y **Django REST Framework (DRF)**, reemplazando la base de datos prototipo SQLite por una infraestructura relacional robusta en **MariaDB** (`brigada_hostel_db`).
 
-Ubicación: `resumen-admin/components/modulo-huespedes` (embebido en
-`/dashboard/admin/resumen`).
+---
 
-El directorio de huéspedes se construye a partir de las **reservas** (una fila por
-reserva), ahora obtenidas desde Django mediante `ReservasService`, que apunta a
-`environment.apiUrl` (`http://127.0.0.1:8000/api`) en lugar de json-server.
+## 12.1 Transición y Migración de Base de Datos: De SQLite a MariaDB
+
+### Justificación Técnica y Beneficios Operativos
+
+El sistema pasó de utilizar SQLite (`brigada_hostel.sqlite3`) a **MariaDB** (motor relacional compatible con MySQL). Esta migración responde a los requerimientos de un entorno de administración hotelera con accesos concurrentes:
+
+| Característica | SQLite (Prototipo previo) | MariaDB / MySQL (Actual) | Impacto en BrigadaHostel |
+| :--- | :--- | :--- | :--- |
+| **Mecanismo de Concurrencia** | Bloqueo a nivel de base de datos/archivo completo en escrituras. | Bloqueo a nivel de fila (**Row-Level Locking**) con motor **InnoDB**. | Permite transacciones simultáneas: un recepcionista puede registrar una reserva mientras múltiples huéspedes consultan disponibilidad o inician sesión sin colisiones ni errores `database is locked`. |
+| **Topología y Desacoplamiento** | Base de datos monolítica embebida en un archivo `.sqlite3`. | Servidor cliente-servidor dedicado sobre red TCP/IP (puerto estándar `3306`). | Desacopla la capa de presentación/API de la capa de persistencia. Permite desplegar MariaDB en un servidor dedicado, clúster o contenedor Docker. |
+| **Integridad Referencial y ACID** | Soporte limitado o dependiente de configuración pragmas. | Cumplimiento estricto de **ACID**, claves foráneas (`FOREIGN KEY`) con acciones en cascada (`ON DELETE CASCADE`, `ON DELETE SET NULL`) y chequeo de consistencia transaccional. | Previene registros huérfanos entre reservas, usuarios, habitaciones y servicios. |
+| **Precisión Financiera y Tipado** | Tipado débil con afinidad de tipos (*type affinity*). | Tipado estricto: `DECIMAL(10,2)`, `DATETIME`, `TINYINT(1)`, `VARCHAR`, y `JSON` nativo. | Cálculo exacto de importes de reservas y servicios sin pérdida de precisión por redondeo flotante. |
+| **Codificación de Caracteres** | Estándar por defecto. | Conjunto de caracteres **`utf8mb4`** y colación **`utf8mb4_unicode_ci`**. | Soporte completo para tildes, caracteres internacionales, nombres compuestos y emojis en notas y descripciones. |
+| **Seguridad y Control de Accesos** | Acceso directo condicionado a permisos de archivo del sistema operativo. | Usuarios dedicados (`GRANT ALL PRIVILEGES ...`), autenticación por contraseña y variables de entorno (`.env`). | Las credenciales de la base de datos están aisladas del código fuente y protegidas en despliegue. |
+
+### Adaptación en el Código del Backend (Django)
+
+Para habilitar MariaDB en Django de manera limpia y portable:
+
+1. **Driver PyMySQL (`PyMySQL>=1.1.0` y `cryptography>=42.0.0`):**
+   En `brigada_backend/__init__.py`, se inicializa PyMySQL como sustituto compatible del driver nativo `MySQLdb`:
+   ```python
+   try:
+       import pymysql
+       pymysql.install_as_MySQLdb()
+   except ImportError:
+       pass
+   ```
+   Esto asegura funcionamiento multiplataforma (Linux, Windows, macOS) sin requerir compiladores de C externos o librerías de desarrollo C de MySQL.
+
+2. **Configuración dinámica en `brigada_backend/settings.py`:**
+   Django lee las variables del entorno mediante `python-dotenv`:
+   ```python
+   DB_ENGINE = os.getenv('DB_ENGINE', 'mariadb').lower()
+
+   if DB_ENGINE in ('mariadb', 'mysql'):
+       DATABASES = {
+           'default': {
+               'ENGINE': 'django.db.backends.mysql',
+               'NAME': os.getenv('DB_NAME', 'brigada_hostel_db'),
+               'USER': os.getenv('DB_USER', 'root'),
+               'PASSWORD': os.getenv('DB_PASSWORD', ''),
+               'HOST': os.getenv('DB_HOST', '127.0.0.1'),
+               'PORT': os.getenv('DB_PORT', '3306'),
+               'OPTIONS': {
+                   'charset': 'utf8mb4',
+                   'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+               },
+           }
+       }
+   else:
+       # Fallback automático a SQLite para desarrollo sin servidor MariaDB activo
+       DATABASES = {
+           'default': {
+               'ENGINE': 'django.db.backends.sqlite3',
+               'NAME': BASE_DIR / 'database' / 'brigada_hostel.sqlite3',
+           }
+       }
+   ```
+
+3. **Variables de entorno (`BackEnd/.env` y `BackEnd/.env.example`):**
+   ```ini
+   DB_ENGINE=mariadb
+   DB_NAME=brigada_hostel_db
+   DB_USER=root
+   DB_PASSWORD=
+   DB_HOST=127.0.0.1
+   DB_PORT=3306
+   ```
+
+4. **Script SQL e Inicialización:**
+   Se dispone de `BackEnd/database/init_db.sql` con la definición física completa de tablas InnoDB y datos iniciales, complementario al sistema de migraciones nativo de Django (`python manage.py migrate` y `python manage.py seed_db`).
+
+---
+
+## 12.2 Arquitectura del Backend: Clean Architecture y Principios SOLID
+
+El módulo backend `BackEnd/dashboard` fue estructurado separando responsabilidades en capas desacopladas:
+
+```
+dashboard/
+├── models.py        # Dominio: Entidades ORM conectadas a tablas MariaDB
+├── serializers.py   # Serialización y DTOs: Validación y conversión camelCase <-> snake_case
+├── selectors.py     # Consultas (SRP): Lecturas, filtros y optimización de queries ORM
+├── services.py      # Casos de Uso (SRP/OCP/DIP): Lógica de negocio pura y transacciones
+├── views.py         # Controladores (APIView): Recepción HTTP, validación y respuestas explícitas
+├── urls.py          # Enrutamiento de endpoints bajo /api/
+└── tests.py         # Suite unitaria con verificación de códigos HTTP 200, 201, 204, 400, 401, 404
+```
+
+### Funcionalidad de las Capas
+
+1. **Capa de Dominio / Modelos (`models.py`):**
+   Define las entidades persistidas en MariaDB con nombres de tablas explícitos (`db_table`):
+   - `Usuario` (`usuarios`): autenticación, roles (`admin`, `usuario`), control de intentos fallidos y bloqueo.
+   - `Habitacion` (`habitaciones`): número, tipo, capacidad, precio por noche y disponibilidad.
+   - `Servicio` (`servicios`): catálogo de adicionales (Desayuno Buffet, Traslado, Spa, Lavandería).
+   - `Reserva` (`reservas`): entidad transaccional con clave foránea a `Usuario` y `Habitacion`, fechas de check-in / check-out, importes decimales, servicios extra en campo JSON y estado (`pendiente`, `confirmada`, `cancelada`).
+   - `ReservaServicio` (`reserva_servicios`): tabla asociativa N:M para desglose detallado de ítems.
+   - `LogAuditoria` (`logs_auditoria`): trazabilidad de cambios operativos y confirmaciones.
+   - `Notificacion` (`notificaciones`): registro de alertas generadas.
+   - `Integrante` (`integrantes`): nómina del equipo Brigada Z (Quiénes Somos).
+
+2. **Capa de Serializadores (`serializers.py`):**
+   - Transforma objetos Python/Django a JSON estándar para Angular.
+   - Convierte nombres entre convención `camelCase` (frontend) y `snake_case` (backend).
+   - Valida reglas de integridad: las fechas de egreso deben ser posteriores a las de ingreso, montos positivos, formato numérico de DNI (`^\d{7,8}$`) y estructura de credenciales.
+   - Al recibir datos inválidos, genera automáticamente una respuesta estructurada con código `400 BAD REQUEST`.
+
+3. **Capa de Selectores (`selectors.py`):**
+   - Aplica el **Principio de Responsabilidad Única (SRP)** aislando las consultas a la base de datos de los controladores.
+   - Optimiza la consulta mediante `select_related('habitacion', 'usuario')` reduciendo las consultas MariaDB (prevención de consultas N+1).
+   - Gestiona filtros dinámicos por estado, término de búsqueda (`search`), fechas y disponibilidad.
+
+4. **Capa de Servicios de Negocio (`services.py`):**
+   - Encapsula las transacciones y lógica de dominio (**SRP**, **Open/Closed Principle** e **Inversión de Dependencias**).
+   - **`DashboardService`**: calcula métricas agregadas en tiempo real (porcentaje de ocupación sobre camas operativas, check-ins programados para la fecha actual, tasa de cancelación e ingresos proyectados).
+   - **`ReservaService`**: gestiona la creación de reservas con autogeneración del código correlativo `#BH-{id}`, cálculo de subtotales, transiciones de estado de reserva y generación automática de entradas en el log de auditoría.
+   - **`AuthService`**: control de autenticación con incremento de intentos fallidos y bloqueo temporal tras superar el umbral de seguridad.
+
+5. **Capa de Controladores / Vistas (`views.py`):**
+   - Vistas basadas en clases heredando de `APIView` de Django REST Framework.
+   - Retornan códigos HTTP estrictos y semánticos:
+     - `200 OK`: lecturas exitosas (`GET`) y actualizaciones parciales (`PATCH`).
+     - `201 CREATED`: creación exitosa de reservas y habitaciones (`POST`).
+     - `204 NO CONTENT`: eliminación exitosa de reservas (`DELETE`).
+     - `400 BAD REQUEST`: errores de validación en parámetros o payload.
+     - `401 UNAUTHORIZED`: credenciales erróneas en login.
+     - `403 FORBIDDEN`: usuario bloqueado por intentos fallidos.
+     - `404 NOT FOUND`: recurso inexistente solicitado por ID.
+
+---
+
+## 12.3 Módulo Huéspedes sobre Django (`ModuloHuespedesComponent`)
+
+Ubicación: `resumen-admin/components/modulo-huespedes` (embebido en `/dashboard/admin/resumen`).
+
+El directorio de huéspedes se construye a partir de las **reservas** (una fila por reserva), ahora obtenidas directamente desde Django mediante `ReservasService`, que apunta a `environment.apiUrl` (`http://127.0.0.1:8000/api`) conectada a MariaDB:
 
 ### Endpoints consumidos
-| Método | Ruta                      | Uso en el módulo                          |
-|--------|---------------------------|-------------------------------------------|
-| GET    | /api/reservas/            | Listado que alimenta el directorio        |
-| GET    | /api/reservas/{id}/       | Detalle de una reserva                    |
-| PATCH  | /api/reservas/{id}/estado/| Cambio de estado (pendiente/confirmada/cancelada) |
+| Método | Ruta | Uso en el módulo |
+| :--- | :--- | :--- |
+| `GET` | `/api/reservas/` | Listado que alimenta el directorio |
+| `GET` | `/api/reservas/{id}/` | Detalle de una reserva |
+| `PATCH` | `/api/reservas/{id}/estado/` | Cambio de estado (`pendiente`/`confirmada`/`cancelada`) |
 
-> No existe `/api/huespedes/`. El directorio no es un recurso propio del backend:
-> se arma en el cliente a partir de `/api/reservas/`.
+> No existe `/api/huespedes/`. El directorio no es un recurso propio del backend: se arma en el cliente a partir de `/api/reservas/`.
 
 ### Render de la tabla
 - `@for (h of huespedes; track h.id)` sobre los datos del backend; sin filas fijas.
 - Estados de vista: spinner (`isLoading`) durante la petición y `@empty` sin registros.
-- Columnas: Huésped (nombre + email), Documento (DNI, `S/D` si falta),
-  Habitación (`tipoHabitacion`), Gasto Total (`precioTotal` con pipe `number`) y Estado.
+- Columnas: Huésped (nombre + email), Documento (DNI, `S/D` si falta), Habitación (`tipoHabitacion`), Gasto Total (`precioTotal` con pipe `number`) y Estado.
 - Badge de estado por color: pendiente → amarillo, confirmada → verde, cancelada → rojo.
 - Contador total derivado de `huespedes.length`.
 
 ### Modelos y validaciones (entregable backend)
 En `dashboard/models.py`, el modelo `Reserva` que respalda el directorio incorpora:
-- **DNI**: `RegexValidator(r'^\d{7,8}$')` — numérico de 7 a 8 dígitos, coherente con
-  el validador del frontend.
+- **DNI**: `RegexValidator(r'^\d{7,8}$')` — numérico de 7 a 8 dígitos, coherente con el validador del frontend.
 - **`precio_total`**: `MinValueValidator(0)` (sin montos negativos).
 - **`huespedes`**: `MinValueValidator(1)`.
 - **`nombre`**: `MinLengthValidator(3)`.
-- **`email`** único a nivel `Usuario` (`unique=True`); **`estado`** restringido por
-  `choices` (pendiente / confirmada / cancelada).
+- **`email`** único a nivel `Usuario` (`unique=True`); **`estado`** restringido por `choices` (pendiente / confirmada / cancelada).
 
-Los validadores se propagan automáticamente al serializer de DRF: un POST/PATCH con
-datos inválidos devuelve `400 BAD REQUEST`.
+---
+
+## 12.4 Catálogo de Endpoints de la API REST
+
+| Método | Endpoint | Descripción | Códigos HTTP |
+| :--- | :--- | :--- | :--- |
+| `GET` | `/api/` | Mapa de recursos disponibles en la API | `200` |
+| `GET` | `/api/reservas/` | Listado de reservas (filtros: `?estado=`, `?search=`, `?tipoHabitacion=`) | `200` |
+| `POST` | `/api/reservas/` | Crear nueva reserva con validación de fechas y cálculo de importes | `201`, `400` |
+| `GET` | `/api/reservas/<id>/` | Detalle completo de una reserva por ID | `200`, `404` |
+| `PATCH` | `/api/reservas/<id>/` | Modificación parcial de datos de una reserva | `200`, `400`, `404` |
+| `PATCH` | `/api/reservas/<id>/estado/`| Actualización directa del estado (`pendiente`, `confirmada`, `cancelada`) | `200`, `400`, `404` |
+| `DELETE` | `/api/reservas/<id>/` | Eliminación física de una reserva | `204`, `404` |
+| `GET` | `/api/habitaciones/` | Catálogo de habitaciones operativas (`?disponible=true`) | `200` |
+| `POST` | `/api/habitaciones/` | Registro de una nueva unidad habitacional | `201`, `400` |
+| `GET` | `/api/dashboard/metricas/`| Métricas ejecutivas en vivo (ocupación, check-ins hoy, ratio cancelación, ingresos) | `200` |
+| `GET` | `/api/integrantes/` | Nómina del equipo de desarrollo (Quiénes Somos) | `200` |
+| `POST` | `/api/auth/login/` | Autenticación con email y contraseña con control de intentos | `200`, `400`, `401`, `403` |
+
+---
+
+# 13. Guía Integral: Cómo Correr el Frontend (Angular) con el Backend (Django + MariaDB)
+
+Esta guía detalla paso a paso cómo iniciar y sincronizar todo el ecosistema de BrigadaHostel de manera simultánea en una computadora de desarrollo.
+
+```mermaid
+flowchart LR
+    A["Navegador Web<br/>Usuario / Recepción"] -->|"Puerto 4200"| B["Frontend Angular<br/>(SPA)"]
+    B -->|"HTTP / REST (JSON)<br/>CORS Habilitado"| C["Backend Django + DRF<br/>Puerto 8000"]
+    C -->|"PyMySQL / ORM<br/>TCP/IP 3306"| D[("Base de Datos<br/>MariaDB (InnoDB)<br/>brigada_hostel_db")]
+```
+
+---
+
+## Requisitos Previos
+
+* **Python 3.10 o superior** (verificar con `python --version` o `python3 --version`).
+* **Node.js 18 o superior y npm** (verificar con `node -v` y `npm -v`).
+* **MariaDB Server o MySQL Server** instalado y activo en el sistema.
+
+---
+
+## Paso 1: Configurar e Iniciar la Base de Datos MariaDB
+
+Asegurate de que el servicio de MariaDB esté en ejecución:
+
+* **En Linux:**
+  ```bash
+  sudo systemctl start mariadb
+  sudo systemctl status mariadb
+  ```
+* **En Windows (XAMPP / WampServer / MariaDB Service):**
+  Iniciá el servicio de MariaDB o el módulo **MySQL** desde el panel de control de XAMPP.
+
+**Crear la base de datos `brigada_hostel_db`:**
+Abrí tu consola de MariaDB:
+```bash
+mariadb -u root -p
+```
+*(o `mysql -u root -p` si utilizás el cliente MySQL)*
+
+Ejecutá los siguientes comandos SQL:
+```sql
+CREATE DATABASE IF NOT EXISTS brigada_hostel_db
+  DEFAULT CHARACTER SET utf8mb4
+  DEFAULT COLLATE utf8mb4_unicode_ci;
+
+-- Opcional: Si querés un usuario específico con contraseña
+CREATE USER IF NOT EXISTS 'brigada_user'@'localhost' IDENTIFIED BY 'brigada_pass';
+GRANT ALL PRIVILEGES ON brigada_hostel_db.* TO 'brigada_user'@'localhost';
+FLUSH PRIVILEGES;
+
+EXIT;
+```
+
+> 💡 **Opción rápida:** Podés importar directamente toda la estructura y datos de prueba desde el archivo SQL provisto:
+> ```bash
+> cd BackEnd
+> mariadb -u root -p < database/init_db.sql
+> ```
+
+---
+
+## Paso 2: Configurar e Iniciar el Backend (Django REST Framework)
+
+Abrí una **Terminal 1** y posicionate en el directorio `BackEnd/`:
+
+```bash
+cd BrigadaHostel/BackEnd
+```
+
+### 2.1 Crear y Activar el Entorno Virtual de Python
+
+* **En Linux / macOS:**
+  ```bash
+  python3 -m venv venv
+  source venv/bin/activate
+  ```
+* **En Windows (PowerShell / CMD):**
+  ```powershell
+  python -m venv venv
+  .\venv\Scripts\activate
+  ```
+
+*(Verificá que el prompt de tu terminal muestre `(venv)` al inicio).*
+
+### 2.2 Instalar las Dependencias de Python
+
+```bash
+pip install -r requirements.txt
+```
+
+### 2.3 Configurar las Variables de Entorno (`.env`)
+
+Copiá la plantilla `.env.example` para crear el archivo `.env`:
+```bash
+# En Linux / macOS
+cp .env.example .env
+
+# En Windows
+copy .env.example .env
+```
+
+Editá el archivo `.env` para asegurarte de que coincida con tus credenciales de MariaDB:
+```ini
+DEBUG=True
+SECRET_KEY=django-insecure-brigada-hostel-secret-key-2026-xyz!
+ALLOWED_HOSTS=*
+
+DB_ENGINE=mariadb
+DB_NAME=brigada_hostel_db
+DB_USER=root
+DB_PASSWORD=tu_password_aqui
+DB_HOST=127.0.0.1
+DB_PORT=3306
+
+CORS_ALLOWED_ORIGINS=http://localhost:4200,http://127.0.0.1:4200
+```
+
+### 2.4 Aplicar Migraciones y Cargar Datos Iniciales
+
+Ejecutá las migraciones del ORM para crear las tablas en MariaDB y poblar el catálogo de datos de prueba:
+```bash
+python manage.py migrate
+python manage.py seed_db
+```
+
+### 2.5 Iniciar el Servidor Django
+
+```bash
+python manage.py runserver 8000
+```
+
+Deberás ver en pantalla:
+```
+System check identified no issues (0 silenced).
+Django version 5.x, using settings 'brigada_backend.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CONTROL-C.
+```
+
+Podés verificar que el backend funciona abriendo en tu navegador:
+* **API Navegable DRF:** `http://127.0.0.1:8000/api/`
+* **Catálogo de Habitaciones:** `http://127.0.0.1:8000/api/habitaciones/`
+* **Métricas Operativas:** `http://127.0.0.1:8000/api/dashboard/metricas/`
+
+*(Dejá esta Terminal 1 corriendo el servidor backend).*
+
+---
+
+## Paso 3: Configurar e Iniciar el Frontend (Angular)
+
+Abrí una **Terminal 2** separada y navegá al directorio `FrontEnd/`:
+
+```bash
+cd BrigadaHostel/FrontEnd
+```
+
+### 3.1 Instalar las Dependencias de Node.js
+
+```bash
+npm install
+```
+
+### 3.2 Verificar la URL de la API
+
+Los entornos de Angular (`src/environments/environment.development.ts` y `environment.ts`) ya están configurados para comunicarse con la API de Django:
+```typescript
+export const environment = {
+  production: false,
+  apiUrl: 'http://127.0.0.1:8000/api'
+};
+```
+
+### 3.3 Iniciar el Servidor de Desarrollo de Angular
+
+```bash
+npm start
+```
+*(Este comando ejecuta `ng serve`).*
+
+Una vez compilado, aparecerá:
+```
+Application bundle generation complete.
+** Angular Live Development Server is listening on localhost:4200, open your browser on http://localhost:4200/ **
+```
+
+Abrí tu navegador web en:
+👉 **`http://localhost:4200/`**
+
+---
+
+## Paso 4: Comprobación de la Integración en Vivo
+
+Al navegar por la aplicación, el Frontend Angular consume en vivo las respuestas generadas por Django REST Framework desde MariaDB:
+
+1. **Pantalla Home (`/home`):** Carga el listado de habitaciones desde `GET /api/habitaciones/`.
+2. **Quiénes Somos (`/quienes-somos`):** Muestra al equipo de Brigada Z desde `GET /api/integrantes/`.
+3. **Login (`/login`):** Valida credenciales contra `POST /api/auth/login/` (por ejemplo, con `admin@brigadahostel.com` / `admin123`).
+4. **Dashboard Admin (`/dashboard/admin`):**
+   - **Métricas:** Consulta `GET /api/dashboard/metricas/` y calcula en tiempo real los KPIs a partir de las reservas registradas en MariaDB.
+   - **Módulo Huéspedes:** Obtiene las reservas desde `GET /api/reservas/` y construye dinámicamente el directorio con estados y subtotales.
+   - **Gestión de Reservas (`/dashboard/admin/reservas`):** Permite filtrar, editar con `PATCH`, confirmar/cancelar estados y eliminar con `DELETE` impactando directamente sobre MariaDB.
+5. **Crear Reserva (`/dashboard/usuario/reservas` o Modal Público):** Envía `POST /api/reservas/`, validando fechas y calculando importes con persistencia inmediata en la base de datos.
+
+---
+
+## Paso 5: Ejecución de Suites de Pruebas
+
+Para garantizar la estabilidad del proyecto completo:
+
+### Pruebas Unitarias del Backend (Django):
+En la terminal del Backend (`BackEnd/`):
+```bash
+python manage.py test dashboard --settings=brigada_backend.test_settings
+```
+*(Verifica 13 pruebas unitarias de estados HTTP y lógica de negocio).*
+
+### Verificación Integral de Endpoints:
+```bash
+python verify_api.py
+```
+*(Ejecuta 14 validaciones automáticas de requests contra todos los endpoints y métodos HTTP).*
+
+### Pruebas Unitarias del Frontend (Angular):
+En la terminal del Frontend (`FrontEnd/`):
+```bash
+npm test
+```
+
+---
+
+## 🛠️ Preguntas Frecuentes y Solución de Problemas
+
+### 1. Error: `OperationalError: (2002, "Can't connect to server on '127.0.0.1'")`
+* **Causa:** El servicio de MariaDB no está iniciado.
+* **Solución:**
+  - En Linux: ejecutá `sudo systemctl start mariadb`.
+  - En Windows: abrí el panel de XAMPP y hacé clic en **Start** en MySQL/MariaDB.
+
+### 2. Error: `OperationalError: (1045, "Access denied for user 'root'@'localhost'")`
+* **Causa:** Contraseña de MariaDB incorrecta o el usuario root requiere autenticación por socket.
+* **Solución:** Verificá el valor de `DB_PASSWORD` en tu archivo `BackEnd/.env`. Si tu MariaDB local no tiene contraseña, dejalo vacío: `DB_PASSWORD=`. Si creaste un usuario específico, ajustá `DB_USER` y `DB_PASSWORD`.
+
+### 3. Error: `Access-Control-Allow-Origin` (CORS) en la consola del navegador
+* **Causa:** El backend no permite peticiones desde el puerto de Angular.
+* **Solución:** `brigada_backend/settings.py` ya incluye `django-cors-headers` con `CORS_ALLOW_ALL_ORIGINS = True` y `http://localhost:4200` en la lista permitida. Verificá que el backend esté ejecutándose en el puerto `8000`.
+
+### 4. ¿Puedo seguir utilizando SQLite temporalmente si no tengo MariaDB instalado?
+* **Sí:** Podés cambiar temporalmente en `BackEnd/.env` la línea:
+  ```ini
+  DB_ENGINE=sqlite
+  ```
+  Django conmutará automáticamente al motor SQLite local (`database/brigada_hostel.sqlite3`). Sin embargo, para entregas y producción se debe utilizar `DB_ENGINE=mariadb`.
+
 
 

@@ -2,7 +2,7 @@
 Django settings for brigada_backend project.
 
 Configurado para BrigadaHostel con arquitectura REST (Django REST Framework),
-CORS habilitado para Angular y base de datos relacional SQLite integrada.
+CORS habilitado para Angular y base de datos relacional MariaDB / MySQL.
 """
 
 from pathlib import Path
@@ -74,16 +74,36 @@ WSGI_APPLICATION = 'brigada_backend.wsgi.application'
 
 
 # ==============================================================================
-# CONFIGURACIÓN DE BASE DE DATOS
-# Base de datos relacional SQLite integrada en archivo (autónoma, portable y sin servidores externos)
+# CONFIGURACIÓN DE BASE DE DATOS (MariaDB / MySQL)
+# Motor principal: MariaDB relacional conectada mediante 'django.db.backends.mysql' y PyMySQL.
+# Parámetros configurables mediante variables de entorno en el archivo .env.
 # ==============================================================================
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'database' / 'brigada_hostel.sqlite3',
+DB_ENGINE = os.getenv('DB_ENGINE', 'mariadb').lower()
+
+if DB_ENGINE in ('mariadb', 'mysql'):
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': os.getenv('DB_NAME', 'brigada_hostel_db'),
+            'USER': os.getenv('DB_USER', 'root'),
+            'PASSWORD': os.getenv('DB_PASSWORD', ''),
+            'HOST': os.getenv('DB_HOST', '127.0.0.1'),
+            'PORT': os.getenv('DB_PORT', '3306'),
+            'OPTIONS': {
+                'charset': 'utf8mb4',
+                'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+            },
+        }
     }
-}
+else:
+    # Soporte alternativo / fallback portable para entornos locales sin MariaDB
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'database' / 'brigada_hostel.sqlite3',
+        }
+    }
 
 
 # Password validation
