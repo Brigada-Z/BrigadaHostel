@@ -1,5 +1,7 @@
 from rest_framework import serializers
-from .models import Usuario, Habitacion, Servicio, Reserva, ReservaServicio, LogAuditoria, Notificacion, Integrante
+from .models import (
+    Usuario, Habitacion, Servicio, Reserva, ReservaServicio, LogAuditoria, Notificacion, Integrante, MensajeContacto
+)
 
 
 class UsuarioSerializer(serializers.ModelSerializer):
@@ -168,6 +170,19 @@ class IntegranteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Integrante
         fields = ['id', 'nombre', 'apellido', 'responsabilidad', 'dni', 'github']
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        data['id'] = str(data['id'])
+        return data
+
+
+class MensajeContactoSerializer(serializers.ModelSerializer):
+    fechaEnvio = serializers.DateTimeField(source='fecha_envio', read_only=True)
+
+    class Meta:
+        model = MensajeContacto
+        fields = ['id', 'nombre', 'email', 'asunto', 'mensaje', 'fechaEnvio']
 
     def to_representation(self, instance):
         data = super().to_representation(instance)

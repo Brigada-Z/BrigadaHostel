@@ -7,7 +7,8 @@ from .models import (
     ReservaServicio,
     LogAuditoria,
     Notificacion,
-    Integrante
+    Integrante,
+    MensajeContacto
 )
 
 
@@ -72,3 +73,9 @@ class NotificacionAdmin(admin.ModelAdmin):
 class IntegranteAdmin(admin.ModelAdmin):
     list_display = ('id', 'nombre', 'apellido', 'responsabilidad', 'dni')
     search_fields = ('nombre', 'apellido', 'dni')
+
+
+@admin.register(MensajeContacto)
+class MensajeContactoAdmin(admin.ModelAdmin):
+    list_display = ('id', 'nombre', 'email', 'asunto', 'fecha_envio')
+    search_fields = ('nombre', 'email', 'asunto')

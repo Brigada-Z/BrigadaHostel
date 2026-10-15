@@ -59,12 +59,21 @@
   height: 100%;
   background-color: #f8f9fa;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
 }
 
 .public-page .integrante-card strong {
   color: #222222;
   font-size: 0.95rem;
+}
+
+.public-page .integrante-card a {
+  color: #1f4e79;
+  font-size: 0.9rem;
+  text-decoration: underline;
+  overflow-wrap: anywhere;
 }
 
 .public-page .pie {
@@ -79,4 +88,26 @@
   .public-page .navbar-dark .navbar-nav .nav-link {
     margin: 4px 0;
   }
+}
+
+.public-page .form-label {
+  font-weight: 600;
+  color: #1f4e79;
+}
+
+.public-page .form-control {
+  border-radius: 6px;
+}
+
+.public-page textarea.form-control {
+  resize: vertical;
+}
+
+.public-page .btn-primary {
+  background-color: #1f4e79;
+  border-color: transparent;
+}
+
+.public-page .btn-primary:hover {
+  background-color: #163b5d;
 }

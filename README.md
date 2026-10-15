@@ -1304,16 +1304,53 @@ En `dashboard/models.py`, el modelo `Reserva` que respalda el directorio incorpo
 | :--- | :--- | :--- | :--- |
 | `GET` | `/api/` | Mapa de recursos disponibles en la API | `200` |
 | `GET` | `/api/reservas/` | Listado de reservas (filtros: `?estado=`, `?search=`, `?tipoHabitacion=`) | `200` |
-| `POST` | `/api/reservas/` | Crear nueva reserva con validación de fechas y cálculo de importes | `201`, `400` |
+| `POST` | `/api/reservas/` | Crear nueva reserva con validación de fechas, cálculo de importes y control de disponibilidad (ver 12.6) | `201`, `400`, `409` |
 | `GET` | `/api/reservas/<id>/` | Detalle completo de una reserva por ID | `200`, `404` |
 | `PATCH` | `/api/reservas/<id>/` | Modificación parcial de datos de una reserva | `200`, `400`, `404` |
 | `PATCH` | `/api/reservas/<id>/estado/`| Actualización directa del estado (`pendiente`, `confirmada`, `cancelada`) | `200`, `400`, `404` |
 | `DELETE` | `/api/reservas/<id>/` | Eliminación física de una reserva | `204`, `404` |
-| `GET` | `/api/habitaciones/` | Catálogo de habitaciones operativas (`?disponible=true`) | `200` |
+| `GET` | `/api/habitaciones/` | Catálogo de habitaciones operativas (`?disponible=true`; con `?fechaIngreso=&fechaSalida=` devuelve solo las libres en ese rango) | `200`, `400` |
 | `POST` | `/api/habitaciones/` | Registro de una nueva unidad habitacional | `201`, `400` |
 | `GET` | `/api/dashboard/metricas/`| Métricas ejecutivas en vivo (ocupación, check-ins hoy, ratio cancelación, ingresos) | `200` |
 | `GET` | `/api/integrantes/` | Nómina del equipo de desarrollo (Quiénes Somos) | `200` |
+| `GET` | `/api/contacto/` | Mensajes recibidos desde el formulario de contacto (Quiénes Somos) | `200` |
+| `POST` | `/api/contacto/` | Envío de un mensaje del formulario de contacto (ver 12.5) | `201`, `400` |
 | `POST` | `/api/auth/login/` | Autenticación con email y contraseña con control de intentos | `200`, `400`, `401`, `403` |
+
+---
+
+## 12.5 Sobre Nosotros: Formulario de Contacto conectado a Django
+
+Ubicación: `pages/quienes-somos` (ruta `/quienes-somos`).
+
+La sección incorpora un **formulario de contacto** (formulario reactivo) que envía los mensajes al backend mediante `ContactoService` → `POST /api/contacto/`. Los mensajes se persisten en la tabla `mensajes_contacto` (modelo `MensajeContacto`, migración `0002_mensajecontacto`).
+
+### Endpoints consumidos
+| Método | Ruta | Uso en la sección |
+| :--- | :--- | :--- |
+| `GET` | `/api/integrantes/` | Integrantes del equipo (nombre, apellido y enlace de GitHub) |
+| `POST` | `/api/contacto/` | Registro del mensaje de contacto |
+
+### Validaciones
+- **Frontend:** nombre (3 a 120 caracteres), email válido, asunto (3 a 150) y mensaje (10 a 1000, con contador de caracteres). Si el formulario es inválido no se envía la petición.
+- **Backend:** el modelo `MensajeContacto` aplica `MinLengthValidator` y largos máximos. Ante datos inválidos responde `400 BAD REQUEST` con los errores por campo, que el formulario muestra debajo de cada campo (por ejemplo, un email sin dominio de primer nivel).
+- **Respuesta exitosa:** `201 CREATED`, mensaje de confirmación al usuario y limpieza del formulario.
+
+### Estándares
+- HTML renderizado validado en el **W3C Nu HTML Checker** sin errores ni advertencias, y CSS validado en el **W3C CSS Validator** sin errores.
+- **Lighthouse** (build de producción): Performance, Accessibility, Best Practices y SEO en verde, tanto en mobile como en desktop.
+
+> Para crear la tabla en una base existente: `python manage.py migrate`. El script `database/init_db.sql` también incluye la tabla `mensajes_contacto`.
+
+---
+
+## 12.6 Control de Disponibilidad (solapamiento de fechas)
+
+Implementa el paso **Control de Disponibilidad** del diagrama de secuencia UML (B.3) mediante `DisponibilidadService` (`dashboard/services.py`), para evitar el overbooking:
+
+- Al crear una reserva (`POST /api/reservas/`) se buscan las reservas **activas** (pendientes o confirmadas) cuyas fechas se superponen con las solicitadas. Las reservas canceladas no ocupan lugar y el día de salida queda libre para un nuevo ingreso.
+- El cupo de cada tipo de habitación es la cantidad de habitaciones habilitadas (`disponible = true`) de ese tipo. Si no queda cupo, se responde **`409 CONFLICT`** con el motivo (por ejemplo: *"No hay habitaciones 'Doble' disponibles del 2026-10-12 al 2026-10-13"*).
+- `GET /api/habitaciones/?fechaIngreso=AAAA-MM-DD&fechaSalida=AAAA-MM-DD` devuelve solo las habitaciones con cupo en ese rango; si el rango es inválido responde `400 BAD REQUEST`.
 
 ---
 
@@ -1513,13 +1550,13 @@ Abrí tu navegador web en:
 Al navegar por la aplicación, el Frontend Angular consume en vivo las respuestas generadas por Django REST Framework desde MariaDB:
 
 1. **Pantalla Home (`/home`):** Carga el listado de habitaciones desde `GET /api/habitaciones/`.
-2. **Quiénes Somos (`/quienes-somos`):** Muestra al equipo de Brigada Z desde `GET /api/integrantes/`.
+2. **Quiénes Somos (`/quienes-somos`):** Muestra al equipo de Brigada Z desde `GET /api/integrantes/` y envía el formulario de contacto con `POST /api/contacto/`.
 3. **Login (`/login`):** Valida credenciales contra `POST /api/auth/login/` (por ejemplo, con `admin@brigadahostel.com` / `admin123`).
 4. **Dashboard Admin (`/dashboard/admin`):**
    - **Métricas:** Consulta `GET /api/dashboard/metricas/` y calcula en tiempo real los KPIs a partir de las reservas registradas en MariaDB.
    - **Módulo Huéspedes:** Obtiene las reservas desde `GET /api/reservas/` y construye dinámicamente el directorio con estados y subtotales.
    - **Gestión de Reservas (`/dashboard/admin/reservas`):** Permite filtrar, editar con `PATCH`, confirmar/cancelar estados y eliminar con `DELETE` impactando directamente sobre MariaDB.
-5. **Crear Reserva (`/dashboard/usuario/reservas` o Modal Público):** Envía `POST /api/reservas/`, validando fechas y calculando importes con persistencia inmediata en la base de datos.
+5. **Crear Reserva (`/dashboard/usuario/reservas` o Modal Público):** Envía `POST /api/reservas/`, validando fechas, disponibilidad (`409 CONFLICT` si las fechas se superponen) y calculando importes con persistencia inmediata en la base de datos.
 
 ---
 
@@ -1532,7 +1569,7 @@ En la terminal del Backend (`BackEnd/`):
 ```bash
 python manage.py test dashboard --settings=brigada_backend.test_settings
 ```
-*(Verifica 13 pruebas unitarias de estados HTTP y lógica de negocio).*
+*(Verifica 22 pruebas unitarias de estados HTTP y lógica de negocio, incluyendo el formulario de contacto y el control de disponibilidad con `409 CONFLICT`).*
 
 ### Verificación Integral de Endpoints:
 ```bash
