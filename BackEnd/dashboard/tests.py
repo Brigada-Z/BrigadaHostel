@@ -2,7 +2,7 @@ from django.test import TestCase
 from rest_framework.test import APIClient
 from rest_framework import status
 from datetime import date, timedelta
-from .models import Usuario, Habitacion, Reserva, Servicio, Integrante
+from .models import Usuario, Habitacion, Reserva, Servicio, Integrante, MensajeContacto
 
 
 class DashboardAPITests(TestCase):
@@ -170,4 +170,94 @@ class DashboardAPITests(TestCase):
     def test_login_vacio_devuelve_400_bad_request(self):
         """POST /api/auth/login/ sin datos requeridos retorna 400 BAD REQUEST"""
         response = self.client.post('/api/auth/login/', {}, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    # --------------------------------------------------------------------------
+    # 5. Pruebas del Formulario de Contacto (Quiénes Somos)
+    # --------------------------------------------------------------------------
+    def test_post_contacto_valido_devuelve_201_created(self):
+        """POST /api/contacto/ con datos válidos retorna 201 CREATED y persiste el mensaje"""
+        payload = {
+            "nombre": "Lucía Fernández",
+            "email": "lucia@test.com",
+            "asunto": "Consulta por grupos",
+            "mensaje": "Quisiera saber si tienen tarifas para grupos de estudiantes."
+        }
+        response = self.client.post('/api/contacto/', payload, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.data['asunto'], 'Consulta por grupos')
+        self.assertIn('fechaEnvio', response.data)
+        self.assertEqual(MensajeContacto.objects.count(), 1)
+
+    def test_post_contacto_invalido_devuelve_400_bad_request(self):
+        """POST /api/contacto/ con email inválido y mensaje corto retorna 400 BAD REQUEST"""
+        payload = {"nombre": "Lu", "email": "no-es-un-email", "asunto": "Hola", "mensaje": "Corto"}
+        response = self.client.post('/api/contacto/', payload, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn('email', response.data['errores'])
+        self.assertIn('mensaje', response.data['errores'])
+        self.assertIn('nombre', response.data['errores'])
+        self.assertEqual(MensajeContacto.objects.count(), 0)
+
+    def test_post_contacto_mensaje_demasiado_largo_devuelve_400_bad_request(self):
+        """POST /api/contacto/ con un mensaje de más de 1000 caracteres retorna 400 BAD REQUEST"""
+        payload = {"nombre": "Lucía", "email": "lucia@test.com", "asunto": "Consulta", "mensaje": "a" * 1001}
+        response = self.client.post('/api/contacto/', payload, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn('mensaje', response.data['errores'])
+
+    def test_get_contacto_devuelve_200_ok(self):
+        """GET /api/contacto/ retorna 200 OK con la lista de mensajes"""
+        MensajeContacto.objects.create(
+            nombre="Lucía", email="lucia@test.com", asunto="Consulta", mensaje="Mensaje de prueba válido."
+        )
+        response = self.client.get('/api/contacto/')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 1)
+
+    # --------------------------------------------------------------------------
+    # 6. Pruebas de Disponibilidad (solapamiento de fechas - UML B.3)
+    # --------------------------------------------------------------------------
+    def _payload_individual(self, desde, hasta):
+        return {
+            "nombre": "Lucía Fernández",
+            "email": "lucia@test.com",
+            "tipoHabitacion": "Individual",
+            "fechaIngreso": str(date.today() + timedelta(days=desde)),
+            "fechaSalida": str(date.today() + timedelta(days=hasta)),
+            "huespedes": 1,
+            "estado": "pendiente"
+        }
+
+    def test_post_reserva_superpuesta_devuelve_409_conflict(self):
+        """POST /api/reservas/ que se superpone con una reserva activa sin cupo libre retorna 409 CONFLICT"""
+        response = self.client.post('/api/reservas/', self._payload_individual(1, 2), format='json')
+        self.assertEqual(response.status_code, status.HTTP_409_CONFLICT)
+        self.assertIn('error', response.data)
+        self.assertEqual(Reserva.objects.count(), 1)
+
+    def test_post_reserva_desde_el_dia_de_salida_devuelve_201_created(self):
+        """El día de salida de una reserva queda libre para que ingrese otra (201 CREATED)"""
+        response = self.client.post('/api/reservas/', self._payload_individual(3, 5), format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    def test_post_reserva_sobre_reserva_cancelada_devuelve_201_created(self):
+        """Una reserva cancelada libera el cupo para esas fechas (201 CREATED)"""
+        self.reserva.estado = 'cancelada'
+        self.reserva.save()
+        response = self.client.post('/api/reservas/', self._payload_individual(1, 2), format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    def test_get_habitaciones_por_fechas_excluye_las_ocupadas(self):
+        """GET /api/habitaciones/?fechaIngreso&fechaSalida devuelve solo habitaciones con cupo en el rango"""
+        Habitacion.objects.create(numero="102", tipo="Doble", precio_noche=45000.00, capacidad=2, disponible=True)
+        desde = date.today() + timedelta(days=1)
+        hasta = date.today() + timedelta(days=2)
+        response = self.client.get(f'/api/habitaciones/?fechaIngreso={desde}&fechaSalida={hasta}')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual([h['tipo'] for h in response.data], ['Doble'])
+
+    def test_get_habitaciones_con_rango_invalido_devuelve_400_bad_request(self):
+        """GET /api/habitaciones/ con fecha de salida anterior a la de ingreso retorna 400 BAD REQUEST"""
+        response = self.client.get('/api/habitaciones/?fechaIngreso=2026-11-10&fechaSalida=2026-11-05')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)

@@ -5,7 +5,8 @@ Capa de Servicios de Negocio (Business Logic Services) - Principios SOLID:
 - D (Dependency Inversion): Las vistas dependen de esta capa de servicios para delegar lógica de negocio y efectos secundarios.
 """
 
-from typing import Tuple, Dict, Any, Optional
+from datetime import date
+from typing import Tuple, Dict, Any, Optional, List
 from django.utils import timezone
 from django.db.models import Sum
 from .models import (
@@ -14,6 +15,58 @@ from .models import (
     Reserva,
     LogAuditoria
 )
+from .selectors import ReservaSelector, HabitacionSelector
+
+
+class DisponibilidadService:
+    """
+    Control de disponibilidad de habitaciones (diagrama de secuencia UML B.3).
+    Evita el overbooking: rechaza reservas cuyas fechas se superponen con otras activas
+    cuando ya no quedan habitaciones libres del tipo solicitado.
+    """
+
+    @staticmethod
+    def verificar_disponibilidad(
+        tipo_habitacion: Optional[str],
+        fecha_ingreso: Optional[date],
+        fecha_salida: Optional[date],
+        habitacion: Optional[Habitacion] = None,
+        excluir_reserva_id: Optional[int] = None
+    ) -> Tuple[bool, Optional[str]]:
+        """
+        Retorna (True, None) si hay cupo o (False, motivo) si las fechas se superponen.
+        El cupo de un tipo es la cantidad de habitaciones habilitadas de ese tipo.
+        """
+        tipo = habitacion.tipo if habitacion else tipo_habitacion
+        if not tipo or not fecha_ingreso or not fecha_salida:
+            return True, None
+
+        if habitacion is not None and not habitacion.disponible:
+            return False, f"La habitación {habitacion.numero or habitacion.id} no está habilitada para reservas."
+
+        superpuestas = ReservaSelector.reservas_superpuestas(fecha_ingreso, fecha_salida, excluir_reserva_id)
+
+        if habitacion is not None and superpuestas.filter(habitacion=habitacion).exists():
+            return False, f"La habitación {habitacion.numero or habitacion.id} ya está reservada en esas fechas."
+
+        cupos = HabitacionSelector.filter_habitaciones(disponible=True).filter(tipo=tipo).count()
+        ocupadas = superpuestas.filter(tipo_habitacion=tipo).count()
+        if ocupadas >= cupos:
+            return False, (
+                f"No hay habitaciones '{tipo}' disponibles del {fecha_ingreso} al {fecha_salida}: "
+                "las fechas se superponen con reservas existentes."
+            )
+
+        return True, None
+
+    @classmethod
+    def habitaciones_disponibles(cls, fecha_ingreso: date, fecha_salida: date) -> List[Habitacion]:
+        """Habitaciones habilitadas con cupo libre durante todo el rango de fechas indicado."""
+        return [
+            habitacion
+            for habitacion in HabitacionSelector.filter_habitaciones(disponible=True)
+            if cls.verificar_disponibilidad(habitacion.tipo, fecha_ingreso, fecha_salida, habitacion=habitacion)[0]
+        ]
 
 
 class ReservaService:

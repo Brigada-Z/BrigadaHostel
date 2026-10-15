@@ -22,6 +22,7 @@ DROP TABLE IF EXISTS `reservas`;
 DROP TABLE IF EXISTS `servicios`;
 DROP TABLE IF EXISTS `habitaciones`;
 DROP TABLE IF EXISTS `integrantes`;
+DROP TABLE IF EXISTS `mensajes_contacto`;
 DROP TABLE IF EXISTS `usuarios`;
 
 CREATE TABLE `usuarios` (
@@ -139,6 +140,18 @@ CREATE TABLE `integrantes` (
     `github` VARCHAR(150) NOT NULL DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- ----------------------------------------------------------------------------
+-- 9. Tabla: mensajes_contacto (Formulario de contacto de Quiénes Somos)
+-- ----------------------------------------------------------------------------
+CREATE TABLE `mensajes_contacto` (
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `nombre` VARCHAR(120) NOT NULL,
+    `email` VARCHAR(120) NOT NULL,
+    `asunto` VARCHAR(150) NOT NULL,
+    `mensaje` TEXT NOT NULL,
+    `fecha_envio` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 SET FOREIGN_KEY_CHECKS = 1;
 
 -- ============================================================================
@@ -175,7 +188,7 @@ INSERT INTO `reservas` (`id`, `numero_reserva`, `usuario_id`, `habitacion_id`, `
 
 -- Integrantes de la Brigada Z (Equipo del Proyecto)
 INSERT INTO `integrantes` (`id`, `nombre`, `apellido`, `responsabilidad`, `dni`, `github`) VALUES
-(1, 'Giuliano', 'BATISTELA', 'Modelado DER y Backend', '42561123', 'https://github.com/gbatistela'),
+(1, 'Giuliano', 'BATISTELLA', 'Modelado DER y Backend', '42561123', 'https://github.com/gbatistela'),
 (2, 'Alejo Nicolas', 'CAMOLOTTO', 'Arquitectura y Documentación', '44606044', 'https://github.com/Camolotto'),
 (3, 'Mauricio Emiliano', 'FERREYRA', 'Frontend Angular y Vistas', '38158836', 'https://github.com/EmiTeck'),
 (4, 'Agustin Nicolas', 'GALLARDO', 'Backend Django y Base de Datos', '41600077', 'https://github.com/agstudio98'),

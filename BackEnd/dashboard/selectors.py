@@ -4,6 +4,7 @@ Centraliza todas las consultas y filtros a la base de datos, desacoplando
 la capa de datos de las vistas y servicios.
 """
 
+from datetime import date
 from typing import Optional
 from django.db.models import QuerySet, Q
 from .models import (
@@ -11,7 +12,8 @@ from .models import (
     Habitacion,
     Servicio,
     Reserva,
-    Integrante
+    Integrante,
+    MensajeContacto
 )
 
 
@@ -51,6 +53,25 @@ class ReservaSelector:
                 Q(numero_reserva__icontains=search)
             )
 
+        return queryset
+
+    @staticmethod
+    def reservas_superpuestas(
+        fecha_ingreso: date,
+        fecha_salida: date,
+        excluir_id: Optional[int] = None
+    ) -> QuerySet[Reserva]:
+        """
+        Reservas activas (pendientes o confirmadas) cuyas fechas se superponen con el rango dado.
+        El día de salida queda libre: una estadía puede empezar el mismo día en que termina otra.
+        """
+        queryset = Reserva.objects.filter(
+            estado__in=['pendiente', 'confirmada'],
+            fecha_ingreso__lt=fecha_salida,
+            fecha_salida__gt=fecha_ingreso
+        )
+        if excluir_id is not None:
+            queryset = queryset.exclude(pk=excluir_id)
         return queryset
 
 
@@ -114,3 +135,11 @@ class IntegranteSelector:
     @staticmethod
     def get_all() -> QuerySet[Integrante]:
         return Integrante.objects.all()
+
+
+class MensajeContactoSelector:
+    """Selector para los mensajes enviados desde el formulario de contacto."""
+
+    @staticmethod
+    def get_all() -> QuerySet[MensajeContacto]:
+        return MensajeContacto.objects.all()

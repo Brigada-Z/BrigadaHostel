@@ -269,7 +269,7 @@ class Command(BaseCommand):
 
         # 5. Integrantes
         integrantes_data = [
-            {'id': 1, 'nombre': 'Giuliano', 'apellido': 'BATISTELA', 'responsabilidad': 'Modelado DER y Backend', 'dni': '42561123', 'github': 'https://github.com/gbatistela'},
+            {'id': 1, 'nombre': 'Giuliano', 'apellido': 'BATISTELLA', 'responsabilidad': 'Modelado DER y Backend', 'dni': '42561123', 'github': 'https://github.com/gbatistela'},
             {'id': 2, 'nombre': 'Alejo Nicolas', 'apellido': 'CAMOLOTTO', 'responsabilidad': 'Arquitectura y Documentación', 'dni': '44606044', 'github': 'https://github.com/Camolotto'},
             {'id': 3, 'nombre': 'Mauricio Emiliano', 'apellido': 'FERREYRA', 'responsabilidad': 'Frontend Angular y Vistas', 'dni': '38158836', 'github': 'https://github.com/EmiTeck'},
             {'id': 4, 'nombre': 'Agustin Nicolas', 'apellido': 'GALLARDO', 'responsabilidad': 'Backend Django y Base de Datos', 'dni': '41600077', 'github': 'https://github.com/agstudio98'},
