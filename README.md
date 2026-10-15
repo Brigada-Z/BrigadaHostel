@@ -1311,6 +1311,7 @@ En `dashboard/models.py`, el modelo `Reserva` que respalda el directorio incorpo
 | `DELETE` | `/api/reservas/<id>/` | Eliminación física de una reserva | `204`, `404` |
 | `GET` | `/api/habitaciones/` | Catálogo de habitaciones operativas (`?disponible=true`; con `?fechaIngreso=&fechaSalida=` devuelve solo las libres en ese rango) | `200`, `400` |
 | `POST` | `/api/habitaciones/` | Registro de una nueva unidad habitacional | `201`, `400` |
+| `GET` | `/api/servicios/` | Catálogo de servicios adicionales con su costo | `200` |
 | `GET` | `/api/dashboard/metricas/`| Métricas ejecutivas en vivo (ocupación, check-ins hoy, ratio cancelación, ingresos) | `200` |
 | `GET` | `/api/integrantes/` | Nómina del equipo de desarrollo (Quiénes Somos) | `200` |
 | `GET` | `/api/contacto/` | Mensajes recibidos desde el formulario de contacto (Quiénes Somos) | `200` |
@@ -1351,6 +1352,41 @@ Implementa el paso **Control de Disponibilidad** del diagrama de secuencia UML (
 - Al crear una reserva (`POST /api/reservas/`) se buscan las reservas **activas** (pendientes o confirmadas) cuyas fechas se superponen con las solicitadas. Las reservas canceladas no ocupan lugar y el día de salida queda libre para un nuevo ingreso.
 - El cupo de cada tipo de habitación es la cantidad de habitaciones habilitadas (`disponible = true`) de ese tipo. Si no queda cupo, se responde **`409 CONFLICT`** con el motivo (por ejemplo: *"No hay habitaciones 'Doble' disponibles del 2026-10-12 al 2026-10-13"*).
 - `GET /api/habitaciones/?fechaIngreso=AAAA-MM-DD&fechaSalida=AAAA-MM-DD` devuelve solo las habitaciones con cupo en ese rango; si el rango es inválido responde `400 BAD REQUEST`.
+
+---
+
+## 12.7 Inicio / Home con datos reales de Django
+
+Ubicación: `pages/home` (ruta `/home`).
+
+La vista de Inicio dejó de mostrar datos fijos: habitaciones, consultas, servicios e indicadores se obtienen de la API de Django. Los textos institucionales (bienvenida y propuesta de valor) se mantienen como contenido de presentación.
+
+### Endpoints consumidos
+| Método | Ruta | Uso en la vista |
+| :--- | :--- | :--- |
+| `GET` | `/api/habitaciones/` | Tarjetas "Habitaciones disponibles" y opciones del formulario |
+| `GET` | `/api/habitaciones/?fechaIngreso=&fechaSalida=` | Habitaciones libres para las fechas elegidas (ver 12.6) |
+| `POST` | `/api/reservas/` | Registro de la consulta de reserva (estado `pendiente`) |
+| `GET` | `/api/reservas/` | Tabla "Consultas registradas" (las 5 más recientes) |
+| `GET` | `/api/servicios/` | Servicios adicionales del "Resumen visual" |
+| `GET` | `/api/dashboard/metricas/` | Indicadores del "Resumen visual" (reservas por estado, habitaciones disponibles y ocupación de hoy) |
+
+### Formulario "Consultar disponibilidad"
+- Validaciones: nombre, email, fechas (la salida debe ser posterior al ingreso) y cantidad de huéspedes limitada por la **capacidad real** de la habitación elegida.
+- **Disponibilidad en tiempo real:** al completar las fechas, el selector muestra solo las habitaciones libres en ese rango (`DisponibilidadService` del frontend). Si la habitación elegida deja de estar libre, se limpia la selección y se avisa al usuario.
+- Respuestas del backend: `201` muestra el número de reserva `#BH-{id}`; `400` pide revisar los datos; `409` muestra el motivo devuelto por Django (fechas superpuestas sin cupo).
+
+### Detalles de implementación
+- La aplicación usa detección de cambios sin Zone.js (`provideZonelessChangeDetection`), por lo que la vista se actualiza con `ChangeDetectorRef.markForCheck()` al recibir cada respuesta. Antes de esta corrección, Home no mostraba los datos de Django.
+- Las consultas se muestran en el orden que devuelve Django (de la más reciente a la más antigua).
+- Cada sección tiene estado de carga, mensaje de error con botón **Reintentar** y mensaje para listas vacías.
+- **Responsive:** en pantallas chicas las tablas se muestran como tarjetas con la etiqueta de cada dato (`data-label`).
+
+### Estándares
+- **W3C:** `ViewEncapsulation.None` y bindings `[routerLink]` / `[formControl]` para que el HTML final no tenga atributos no estándar. HTML renderizado y CSS validados sin errores ni advertencias.
+- **Lighthouse** (build de producción): Performance, Accessibility, Best Practices y SEO en verde, tanto en mobile como en desktop. En `index.html` se quitó Bootstrap por CDN (ya se incluye desde `angular.json` y se cargaba dos veces), se agregó `meta description` y la preconexión a la API, y se sumó `public/robots.txt`.
+
+> Para auditar con Lighthouse y W3C se debe usar el build de producción (`ng build`), no `ng serve`: en modo desarrollo los archivos no están minificados ni comprimidos y Performance da resultados que no corresponden a la aplicación real.
 
 ---
 
@@ -1549,7 +1585,7 @@ Abrí tu navegador web en:
 
 Al navegar por la aplicación, el Frontend Angular consume en vivo las respuestas generadas por Django REST Framework desde MariaDB:
 
-1. **Pantalla Home (`/home`):** Carga el listado de habitaciones desde `GET /api/habitaciones/`.
+1. **Pantalla Home (`/home`):** Muestra habitaciones, servicios e indicadores desde `GET /api/habitaciones/`, `GET /api/servicios/` y `GET /api/dashboard/metricas/`, y las últimas consultas desde `GET /api/reservas/`. El formulario consulta las habitaciones libres para las fechas elegidas y registra la consulta con `POST /api/reservas/` (`409` si las fechas se superponen).
 2. **Quiénes Somos (`/quienes-somos`):** Muestra al equipo de Brigada Z desde `GET /api/integrantes/` y envía el formulario de contacto con `POST /api/contacto/`.
 3. **Login (`/login`):** Valida credenciales contra `POST /api/auth/login/` (por ejemplo, con `admin@brigadahostel.com` / `admin123`).
 4. **Dashboard Admin (`/dashboard/admin`):**
