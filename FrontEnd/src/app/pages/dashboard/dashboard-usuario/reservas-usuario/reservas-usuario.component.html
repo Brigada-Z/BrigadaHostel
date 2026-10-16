@@ -86,7 +86,7 @@
               </div>
             </div>
 
-            <!-- Catálogo Dinámico de Habitaciones desde db.json -->
+            <!-- Catálogo Dinámico de Habitaciones desde MariaDB (DRF) -->
             <div class="room-selector-box">
               <div class="flex-between mb-20">
                 <h3 class="m-0 font-weight-800 text-base">Elige tu tipo de habitación</h3>
@@ -379,7 +379,7 @@
 
   </form>
 
-  <!-- Modal Confirmación Éxito (Conectado a json-server) -->
+  <!-- Modal Confirmación Éxito (Conectado a MariaDB / Django REST Framework) -->
   @if (bookingSuccess && reservaConfirmada) {
     <div class="modal-backdrop-custom">
       <div class="modal-content-premium">
@@ -392,7 +392,7 @@
         <h2 class="text-2xl font-weight-800 mb-2">¡Reserva Registrada con Éxito!</h2>
         <p class="text-secondary mb-2">Código asignado por el servidor: <strong>#BH-{{ reservaConfirmada.id }}</strong></p>
         <p class="text-xs text-muted mb-4">
-          La reserva de <strong>{{ reservaConfirmada.nombre }}</strong> fue guardada en el archivo <code>FrontEnd/db.json</code> y ya se encuentra disponible para su confirmación en el Dashboard de Administración.
+          La reserva de <strong>{{ reservaConfirmada.nombre }}</strong> fue guardada en la base de datos relacional MariaDB y ya se encuentra disponible para su confirmación en el Dashboard de Administración.
         </p>
 
         <div class="d-flex gap-3 flex-wrap">

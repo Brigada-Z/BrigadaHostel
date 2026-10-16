@@ -57,11 +57,11 @@ BackEnd/
 
 | Capa | Archivo | Principio SOLID / Responsabilidad |
 | :--- | :--- | :--- |
-| **Modelos (Dominio)** | `models.py` | Entidades de datos mapeadas a tablas físicas MariaDB (`usuarios`, `habitaciones`, `servicios`, `reservas`, `reserva_servicios`, `logs_auditoria`, `notificaciones`, `integrantes`). |
+| **Modelos (Dominio)** | `models.py` | Entidades de datos mapeadas a tablas físicas MariaDB (`usuarios`, `habitaciones`, `servicios`, `reservas`, `reserva_servicios`, `logs_auditoria`, `notificaciones`, `integrantes`, `mensajes_contacto`). |
 | **Serializadores (DTOs)** | `serializers.py` | Validación de esquemas, conversión camelCase (Angular) ↔ snake_case (Django) y control de tipos. |
 | **Selectores (Lectura)** | `selectors.py` | **S (Single Responsibility)**: Centraliza lecturas del ORM (`select_related`, filtros por rango de fechas, estados). |
-| **Servicios (Negocio)** | `services.py` | **S / O / D**: Encapsula la lógica de negocio (cálculo de métricas, transiciones de estado de reservas, registro en log de auditoría). |
-| **Vistas (Controladores)** | `views.py` | **S / D**: Controladores HTTP que reciben el request, validan con serializers, delegan a servicios y retornan códigos HTTP explícitos (`200 OK`, `201 CREATED`, `204 NO CONTENT`, `400 BAD REQUEST`, `401 UNAUTHORIZED`, `404 NOT FOUND`). |
+| **Servicios (Negocio)** | `services.py` | **S / O / D**: Encapsula la lógica de negocio (cálculo de métricas, transiciones de estado de reservas, control de disponibilidad por solapamiento de fechas con `DisponibilidadService`, registro en log de auditoría). |
+| **Vistas (Controladores)** | `views.py` | **S / D**: Controladores HTTP que reciben el request, validan con serializers, delegan a servicios y retornan códigos HTTP explícitos (`200 OK`, `201 CREATED`, `204 NO CONTENT`, `400 BAD REQUEST`, `401 UNAUTHORIZED`, `404 NOT FOUND`, `409 CONFLICT`). |
 | **Comando de Poblado** | `management/commands/seed_db.py` | Inserta o actualiza datos iniciales idénticos al catálogo de habitaciones, usuarios, servicios y reservas. |
 
 ---
@@ -226,7 +226,7 @@ El servidor quedará disponible en:
    ```bash
    python manage.py test dashboard --settings=brigada_backend.test_settings
    ```
-   *(Ejecuta 13 tests unitarios cubriendo los códigos HTTP 200, 201, 204, 400, 401 y 404).*
+   *(Ejecuta 22 tests unitarios cubriendo los códigos HTTP 200, 201, 204, 400, 401, 404 y 409, incluyendo el formulario de contacto y el control de disponibilidad).*
 
 2. **Script de Verificación Integral de la API (14 verificaciones de endpoints):**
    ```bash
@@ -293,13 +293,15 @@ Para tener el sistema completo funcionando (Frontend consumiendo la API de Djang
 | :--- | :--- | :--- | :--- |
 | `GET` | `/api/` | Raíz de la API y mapa de recursos disponibles | `200` |
 | `GET` | `/api/reservas/` | Listar reservas (filtros: `?estado=`, `?search=`, `?tipoHabitacion=`) | `200` |
-| `POST` | `/api/reservas/` | Crear nueva reserva con validaciones de fechas y disponibilidad | `201`, `400` |
+| `POST` | `/api/reservas/` | Crear nueva reserva con validaciones de fechas y disponibilidad (`409` si las fechas se superponen y no queda cupo) | `201`, `400`, `409` |
 | `GET` | `/api/reservas/<id>/` | Detalle de reserva por ID | `200`, `404` |
 | `PATCH` | `/api/reservas/<id>/` | Modificación parcial de reserva | `200`, `400`, `404` |
 | `PATCH` | `/api/reservas/<id>/estado/`| Actualización directa del estado operativo (`pendiente`, `confirmada`, `cancelada`) | `200`, `400`, `404` |
 | `DELETE` | `/api/reservas/<id>/` | Eliminar reserva del sistema | `204`, `404` |
-| `GET` | `/api/habitaciones/` | Catálogo de habitaciones (`?disponible=true`) | `200` |
+| `GET` | `/api/habitaciones/` | Catálogo de habitaciones (`?disponible=true`; con `?fechaIngreso=&fechaSalida=` solo las libres en ese rango) | `200`, `400` |
 | `POST` | `/api/habitaciones/` | Registrar nueva habitación en el sistema | `201`, `400` |
 | `GET` | `/api/dashboard/metricas/`| Métricas en tiempo real (ocupación, check-ins, cancelaciones, ingresos) | `200` |
 | `GET` | `/api/integrantes/` | Listado del equipo de desarrollo (Quiénes Somos) | `200` |
+| `GET` | `/api/contacto/` | Mensajes recibidos desde el formulario de contacto (Quiénes Somos) | `200` |
+| `POST` | `/api/contacto/` | Registrar un mensaje del formulario de contacto (validaciones por campo) | `201`, `400` |
 | `POST` | `/api/auth/login/` | Autenticación de usuario para acceso al Dashboard con validación de intentos | `200`, `400`, `401`, `403` |

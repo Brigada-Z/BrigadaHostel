@@ -1,3 +1,5 @@
+from django.core.exceptions import ValidationError
+from django.core.validators import MinLengthValidator
 from django.db import models
 
 
@@ -99,7 +101,20 @@ class Reserva(models.Model):
         verbose_name_plural = 'Reservas'
         ordering = ['-fecha_creacion']
 
+    def clean(self):
+        super().clean()
+        if self.fecha_ingreso and self.fecha_salida:
+            if self.fecha_salida <= self.fecha_ingreso:
+                raise ValidationError({
+                    'fecha_salida': 'La fecha de salida debe ser posterior a la fecha de ingreso.'
+                })
+        if self.huespedes is not None and self.huespedes < 1:
+            raise ValidationError({
+                'huespedes': 'Debe haber al menos 1 huésped.'
+            })
+
     def save(self, *args, **kwargs):
+        self.clean()
         is_new = self.pk is None
         super().save(*args, **kwargs)
         if is_new and not self.numero_reserva:
@@ -171,3 +186,20 @@ class Integrante(models.Model):
 
     def __str__(self):
         return f"{self.nombre} {self.apellido}"
+
+
+class MensajeContacto(models.Model):
+    nombre = models.CharField(max_length=120, validators=[MinLengthValidator(3)])
+    email = models.EmailField(max_length=120)
+    asunto = models.CharField(max_length=150, validators=[MinLengthValidator(3)])
+    mensaje = models.TextField(max_length=1000, validators=[MinLengthValidator(10)])
+    fecha_envio = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = 'mensajes_contacto'
+        verbose_name = 'Mensaje de Contacto'
+        verbose_name_plural = 'Mensajes de Contacto'
+        ordering = ['-fecha_envio']
+
+    def __str__(self):
+        return f"{self.asunto} - {self.nombre} ({self.email})"

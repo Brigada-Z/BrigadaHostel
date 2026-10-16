@@ -1,0 +1,19 @@
+# Operating System Files
+.DS_Store
+Thumbs.db
+.fuse_hidden*
+*.swp
+*~
+
+# Python cache & virtual environment
+__pycache__/
+*.py[cod]
+BackEnd/venv/
+BackEnd/env/
+BackEnd/.env
+
+# Node & Angular
+FrontEnd/node_modules/
+FrontEnd/dist/
+FrontEnd/.angular/cache/
+package-lock.json

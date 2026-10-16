@@ -18,8 +18,7 @@
 9. About & Contributors
 10. Traspaso a Angular
 11. Evidencia 5 - Dashboard Dinámico con HttpClient, Formularios Reactivos y json-server
-12. Backend Django REST Framework (DRF) con Base de Datos MariaDB
-13. Guía Integral: Cómo Correr el Frontend (Angular) con el Backend (Django + MariaDB)
+12. Evidencia 6 - Backend Django REST Framework (DRF) con Base de Datos MariaDB
 
 ---
 
@@ -1126,7 +1125,9 @@ flowchart TD
 
 ---
 
-# 12. Backend Django REST Framework (DRF) con Base de Datos MariaDB
+
+
+# EVIDENCIA 6 - Migracion a Backend Django REST Framework (DRF) con Base de Datos MariaDB
 
 A partir de esta versión, BrigadaHostel cuenta con un backend empresarial desarrollado en **Django 5** y **Django REST Framework (DRF)**, reemplazando la base de datos prototipo SQLite por una infraestructura relacional robusta en **MariaDB** (`brigada_hostel_db`).
 
@@ -1303,20 +1304,93 @@ En `dashboard/models.py`, el modelo `Reserva` que respalda el directorio incorpo
 | :--- | :--- | :--- | :--- |
 | `GET` | `/api/` | Mapa de recursos disponibles en la API | `200` |
 | `GET` | `/api/reservas/` | Listado de reservas (filtros: `?estado=`, `?search=`, `?tipoHabitacion=`) | `200` |
-| `POST` | `/api/reservas/` | Crear nueva reserva con validación de fechas y cálculo de importes | `201`, `400` |
+| `POST` | `/api/reservas/` | Crear nueva reserva con validación de fechas, cálculo de importes y control de disponibilidad (ver 12.6) | `201`, `400`, `409` |
 | `GET` | `/api/reservas/<id>/` | Detalle completo de una reserva por ID | `200`, `404` |
 | `PATCH` | `/api/reservas/<id>/` | Modificación parcial de datos de una reserva | `200`, `400`, `404` |
 | `PATCH` | `/api/reservas/<id>/estado/`| Actualización directa del estado (`pendiente`, `confirmada`, `cancelada`) | `200`, `400`, `404` |
 | `DELETE` | `/api/reservas/<id>/` | Eliminación física de una reserva | `204`, `404` |
-| `GET` | `/api/habitaciones/` | Catálogo de habitaciones operativas (`?disponible=true`) | `200` |
+| `GET` | `/api/habitaciones/` | Catálogo de habitaciones operativas (`?disponible=true`; con `?fechaIngreso=&fechaSalida=` devuelve solo las libres en ese rango) | `200`, `400` |
 | `POST` | `/api/habitaciones/` | Registro de una nueva unidad habitacional | `201`, `400` |
+| `GET` | `/api/servicios/` | Catálogo de servicios adicionales con su costo | `200` |
 | `GET` | `/api/dashboard/metricas/`| Métricas ejecutivas en vivo (ocupación, check-ins hoy, ratio cancelación, ingresos) | `200` |
 | `GET` | `/api/integrantes/` | Nómina del equipo de desarrollo (Quiénes Somos) | `200` |
+| `GET` | `/api/contacto/` | Mensajes recibidos desde el formulario de contacto (Quiénes Somos) | `200` |
+| `POST` | `/api/contacto/` | Envío de un mensaje del formulario de contacto (ver 12.5) | `201`, `400` |
 | `POST` | `/api/auth/login/` | Autenticación con email y contraseña con control de intentos | `200`, `400`, `401`, `403` |
 
 ---
 
-# 13. Guía Integral: Cómo Correr el Frontend (Angular) con el Backend (Django + MariaDB)
+## 12.5 Sobre Nosotros: Formulario de Contacto conectado a Django
+
+Ubicación: `pages/quienes-somos` (ruta `/quienes-somos`).
+
+La sección incorpora un **formulario de contacto** (formulario reactivo) que envía los mensajes al backend mediante `ContactoService` → `POST /api/contacto/`. Los mensajes se persisten en la tabla `mensajes_contacto` (modelo `MensajeContacto`, migración `0002_mensajecontacto`).
+
+### Endpoints consumidos
+| Método | Ruta | Uso en la sección |
+| :--- | :--- | :--- |
+| `GET` | `/api/integrantes/` | Integrantes del equipo (nombre, apellido y enlace de GitHub) |
+| `POST` | `/api/contacto/` | Registro del mensaje de contacto |
+
+### Validaciones
+- **Frontend:** nombre (3 a 120 caracteres), email válido, asunto (3 a 150) y mensaje (10 a 1000, con contador de caracteres). Si el formulario es inválido no se envía la petición.
+- **Backend:** el modelo `MensajeContacto` aplica `MinLengthValidator` y largos máximos. Ante datos inválidos responde `400 BAD REQUEST` con los errores por campo, que el formulario muestra debajo de cada campo (por ejemplo, un email sin dominio de primer nivel).
+- **Respuesta exitosa:** `201 CREATED`, mensaje de confirmación al usuario y limpieza del formulario.
+
+### Estándares
+- HTML renderizado validado en el **W3C Nu HTML Checker** sin errores ni advertencias, y CSS validado en el **W3C CSS Validator** sin errores.
+- **Lighthouse** (build de producción): Performance, Accessibility, Best Practices y SEO en verde, tanto en mobile como en desktop.
+
+> Para crear la tabla en una base existente: `python manage.py migrate`. El script `database/init_db.sql` también incluye la tabla `mensajes_contacto`.
+
+---
+
+## 12.6 Control de Disponibilidad (solapamiento de fechas)
+
+Implementa el paso **Control de Disponibilidad** del diagrama de secuencia UML (B.3) mediante `DisponibilidadService` (`dashboard/services.py`), para evitar el overbooking:
+
+- Al crear una reserva (`POST /api/reservas/`) se buscan las reservas **activas** (pendientes o confirmadas) cuyas fechas se superponen con las solicitadas. Las reservas canceladas no ocupan lugar y el día de salida queda libre para un nuevo ingreso.
+- El cupo de cada tipo de habitación es la cantidad de habitaciones habilitadas (`disponible = true`) de ese tipo. Si no queda cupo, se responde **`409 CONFLICT`** con el motivo (por ejemplo: *"No hay habitaciones 'Doble' disponibles del 2026-10-12 al 2026-10-13"*).
+- `GET /api/habitaciones/?fechaIngreso=AAAA-MM-DD&fechaSalida=AAAA-MM-DD` devuelve solo las habitaciones con cupo en ese rango; si el rango es inválido responde `400 BAD REQUEST`.
+
+---
+
+## 12.7 Inicio / Home con datos reales de Django
+
+Ubicación: `pages/home` (ruta `/home`).
+
+La vista de Inicio dejó de mostrar datos fijos: habitaciones, consultas, servicios e indicadores se obtienen de la API de Django. Los textos institucionales (bienvenida y propuesta de valor) se mantienen como contenido de presentación.
+
+### Endpoints consumidos
+| Método | Ruta | Uso en la vista |
+| :--- | :--- | :--- |
+| `GET` | `/api/habitaciones/` | Tarjetas "Habitaciones disponibles" y opciones del formulario |
+| `GET` | `/api/habitaciones/?fechaIngreso=&fechaSalida=` | Habitaciones libres para las fechas elegidas (ver 12.6) |
+| `POST` | `/api/reservas/` | Registro de la consulta de reserva (estado `pendiente`) |
+| `GET` | `/api/reservas/` | Tabla "Consultas registradas" (las 5 más recientes) |
+| `GET` | `/api/servicios/` | Servicios adicionales del "Resumen visual" |
+| `GET` | `/api/dashboard/metricas/` | Indicadores del "Resumen visual" (reservas por estado, habitaciones disponibles y ocupación de hoy) |
+
+### Formulario "Consultar disponibilidad"
+- Validaciones: nombre, email, fechas (la salida debe ser posterior al ingreso) y cantidad de huéspedes limitada por la **capacidad real** de la habitación elegida.
+- **Disponibilidad en tiempo real:** al completar las fechas, el selector muestra solo las habitaciones libres en ese rango (`DisponibilidadService` del frontend). Si la habitación elegida deja de estar libre, se limpia la selección y se avisa al usuario.
+- Respuestas del backend: `201` muestra el número de reserva `#BH-{id}`; `400` pide revisar los datos; `409` muestra el motivo devuelto por Django (fechas superpuestas sin cupo).
+
+### Detalles de implementación
+- La aplicación usa detección de cambios sin Zone.js (`provideZonelessChangeDetection`), por lo que la vista se actualiza con `ChangeDetectorRef.markForCheck()` al recibir cada respuesta. Antes de esta corrección, Home no mostraba los datos de Django.
+- Las consultas se muestran en el orden que devuelve Django (de la más reciente a la más antigua).
+- Cada sección tiene estado de carga, mensaje de error con botón **Reintentar** y mensaje para listas vacías.
+- **Responsive:** en pantallas chicas las tablas se muestran como tarjetas con la etiqueta de cada dato (`data-label`).
+
+### Estándares
+- **W3C:** `ViewEncapsulation.None` y bindings `[routerLink]` / `[formControl]` para que el HTML final no tenga atributos no estándar. HTML renderizado y CSS validados sin errores ni advertencias.
+- **Lighthouse** (build de producción): Performance, Accessibility, Best Practices y SEO en verde, tanto en mobile como en desktop. En `index.html` se quitó Bootstrap por CDN (ya se incluye desde `angular.json` y se cargaba dos veces), se agregó `meta description` y la preconexión a la API, y se sumó `public/robots.txt`.
+
+> Para auditar con Lighthouse y W3C se debe usar el build de producción (`ng build`), no `ng serve`: en modo desarrollo los archivos no están minificados ni comprimidos y Performance da resultados que no corresponden a la aplicación real.
+
+---
+
+## Guía Integral: Cómo Correr el Frontend (Angular) con el Backend (Django + MariaDB)
 
 Esta guía detalla paso a paso cómo iniciar y sincronizar todo el ecosistema de BrigadaHostel de manera simultánea en una computadora de desarrollo.
 
@@ -1370,7 +1444,7 @@ FLUSH PRIVILEGES;
 EXIT;
 ```
 
-> 💡 **Opción rápida:** Podés importar directamente toda la estructura y datos de prueba desde el archivo SQL provisto:
+> **Opción rápida:** Podés importar directamente toda la estructura y datos de prueba desde el archivo SQL provisto:
 > ```bash
 > cd BackEnd
 > mariadb -u root -p < database/init_db.sql
@@ -1503,7 +1577,7 @@ Application bundle generation complete.
 ```
 
 Abrí tu navegador web en:
-👉 **`http://localhost:4200/`**
+**`http://localhost:4200/`**
 
 ---
 
@@ -1511,14 +1585,14 @@ Abrí tu navegador web en:
 
 Al navegar por la aplicación, el Frontend Angular consume en vivo las respuestas generadas por Django REST Framework desde MariaDB:
 
-1. **Pantalla Home (`/home`):** Carga el listado de habitaciones desde `GET /api/habitaciones/`.
-2. **Quiénes Somos (`/quienes-somos`):** Muestra al equipo de Brigada Z desde `GET /api/integrantes/`.
+1. **Pantalla Home (`/home`):** Muestra habitaciones, servicios e indicadores desde `GET /api/habitaciones/`, `GET /api/servicios/` y `GET /api/dashboard/metricas/`, y las últimas consultas desde `GET /api/reservas/`. El formulario consulta las habitaciones libres para las fechas elegidas y registra la consulta con `POST /api/reservas/` (`409` si las fechas se superponen).
+2. **Quiénes Somos (`/quienes-somos`):** Muestra al equipo de Brigada Z desde `GET /api/integrantes/` y envía el formulario de contacto con `POST /api/contacto/`.
 3. **Login (`/login`):** Valida credenciales contra `POST /api/auth/login/` (por ejemplo, con `admin@brigadahostel.com` / `admin123`).
 4. **Dashboard Admin (`/dashboard/admin`):**
    - **Métricas:** Consulta `GET /api/dashboard/metricas/` y calcula en tiempo real los KPIs a partir de las reservas registradas en MariaDB.
    - **Módulo Huéspedes:** Obtiene las reservas desde `GET /api/reservas/` y construye dinámicamente el directorio con estados y subtotales.
    - **Gestión de Reservas (`/dashboard/admin/reservas`):** Permite filtrar, editar con `PATCH`, confirmar/cancelar estados y eliminar con `DELETE` impactando directamente sobre MariaDB.
-5. **Crear Reserva (`/dashboard/usuario/reservas` o Modal Público):** Envía `POST /api/reservas/`, validando fechas y calculando importes con persistencia inmediata en la base de datos.
+5. **Crear Reserva (`/dashboard/usuario/reservas` o Modal Público):** Envía `POST /api/reservas/`, validando fechas, disponibilidad (`409 CONFLICT` si las fechas se superponen) y calculando importes con persistencia inmediata en la base de datos.
 
 ---
 
@@ -1531,7 +1605,7 @@ En la terminal del Backend (`BackEnd/`):
 ```bash
 python manage.py test dashboard --settings=brigada_backend.test_settings
 ```
-*(Verifica 13 pruebas unitarias de estados HTTP y lógica de negocio).*
+*(Verifica 22 pruebas unitarias de estados HTTP y lógica de negocio, incluyendo el formulario de contacto y el control de disponibilidad con `409 CONFLICT`).*
 
 ### Verificación Integral de Endpoints:
 ```bash
@@ -1547,7 +1621,7 @@ npm test
 
 ---
 
-## 🛠️ Preguntas Frecuentes y Solución de Problemas
+## Preguntas Frecuentes y Solución de Problemas
 
 ### 1. Error: `OperationalError: (2002, "Can't connect to server on '127.0.0.1'")`
 * **Causa:** El servicio de MariaDB no está iniciado.
@@ -1571,4 +1645,35 @@ npm test
   Django conmutará automáticamente al motor SQLite local (`database/brigada_hostel.sqlite3`). Sin embargo, para entregas y producción se debe utilizar `DB_ENGINE=mariadb`.
 
 
+## Diagrama de Secuencia del Sistema (Flujo de Reservas)
 
+El flujo del sistema se divide principalmente en dos fases operativas: la **Solicitud de Reserva** realizada por el huésped y la **Resolución de la Reserva** gestionada por el administrador.
+
+### Fase 1: Solicitud de Reserva (Rol Huésped)
+
+1. **Petición Inicial:** El cliente (`SPA Angular`) envía una solicitud HTTP `POST /reservas` con los datos de fechas (`checkIn`, `checkOut`) y la cantidad de huéspedes a través del `ReservaController`.
+2. **Autenticación y Validación:** 
+   - El controlador consulta al `AuthService` para validar que el token y el rol de usuario sean correctos.
+   - Se procesan las validaciones de formato mediante el `ValidacionService`. Si los datos son inválidos, se interrumpe el flujo devolviendo un error `400 Bad Request`.
+3. **Control de Disponibilidad:**
+   - Si los datos son válidos, el `ReservaService` solicita al `DisponibilidadService` comprobar los cupos.
+   - Este servicio consulta las habitaciones existentes en el repositorio y recorre las habitaciones candidatas verificando contra las reservas ya existentes (`ReserveRepository`).
+   - Si no hay disponibilidad, se responde con un código `409 Conflict` indicando que las fechas se superponen.
+4. **Persistencia y Creación:**
+   - Si hay disponibilidad, se registra la reserva con estado inicial `Pendiente` en la base de datos y se sincroniza con el servicio externo (`BrigadaHostel`).
+   - Finalmente, se devuelve una respuesta exitosa `201 Created` al cliente.
+
+---
+
+### Fase 2: Resolución de la Reserva (Rol Administrador)
+
+1. **Acción de Revisión:** El administrador (`SPA Angular`) envía una petición HTTP `PATCH /reservas/{id}` incluyendo la decisión tomada (aprobar o rechazar).
+2. **Validación de Permisos:** 
+   - Se valida la sesión y los privilegios de administrador mediante el `AuthService`. Si no cuenta con permisos, se deniega el acceso (`401 / 403`).
+3. **Procesamiento del Estado:**
+   - El sistema busca la reserva por su ID. Si el estado actual es distinto de `Pendiente`, se rechaza la operación con un `409 Conflict`.
+   - **Si el Administrador aprueba:** Se genera un código único de confirmación (`B-id`), se actualiza el estado a `Confirmada` y se comunica con el sistema externo.
+   - **Si el Administrador rechaza:** Se actualiza el estado de la reserva a `Cancelada` o `Rechazada`.
+4. **Notificación al Huésped:**
+   - Una vez actualizado el estado, el `NotificacionService` registra la notificación correspondiente en el sistema y, en caso de que el huésped tenga un correo registrado, se le envía un email informando el resultado.
+   - El flujo concluye devolviendo al cliente un código `200 OK` con el estado final y el código asociado.

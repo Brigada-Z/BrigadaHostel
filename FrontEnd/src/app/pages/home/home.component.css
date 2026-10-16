@@ -51,12 +51,17 @@
   color: #222222;
 }
 
-.public-page .integrante-card {
+.public-page .integrante-card,
+.public-page .habitacion-card {
   border: 1px solid #dddddd;
   border-radius: 6px;
   padding: 16px;
   height: 100%;
   background-color: #f8f9fa;
+}
+
+.public-page .habitacion-card h3 {
+  color: #1f4e79;
 }
 
 .public-page .pie {
@@ -73,6 +78,14 @@
   }
 }
 
+/* En móvil styles.css muestra cada fila de tabla como tarjeta: se quitan los bordes verticales de las celdas */
+@media (max-width: 768px) {
+  .public-page .table-bordered td {
+    border-left-width: 0;
+    border-right-width: 0;
+  }
+}
+
 .public-page .form-label {
   font-weight: 600;
   color: #1f4e79;
@@ -85,10 +98,9 @@
 
 .public-page .btn-primary {
   background-color: #1f4e79;
-  border-color: #1f4e79;
+  border-color: transparent;
 }
 
 .public-page .btn-primary:hover {
   background-color: #163b5d;
-  border-color: #163b5d;
 }
