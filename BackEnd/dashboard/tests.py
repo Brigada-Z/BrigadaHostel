@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.test import TestCase
 from rest_framework.test import APIClient
 from rest_framework import status
@@ -261,3 +262,42 @@ class DashboardAPITests(TestCase):
         """GET /api/habitaciones/ con fecha de salida anterior a la de ingreso retorna 400 BAD REQUEST"""
         response = self.client.get('/api/habitaciones/?fechaIngreso=2026-11-10&fechaSalida=2026-11-05')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_reserva_clean_valida_fechas_y_huespedes_en_capa_de_modelo(self):
+        """Validación en modelo: clean() lanza ValidationError si fecha_salida <= fecha_ingreso o huespedes < 1"""
+        reserva_fechas_invalidas = Reserva(
+            nombre="Tester",
+            email="tester@test.com",
+            tipo_habitacion="Individual",
+            fecha_ingreso=date(2026, 12, 10),
+            fecha_salida=date(2026, 12, 5),
+            huespedes=1
+        )
+        with self.assertRaises(ValidationError) as ctx:
+            reserva_fechas_invalidas.clean()
+        self.assertIn('fecha_salida', ctx.exception.message_dict)
+
+        reserva_cero_huespedes = Reserva(
+            nombre="Tester 2",
+            email="tester2@test.com",
+            tipo_habitacion="Individual",
+            fecha_ingreso=date(2026, 12, 10),
+            fecha_salida=date(2026, 12, 15),
+            huespedes=0
+        )
+        with self.assertRaises(ValidationError) as ctx:
+            reserva_cero_huespedes.clean()
+        self.assertIn('huespedes', ctx.exception.message_dict)
+
+    def test_reserva_save_ejecuta_clean_y_lanza_validation_error(self):
+        """Verificar que save() ejecuta automáticamente clean() y previene persistencia inválida"""
+        reserva = Reserva(
+            nombre="Tester Save",
+            email="save@test.com",
+            tipo_habitacion="Individual",
+            fecha_ingreso=date(2026, 12, 10),
+            fecha_salida=date(2026, 12, 5),
+            huespedes=1
+        )
+        with self.assertRaises(ValidationError):
+            reserva.save()

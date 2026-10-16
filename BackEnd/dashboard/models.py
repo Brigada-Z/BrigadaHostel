@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.core.validators import MinLengthValidator
 from django.db import models
 
@@ -100,7 +101,20 @@ class Reserva(models.Model):
         verbose_name_plural = 'Reservas'
         ordering = ['-fecha_creacion']
 
+    def clean(self):
+        super().clean()
+        if self.fecha_ingreso and self.fecha_salida:
+            if self.fecha_salida <= self.fecha_ingreso:
+                raise ValidationError({
+                    'fecha_salida': 'La fecha de salida debe ser posterior a la fecha de ingreso.'
+                })
+        if self.huespedes is not None and self.huespedes < 1:
+            raise ValidationError({
+                'huespedes': 'Debe haber al menos 1 huésped.'
+            })
+
     def save(self, *args, **kwargs):
+        self.clean()
         is_new = self.pk is None
         super().save(*args, **kwargs)
         if is_new and not self.numero_reserva:
