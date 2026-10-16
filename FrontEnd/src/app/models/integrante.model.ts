@@ -3,4 +3,5 @@ export interface Integrante {
   nombre: string;
   apellido: string;
   responsabilidad: string;
+  github?: string;
 }

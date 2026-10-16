@@ -1,10 +1,15 @@
+<!--
+  Enlaces y controles usan property binding ([routerLink], [formControl]) en lugar de atributos
+  estáticos (routerLink="...", formControlName="..."): así Angular no deja atributos no estándar
+  en el HTML final y la página valida sin errores en W3C.
+-->
 <div class="public-page d-flex flex-column min-vh-100">
   <header class="encabezado text-white text-center py-4">
     <div class="container">
       <h1 class="mb-2">Brigada Hostel</h1>
       <p class="mb-3">Sistema de gestión para hoteles pequeños y medianos</p>
 
-      <nav class="navbar navbar-expand-md navbar-dark p-0">
+      <nav class="navbar navbar-expand-md navbar-dark p-0" aria-label="Navegación principal">
         <div class="container-fluid justify-content-center position-relative">
           <button
             class="navbar-toggler"
@@ -21,15 +26,15 @@
           <div class="collapse navbar-collapse justify-content-center" id="menuPrincipalHome">
             <ul class="navbar-nav align-items-center">
               <li class="nav-item">
-                <a class="nav-link active" routerLink="/home">Inicio</a>
+                <a class="nav-link active" aria-current="page" [routerLink]="['/home']">Inicio</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" routerLink="/quienes-somos">Quiénes Somos</a>
+                <a class="nav-link" [routerLink]="['/quienes-somos']">Quiénes Somos</a>
               </li>
               <li class="nav-item">
                 <a
                   class="nav-link nav-dashboard"
-                  routerLink="/auth/login"
+                  [routerLink]="['/auth/login']"
                   title="Panel de Gestión"
                   aria-label="Panel de Gestión"
                 >
@@ -92,6 +97,49 @@
 
     <section class="card mb-4 shadow-sm">
       <div class="card-body">
+        <h2 class="card-title h4">Habitaciones disponibles</h2>
+        <p>Catálogo obtenido en tiempo real desde la API REST de BrigadaHostel.</p>
+
+        @if (cargandoHabitaciones) {
+          <div class="d-flex align-items-center gap-2" role="status">
+            <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+            <span>Cargando habitaciones...</span>
+          </div>
+        } @else if (errorHabitaciones) {
+          <div class="alert alert-danger d-flex flex-wrap align-items-center justify-content-between gap-2 mb-0" role="alert">
+            <span>{{ errorHabitaciones }}</span>
+            <button type="button" class="btn btn-sm btn-outline-dark" (click)="cargarHabitaciones()">Reintentar</button>
+          </div>
+        } @else {
+          <div class="row g-3">
+            @for (habitacion of habitaciones; track habitacion.id) {
+              <div class="col-12 col-md-6">
+                <article class="habitacion-card">
+                  <h3 class="h5 mb-2">{{ habitacion.tipo }}</h3>
+                  @if (habitacion.descripcion) {
+                    <p>{{ habitacion.descripcion }}</p>
+                  }
+                  <ul class="list-unstyled mb-0">
+                    <li>
+                      <strong>Capacidad:</strong>
+                      {{ habitacion.capacidad }} {{ habitacion.capacidad === 1 ? 'huésped' : 'huéspedes' }}
+                    </li>
+                    <li><strong>Precio por noche:</strong> ${{ habitacion.precioPorNoche | number: '1.0-0' }}</li>
+                  </ul>
+                </article>
+              </div>
+            } @empty {
+              <div class="col-12">
+                <div class="alert alert-info mb-0">No hay habitaciones disponibles en este momento.</div>
+              </div>
+            }
+          </div>
+        }
+      </div>
+    </section>
+
+    <section class="card mb-4 shadow-sm">
+      <div class="card-body">
         <h2 class="card-title h4">Consultar disponibilidad</h2>
         <p>
           Completá el formulario para registrar una consulta de reserva. La solicitud quedará
@@ -106,7 +154,8 @@
                 id="nombre"
                 type="text"
                 class="form-control"
-                formControlName="nombre"
+                autocomplete="name"
+                [formControl]="f.nombre"
                 placeholder="Ej: Juan Pérez"
               >
 
@@ -125,7 +174,8 @@
                 id="email"
                 type="email"
                 class="form-control"
-                formControlName="email"
+                autocomplete="email"
+                [formControl]="f.email"
                 placeholder="Ej: correo@email.com"
               >
 
@@ -144,7 +194,7 @@
                 id="fechaIngreso"
                 type="date"
                 class="form-control"
-                formControlName="fechaIngreso"
+                [formControl]="f.fechaIngreso"
               >
 
               @if (f.fechaIngreso.touched && f.fechaIngreso.hasError('required')) {
@@ -158,7 +208,7 @@
                 id="fechaSalida"
                 type="date"
                 class="form-control"
-                formControlName="fechaSalida"
+                [formControl]="f.fechaSalida"
               >
 
               @if (f.fechaSalida.touched && f.fechaSalida.hasError('required')) {
@@ -173,60 +223,85 @@
             </div>
 
             <div class="col-12 col-md-6">
+              <label for="habitacion" class="form-label">Tipo de habitación</label>
+              <select
+                id="habitacion"
+                class="form-select"
+                [formControl]="f.habitacionId"
+              >
+                <option value="">{{ cargandoHabitaciones ? 'Cargando habitaciones...' : 'Seleccionar tipo' }}</option>
+                @for (habitacion of opcionesHabitacion; track habitacion.id) {
+                  <option [value]="habitacion.id">
+                    {{ habitacion.tipo }} - Capacidad {{ habitacion.capacidad }} - ${{ habitacion.precioPorNoche | number: '1.0-0' }} por noche
+                  </option>
+                }
+              </select>
+
+              <div class="form-text" aria-live="polite">
+                @if (consultandoDisponibilidad) {
+                  Verificando disponibilidad para esas fechas...
+                } @else if (habitacionesLibres) {
+                  @if (habitacionesLibres.length > 0) {
+                    Habitaciones libres para las fechas elegidas: {{ habitacionesLibres.length }}.
+                  } @else {
+                    No hay habitaciones libres para las fechas elegidas. Probá con otras fechas.
+                  }
+                } @else {
+                  Elegí las fechas para ver solo las habitaciones libres.
+                }
+              </div>
+
+              @if (avisoDisponibilidad) {
+                <div class="text-danger small mt-1">{{ avisoDisponibilidad }}</div>
+              }
+
+              @if (f.habitacionId.touched && f.habitacionId.hasError('required')) {
+                <div class="text-danger small mt-1">Seleccioná un tipo de habitación.</div>
+              }
+            </div>
+
+            <div class="col-12 col-md-6">
               <label for="huespedes" class="form-label">Cantidad de huéspedes</label>
               <input
                 id="huespedes"
                 type="number"
                 class="form-control"
-                formControlName="huespedes"
+                [formControl]="f.huespedes"
                 min="1"
-                max="8"
+                [attr.max]="habitacionSeleccionada?.capacidad ?? null"
               >
 
               @if (f.huespedes.touched && f.huespedes.hasError('required')) {
                 <div class="text-danger small mt-1">La cantidad de huéspedes es obligatoria.</div>
               }
 
-              @if (f.huespedes.touched && (f.huespedes.hasError('min') || f.huespedes.hasError('max'))) {
-                <div class="text-danger small mt-1">La cantidad debe estar entre 1 y 8.</div>
+              @if (f.huespedes.touched && f.huespedes.hasError('min')) {
+                <div class="text-danger small mt-1">Debe haber al menos 1 huésped.</div>
               }
-            </div>
 
-            <div class="col-12 col-md-6">
-              <label for="tipoHabitacion" class="form-label">Tipo de habitación</label>
-              <select
-                id="tipoHabitacion"
-                class="form-select"
-                formControlName="tipoHabitacion"
-              >
-                <option value="">Seleccionar tipo</option>
-                @for (habitacion of habitaciones; track habitacion.id) {
-                  <option [value]="habitacion.tipo">
-                    {{ habitacion.tipo }} - Capacidad {{ habitacion.capacidad }} - ${{ habitacion.precioPorNoche }}
-                  </option>
-                }
-              </select>
-
-              @if (f.tipoHabitacion.touched && f.tipoHabitacion.hasError('required')) {
-                <div class="text-danger small mt-1">Seleccioná un tipo de habitación.</div>
+              @if (consultaReservaForm.hasError('capacidadExcedida') && (f.huespedes.touched || f.habitacionId.touched)) {
+                <div class="text-danger small mt-1">
+                  La habitación seleccionada admite hasta {{ consultaReservaForm.getError('capacidadExcedida') }}
+                  huéspedes.
+                </div>
               }
             </div>
           </div>
 
           @if (mensajeExito) {
-            <div class="alert alert-success mt-3 mb-0">
+            <div class="alert alert-success mt-3 mb-0" role="status">
               {{ mensajeExito }}
             </div>
           }
 
           @if (mensajeError) {
-            <div class="alert alert-danger mt-3 mb-0">
+            <div class="alert alert-danger mt-3 mb-0" role="alert">
               {{ mensajeError }}
             </div>
           }
 
           <div class="mt-4">
-            <button type="submit" class="btn btn-primary" [disabled]="isSubmitting">
+            <button type="submit" class="btn btn-primary" [disabled]="isSubmitting || cargandoHabitaciones || consultandoDisponibilidad">
               {{ isSubmitting ? 'Enviando...' : 'Registrar consulta' }}
             </button>
           </div>
@@ -238,10 +313,20 @@
       <div class="card-body">
         <h2 class="card-title h4">Consultas registradas</h2>
         <p>
-          Últimas consultas de reserva obtenidas desde la API de prueba con json-server.
+          Últimas consultas de reserva obtenidas desde la API REST de BrigadaHostel.
         </p>
 
-        @if (reservas.length === 0) {
+        @if (cargandoReservas) {
+          <div class="d-flex align-items-center gap-2" role="status">
+            <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+            <span>Cargando consultas...</span>
+          </div>
+        } @else if (errorReservas) {
+          <div class="alert alert-danger d-flex flex-wrap align-items-center justify-content-between gap-2 mb-0" role="alert">
+            <span>{{ errorReservas }}</span>
+            <button type="button" class="btn btn-sm btn-outline-dark" (click)="cargarReservas()">Reintentar</button>
+          </div>
+        } @else if (reservas.length === 0) {
           <div class="alert alert-info mb-0">
             Todavía no hay consultas registradas.
           </div>
@@ -250,24 +335,29 @@
             <table class="table table-bordered table-hover align-middle mb-0">
               <thead class="table-primary">
                 <tr>
-                  <th>Nombre</th>
-                  <th>Ingreso</th>
-                  <th>Salida</th>
-                  <th>Huéspedes</th>
-                  <th>Habitación</th>
-                  <th>Estado</th>
+                  <th scope="col">Nombre</th>
+                  <th scope="col">Ingreso</th>
+                  <th scope="col">Salida</th>
+                  <th scope="col">Huéspedes</th>
+                  <th scope="col">Habitación</th>
+                  <th scope="col">Estado</th>
                 </tr>
               </thead>
               <tbody>
                 @for (reserva of reservas; track reserva.id) {
                   <tr>
-                    <td>{{ reserva.nombre }}</td>
-                    <td>{{ reserva.fechaIngreso }}</td>
-                    <td>{{ reserva.fechaSalida }}</td>
-                    <td>{{ reserva.huespedes }}</td>
-                    <td>{{ reserva.tipoHabitacion }}</td>
-                    <td>
-                      <span class="badge text-bg-warning">
+                    <td data-label="Nombre">{{ reserva.nombre }}</td>
+                    <td data-label="Ingreso">{{ reserva.fechaIngreso | date: 'dd/MM/yyyy' }}</td>
+                    <td data-label="Salida">{{ reserva.fechaSalida | date: 'dd/MM/yyyy' }}</td>
+                    <td data-label="Huéspedes">{{ reserva.huespedes }}</td>
+                    <td data-label="Habitación">{{ reserva.tipoHabitacion }}</td>
+                    <td data-label="Estado">
+                      <span
+                        class="badge-status"
+                        [class.yellow]="reserva.estado === 'pendiente'"
+                        [class.green]="reserva.estado === 'confirmada'"
+                        [class.red]="reserva.estado === 'cancelada'"
+                      >
                         {{ reserva.estado }}
                       </span>
                     </td>
@@ -283,31 +373,67 @@
     <section class="card mb-4 shadow-sm">
       <div class="card-body">
         <h2 class="card-title h4">Resumen visual</h2>
+        <p>Indicadores calculados por el backend en el momento de la consulta.</p>
 
-        <div class="table-responsive">
-          <table class="table table-bordered table-hover align-middle mb-0">
-            <thead class="table-primary">
-              <tr>
-                <th>Área</th>
-                <th>Ejemplo de información</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Reservas</td>
-                <td>Reservas activas y próximas llegadas</td>
-              </tr>
-              <tr>
-                <td>Habitaciones</td>
-                <td>Disponibles, ocupadas o en mantenimiento</td>
-              </tr>
-              <tr>
-                <td>Servicios</td>
-                <td>Desayuno, cochera, lavandería u otros</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        @if (cargandoResumen) {
+          <div class="d-flex align-items-center gap-2" role="status">
+            <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+            <span>Cargando resumen...</span>
+          </div>
+        } @else if (errorResumen || !metricas) {
+          <div class="alert alert-danger d-flex flex-wrap align-items-center justify-content-between gap-2 mb-0" role="alert">
+            <span>{{ errorResumen }}</span>
+            <button type="button" class="btn btn-sm btn-outline-dark" (click)="cargarResumen()">Reintentar</button>
+          </div>
+        } @else {
+          <div class="table-responsive">
+            <table class="table table-bordered table-hover align-middle mb-0">
+              <thead class="table-primary">
+                <tr>
+                  <th scope="col">Área</th>
+                  <th scope="col">Estado actual</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td data-label="Área">Reservas</td>
+                  <td data-label="Estado actual">
+                    <ul class="list-unstyled mb-0">
+                      <li>Registradas: {{ metricas.totales.reservas }}</li>
+                      <li>Pendientes: {{ metricas.totales.pendientes }}</li>
+                      <li>Confirmadas: {{ metricas.totales.confirmadas }}</li>
+                      <li>Canceladas: {{ metricas.totales.canceladas }}</li>
+                    </ul>
+                  </td>
+                </tr>
+                <tr>
+                  <td data-label="Área">Habitaciones</td>
+                  <td data-label="Estado actual">
+                    <ul class="list-unstyled mb-0">
+                      <li>
+                        Disponibles: {{ metricas.totales.habitacionesDisponibles }}
+                        de {{ metricas.totales.habitaciones }}
+                      </li>
+                      <li>Ocupación de hoy: {{ metricas.ocupacionHoy.porcentaje | number: '1.0-1' }}%</li>
+                    </ul>
+                  </td>
+                </tr>
+                <tr>
+                  <td data-label="Área">Servicios</td>
+                  <td data-label="Estado actual">
+                    <ul class="list-unstyled mb-0">
+                      @for (servicio of servicios; track servicio.id) {
+                        <li>{{ servicio.nombre }} (${{ servicio.costo | number: '1.0-0' }})</li>
+                      } @empty {
+                        <li>No hay servicios adicionales cargados.</li>
+                      }
+                    </ul>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        }
       </div>
     </section>
   </main>

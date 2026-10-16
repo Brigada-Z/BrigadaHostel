@@ -85,7 +85,7 @@ export class ReservasUsuarioComponent implements OnInit {
         this.cdr.markForCheck();
       },
       error: (err) => {
-        console.error('Error al cargar habitaciones desde json-server:', err);
+        console.error('Error al cargar habitaciones desde el backend:', err);
         this.isLoadingHabitaciones = false;
         this.cdr.markForCheck();
       }
@@ -201,8 +201,8 @@ export class ReservasUsuarioComponent implements OnInit {
         this.cdr.markForCheck();
       },
       error: (err) => {
-        console.error('Error al guardar reserva en json-server:', err);
-        this.submitError = 'No se pudo guardar la reserva en el servidor. Verificá que json-server esté corriendo en el puerto 3000.';
+        console.error('Error al guardar reserva en el backend:', err);
+        this.submitError = 'No se pudo guardar la reserva en el servidor. Verificá que la API de Django REST Framework esté corriendo en el puerto 8000.';
         this.isSubmitting = false;
         this.cdr.markForCheck();
       }
