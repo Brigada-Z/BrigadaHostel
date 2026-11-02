@@ -203,3 +203,35 @@ class MensajeContacto(models.Model):
 
     def __str__(self):
         return f"{self.asunto} - {self.nombre} ({self.email})"
+
+
+class Incidencia(models.Model):
+    ESTADOS = [
+        ('abierta', 'Abierta'),
+        ('en_proceso', 'En Proceso'),
+        ('resuelta', 'Resuelta'),
+        ('cerrada', 'Cerrada'),
+    ]
+
+    SEVERIDADES = [
+        ('baja', 'Baja'),
+        ('media', 'Media'),
+        ('alta', 'Alta'),
+    ]
+
+    usuario = models.ForeignKey(Usuario, on_delete=models.SET_NULL, null=True, blank=True, related_name='incidencias')
+    habitacion = models.ForeignKey(Habitacion, on_delete=models.SET_NULL, null=True, blank=True, related_name='incidencias')
+    titulo = models.CharField(max_length=120)
+    descripcion = models.TextField(blank=True, default='')
+    severidad = models.CharField(max_length=20, choices=SEVERIDADES, default='media')
+    estado = models.CharField(max_length=20, choices=ESTADOS, default='abierta')
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = 'incidencias'
+        verbose_name = 'Incidencia'
+        verbose_name_plural = 'Incidencias'
+        ordering = ['-fecha_creacion']
+
+    def __str__(self) -> str:
+        return f"[{self.get_estado_display()}] {self.titulo} - Hab {self.habitacion.numero if self.habitacion else '-'}"

@@ -23,6 +23,70 @@
     --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* Tema oscuro (se aplica vía atributo data-theme en <html>, gestionado por PreferencesService) */
+[data-theme='dark'] {
+    --bg-main: #0f172a;
+    --bg-sidebar: #020617;
+    --bg-card: #1e293b;
+    --primary: #f8fafc;
+    --accent: #334155;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --text-light: #64748b;
+    --border: #334155;
+    --success: #10b981;
+    --danger: #ef4444;
+    --warning: #f59e0b;
+    --info: #0ea5e9;
+
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.4);
+    --shadow-premium: 0 20px 25px -5px rgba(0, 0, 0, 0.6), 0 10px 10px -5px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme='dark'] body,
+body[data-theme='dark'] {
+    background-color: var(--bg-main);
+    color: var(--text-main);
+}
+
+[data-theme='dark'] h1, [data-theme='dark'] h2, [data-theme='dark'] h3, [data-theme='dark'] h4, [data-theme='dark'] h5, [data-theme='dark'] h6 { color: var(--primary); }
+[data-theme='dark'] a { color: inherit; }
+[data-theme='dark'] .card, [data-theme='dark'] .content-section { background: var(--bg-card); border-color: var(--border); }
+[data-theme='dark'] .btn-outline { color: var(--text-main); border-color: var(--border); }
+[data-theme='dark'] .btn-outline:hover { background: #334155; border-color: #475569; }
+[data-theme='dark'] .input-field { background: #0f172a; color: var(--text-main); border-color: var(--border); }
+[data-theme='dark'] .auth-label { color: var(--text-muted); }
+[data-theme='dark'] .modal-content-premium { background: var(--bg-card); color: var(--text-main); }
+[data-theme='dark'] .toast-item-premium { background: var(--bg-sidebar); color: #fff; }
+[data-theme='dark'] .user-info { background: #1e293b; border-color: var(--border); }
+[data-theme='dark'] .user-avatar-small { background: var(--bg-sidebar); }
+[data-theme='dark'] .role-switcher { background: #0f172a; border-color: var(--border); }
+[data-theme='dark'] .role-label { color: var(--text-muted); }
+[data-theme='dark'] .role-label.active { background: var(--accent); color: #fff; }
+[data-theme='dark'] .header-title, [data-theme='dark'] .header-subtitle { color: var(--text-main); }
+[data-theme='dark'] .text-secondary { color: var(--text-muted) !important; }
+[data-theme='dark'] .text-xs-muted { color: var(--text-muted) !important; }
+[data-theme='dark'] .metric-value { color: var(--text-main); }
+[data-theme='dark'] .metric-card { background: var(--bg-card); border-color: var(--border); }
+[data-theme='dark'] .metric-title { color: var(--text-muted); }
+[data-theme='dark'] .badge-status.yellow { background: rgba(245, 158, 11, 0.2); color: #fbbf24; }
+[data-theme='dark'] .badge-status.green { background: rgba(16, 185, 129, 0.2); color: #34d399; }
+[data-theme='dark'] .badge-status.red { background: rgba(239, 68, 68, 0.2); color: #f87171; }
+[data-theme='dark'] .status-reserva-activa { background: rgba(16, 185, 129, 0.2); color: #34d399; }
+[data-theme='dark'] .status-badge-blue { background: rgba(14, 165, 233, 0.2); color: #38bdf8; }
+[data-theme='dark'] .status-badge-custom { background: rgba(245, 158, 11, 0.2); color: #fbbf24; }
+[data-theme='dark'] .pie-chart { background: conic-gradient(#334155 0% 75%, #10b981 75% 91.6%, #ef4444 91.6% 100%); }
+[data-theme='dark'] .bar { background: #334155 !important; }
+[data-theme='dark'] .h-bar-bg { background: #334155; }
+[data-theme='dark'] .h-bar-fill { background: #475569; }
+[data-theme='dark'] .progress { background: #334155; }
+[data-theme='dark'] .progress-bar { background: var(--success); }
+[data-theme='dark'] .header { background: rgba(15, 23, 42, 0.9); border-bottom-color: var(--border); }
+[data-theme='dark'] .dashboard-layout { color: var(--text-main); }
+[data-theme='dark'] ::placeholder { color: var(--text-light); }
+
 * {
     margin: 0;
     padding: 0;

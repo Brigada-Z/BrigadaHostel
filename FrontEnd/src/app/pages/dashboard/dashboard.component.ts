@@ -2,6 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { RouterLink, RouterOutlet, RouterLinkActive, Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs';
 import { DashboardService, UserRole } from '../../services/dashboard.service';
+import { PreferencesService } from '../../services/preferences.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -12,6 +13,7 @@ import { DashboardService, UserRole } from '../../services/dashboard.service';
 })
 export class DashboardComponent implements OnInit {
   public dashboardService = inject(DashboardService);
+  public readonly preferencesService = inject(PreferencesService);
   private router = inject(Router);
 
   ngOnInit(): void {

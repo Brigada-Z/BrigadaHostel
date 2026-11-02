@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import (
-    Usuario, Habitacion, Servicio, Reserva, ReservaServicio, LogAuditoria, Notificacion, Integrante, MensajeContacto
+    Usuario, Habitacion, Servicio, Reserva, ReservaServicio, LogAuditoria, Notificacion, Integrante, MensajeContacto, Incidencia
 )
 
 
@@ -200,3 +200,31 @@ class NotificacionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Notificacion
         fields = ['id', 'reserva', 'usuario', 'tipo', 'fecha_envio', 'estado_envio']
+
+
+class IncidenciaSerializer(serializers.ModelSerializer):
+    """
+    Serializador para el módulo de Operaciones: registro de incidencias (fallas, mantenimiento, stock).
+    """
+
+    class Meta:
+        model = Incidencia
+        fields = [
+            'id',
+            'usuario',
+            'habitacion',
+            'titulo',
+            'descripcion',
+            'severidad',
+            'estado',
+            'fecha_creacion',
+        ]
+        read_only_fields = ['id', 'usuario', 'estado', 'fecha_creacion']
+
+    def validate(self, attrs):
+        severidad = attrs.get('severidad')
+        if self.instance is not None:
+            severidad = attrs.get('severidad') or self.instance.severidad
+        if severidad and severidad not in dict(Incidencia.SEVERIDADES):
+            raise serializers.ValidationError({'severidad': 'Severidad inválida.'})
+        return attrs

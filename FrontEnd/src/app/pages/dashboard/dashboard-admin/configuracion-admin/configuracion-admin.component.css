@@ -30,3 +30,11 @@
     transform: translateY(0);
   }
 }
+
+.user-avatar-preview {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--border);
+}

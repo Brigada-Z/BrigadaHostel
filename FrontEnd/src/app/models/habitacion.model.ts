@@ -1,5 +1,6 @@
 export interface Habitacion {
   id: string;
+  numero?: string;
   tipo: string;
   precioPorNoche: number;
   capacidad: number;

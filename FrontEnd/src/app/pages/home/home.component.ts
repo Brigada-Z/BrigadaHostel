@@ -156,6 +156,8 @@ export class HomeComponent implements OnInit {
           this.mensajeError = err.error?.error ?? 'No hay disponibilidad para las fechas elegidas.';
         } else if (err.status === 400) {
           this.mensajeError = 'El servidor rechazó la consulta. Revisá los datos ingresados.';
+        } else if (!err.status) {
+          this.mensajeError = 'No se pudo conectar con el servidor. Verificá que el backend (Django REST Framework en el puerto 8000) esté funcionando.';
         } else {
           this.mensajeError = 'No se pudo registrar la consulta. Verificá que el servidor backend esté funcionando.';
         }
