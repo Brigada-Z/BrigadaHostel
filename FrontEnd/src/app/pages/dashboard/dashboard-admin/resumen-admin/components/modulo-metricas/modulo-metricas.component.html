@@ -1,26 +1,26 @@
 <section class="content-section mb-40">
     <div class="flex-between mb-40 border-bottom-soft pb-24">
         <div>
-            <h2 class="m-0 text-3xl font-weight-900">Módulo Métricas</h2>
+            <h2 class="m-0 text-3xl font-weight-900">{{ preferencesService.t('moduloMetricas') }}</h2>
             <p class="header-subtitle">Inteligencia de negocios y reportes de rentabilidad</p>
         </div>
         <div class="d-flex flex-wrap gap-3">
-            <select class="form-select w-auto filter-select height-52">
-                <option>Este Mes</option>
-                <option>Trimestre</option>
-                <option>Año 2026</option>
+            <select class="form-select w-auto filter-select height-52" [(ngModel)]="periodo" (ngModelChange)="onPeriodoChange($event)">
+                <option value="Este Mes">Este Mes</option>
+                <option value="Trimestre">Trimestre</option>
+                <option value="Año 2026">Año 2026</option>
             </select>
             <button type="button" class="btn-outline d-flex align-items-center gap-2" (click)="cargarMetricas()">
                 <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
                 </svg>
-                Actualizar
+                {{ preferencesService.t('actualizar') }}
             </button>
-            <button type="button" class="btn-premium">
+            <button type="button" class="btn-premium" (click)="exportarPdf()">
                 <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" class="me-2">
                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
                 </svg>
-                Exportar PDF
+                {{ preferencesService.t('exportarPdf') }}
             </button>
         </div>
     </div>

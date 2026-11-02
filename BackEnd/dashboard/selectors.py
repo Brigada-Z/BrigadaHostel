@@ -13,7 +13,8 @@ from .models import (
     Servicio,
     Reserva,
     Integrante,
-    MensajeContacto
+    MensajeContacto,
+    Incidencia
 )
 
 
@@ -143,3 +144,18 @@ class MensajeContactoSelector:
     @staticmethod
     def get_all() -> QuerySet[MensajeContacto]:
         return MensajeContacto.objects.all()
+
+
+class IncidenciaSelector:
+    """Selector para operaciones de consulta sobre incidencias del hostel."""
+
+    @staticmethod
+    def get_all() -> QuerySet[Incidencia]:
+        return Incidencia.objects.all()
+
+    @staticmethod
+    def get_by_id(pk: int | str) -> Optional[Incidencia]:
+        try:
+            return Incidencia.objects.get(pk=pk)
+        except (Incidencia.DoesNotExist, ValueError):
+            return None

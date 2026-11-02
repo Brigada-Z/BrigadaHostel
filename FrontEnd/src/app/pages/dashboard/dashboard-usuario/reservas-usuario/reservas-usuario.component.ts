@@ -202,11 +202,50 @@ export class ReservasUsuarioComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error al guardar reserva en el backend:', err);
-        this.submitError = 'No se pudo guardar la reserva en el servidor. Verificá que la API de Django REST Framework esté corriendo en el puerto 8000.';
+        this.submitError = this.manejarErrorReserva(err);
         this.isSubmitting = false;
         this.cdr.markForCheck();
       }
     });
+  }
+
+  /**
+   * Traduce los errores HTTP de la API de reservas a mensajes comprensibles para el usuario.
+   * - 409: conflicto de disponibilidad (las fechas se superponen con una reserva activa).
+   * - 400: errores de validación reportados por el backend (fechas inválidas, datos malformados).
+   * - 0: error de red / backend no disponible.
+   */
+  private manejarErrorReserva(err: any): string {
+    if (!err) {
+      return 'No se pudo guardar la reserva en el servidor. Verificá que la API de Django REST Framework esté corriendo en el puerto 8000.';
+    }
+
+    if (err.status === 409) {
+      // El backend (Django + DRF) detectó solapamiento de fechas: el backend SÍ está corriendo correctamente.
+      const mensajeBackend = err.error?.mensaje || err.error?.error;
+      return mensajeBackend
+        ? `${mensajeBackend} Probá con un rango de fechas distinto.`
+        : 'No hay disponibilidad para las fechas solicitadas. Probá con un rango de fechas distinto.';
+    }
+
+    if (err.status === 400) {
+      const erroresValidacion = err.error?.errores;
+      if (erroresValidacion) {
+        const detalles = Object.entries(erroresValidacion)
+          .map(([campo, mensajes]) => `${campo}: ${Array.isArray(mensajes) ? mensajes.join(', ') : mensajes}`)
+          .join(' | ');
+        if (detalles) {
+          return `La reserva fue rechazada por el servidor: ${detalles}`;
+        }
+      }
+      return 'El servidor rechazó la reserva. Revisá los datos ingresados (por ejemplo, que la fecha de salida sea posterior a la de ingreso).';
+    }
+
+    if (!err.status || err.status === 0) {
+      return 'No se pudo conectar con el servidor. Verificá que la API de Django REST Framework esté corriendo en el puerto 8000.';
+    }
+
+    return 'No se pudo guardar la reserva en el servidor. Verificá que la API de Django REST Framework esté corriendo en el puerto 8000.';
   }
 
   resetWizard(): void {

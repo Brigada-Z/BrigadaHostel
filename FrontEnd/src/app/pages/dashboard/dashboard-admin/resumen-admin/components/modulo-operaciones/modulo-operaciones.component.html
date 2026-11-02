@@ -1,12 +1,12 @@
 <section class="content-section mb-40">
     <div class="flex-between mb-40 border-bottom-soft pb-24">
         <div>
-            <h2 class="m-0 text-3xl font-weight-900">Módulo Operaciones</h2>
+            <h2 class="m-0 text-3xl font-weight-900">{{ preferencesService.t('moduloOperaciones') }}</h2>
             <p class="header-subtitle">Optimización de recursos, mantenimiento preventivo y  limpieza</p>
         </div>
         <div class="d-flex flex-wrap gap-3">
-            <button type="button" class="btn-outline">Ver Planilla Mensual</button>
-            <button type="button" class="btn-premium">+ Nueva Incidencia</button>
+            <button type="button" class="btn-outline" (click)="abrirPlanilla()">{{ preferencesService.t('verPlanillaMensual') }}</button>
+            <button type="button" class="btn-premium" (click)="abrirModalIncidencia()">+ {{ preferencesService.t('nuevaIncidencia') }}</button>
         </div>
     </div>
     <div class="row g-5">
@@ -14,7 +14,7 @@
         <div class="col-md-6">
             <div class="card p-32 h-100 border-0 shadow-none bg-light">
                 <div class="flex-between mb-24">
-                    <h3 class="text-lg font-weight-800 m-0">Estado de Habitaciones</h3>
+                    <h3 class="text-lg font-weight-800 m-0">{{ preferencesService.t('estadoHabitaciones') }}</h3>
                     <span class="text-xs font-weight-700 text-muted">ACTUALIZADO: 14:30 PM</span>
                 </div>
                 <div class="flex-column gap-12">
@@ -64,7 +64,7 @@
         <!-- Inventario Crítico Extendido -->
         <div class="col-md-6">
             <div class="card p-32 h-100 border-0 shadow-none bg-light d-flex flex-column">
-                <h3 class="text-lg font-weight-800 mb-24 m-0">Control de Stock e Insumos</h3>
+                <h3 class="text-lg font-weight-800 mb-24 m-0">{{ preferencesService.t('stockInsumos') }}</h3>
                 <div class="table-responsive flex-1">
                     <table class="table table-sm table-borderless align-middle mb-0">
                         <thead>
@@ -79,7 +79,7 @@
                             <tr class="border-bottom-soft"><td class="py-12"><strong>Toallas de Baño</strong></td><td class="text-xs">Lencería</td><td class="text-end text-danger font-bold">12 <small>(Bajo)</small></td></tr>
                             <tr class="border-bottom-soft"><td class="py-12"><strong>Kits de Limpieza</strong></td><td class="text-xs">Químicos</td><td class="text-end font-bold">85</td></tr>
                             <tr class="border-bottom-soft"><td class="py-12"><strong>Papel Higiénico</strong></td><td class="text-xs">Descartables</td><td class="text-end font-bold">120</td></tr>
-                            <tr class="border-bottom-soft"><td class="py-12"><strong>Café / Té (Cajas)</strong></td><td class="text-xs">Alimentos</td><td class="text-end text-warning font-bold">8</td></tr>
+                            <tr class="border-bottom-soft"><td class="py-12"><strong>Café / Té (Cajas)</strong></td><td class="text-xs">Alimentos</td><td class="text-end font-bold">8</td></tr>
                             <tr class="border-bottom-soft"><td class="py-12"><strong>Detergente Ind.</strong></td><td class="text-xs">Químicos</td><td class="text-end font-bold">15 Lts</td></tr>
                         </tbody>
                     </table>
@@ -99,3 +99,137 @@
         </div>
     </div>
 </section>
+
+<!-- MODAL: PLANILLA MENSUAL -->
+@if (mostrarPlanilla) {
+    <div class="modal-backdrop-custom" (click)="cerrarPlanilla()">
+        <div class="modal-content-premium modal-planilla" (click)="$event.stopPropagation()">
+            <div class="flex-between mb-24">
+                <h3 class="text-lg font-weight-800 m-0">{{ preferencesService.t('planMensual') }}</h3>
+                <button type="button" class="btn-outline btn-small" (click)="cerrarPlanilla()">{{ preferencesService.t('cancelar') }}</button>
+            </div>
+
+            <div class="mb-24">
+                <label class="auth-label" for="planMes">Mes</label>
+                <input
+                    id="planMes"
+                    type="month"
+                    class="input-field w-full"
+                    [(ngModel)]="planMes"
+                    (ngModelChange)="cargarPlanilla($event)" />
+            </div>
+
+            <div class="table-responsive">
+                @if (isLoadingPlanilla) {
+                    <div class="text-center py-4 text-secondary">
+                        <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                        Generando planilla...
+                    </div>
+                } @else {
+                    <table class="table table-sm table-borderless align-middle mb-0">
+                        <thead>
+                            <tr class="text-xs-muted text-uppercase border-bottom">
+                                <th class="pb-3">Reserva</th>
+                                <th class="pb-3">Huésped</th>
+                                <th class="pb-3">Habitación</th>
+                                <th class="pb-3">Ingreso</th>
+                                <th class="pb-3">Salida</th>
+                                <th class="pb-3 text-end">Precio</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (planReservas.length === 0) {
+                                <tr>
+                                    <td colspan="6" class="text-center text-secondary py-16">Sin reservas para el mes seleccionado.</td>
+                                </tr>
+                            } @for (reserva of planReservas; track reserva.id) {
+                                <tr class="border-bottom-soft">
+                                    <td class="py-12">#BH-{{ reserva.id }}</td>
+                                    <td class="py-12">{{ reserva.nombre }}</td>
+                                    <td class="py-12">{{ reserva.tipoHabitacion }}</td>
+                                    <td class="py-12">{{ reserva.fechaIngreso }}</td>
+                                    <td class="py-12">{{ reserva.fechaSalida }}</td>
+                                    <td class="py-12 text-end font-bold">${{ reserva.precioTotal ?? 0 }}</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
+        </div>
+    </div>
+}
+
+<!-- MODAL: NUEVA INCIDENCIA -->
+@if (mostrarModalIncidencia) {
+    <div class="modal-backdrop-custom" (click)="cerrarModalIncidencia()">
+        <div class="modal-content-premium modal-planilla" (click)="$event.stopPropagation()">
+            <div class="flex-between mb-24">
+                <h3 class="text-lg font-weight-800 m-0">{{ preferencesService.t('nuevaIncidencia') }}</h3>
+                <button type="button" class="btn-outline btn-small" (click)="cerrarModalIncidencia()">{{ preferencesService.t('cancelar') }}</button>
+            </div>
+
+            <form [formGroup]="incidenciaForm" (ngSubmit)="onSubmitIncidencia()" novalidate>
+                <div class="flex-column gap-15">
+                    <div class="form-group mb-0">
+                        <label class="auth-label" for="incTitulo">Título</label>
+                        <input id="incTitulo" type="text" class="input-field" formControlName="titulo">
+                        @if (incidenciaForm.get('titulo')?.invalid) {
+                            <div class="invalid-feedback-custom"><span>El título es obligatorio (mín. 3 caracteres).</span></div>
+                        }
+                    </div>
+
+                    <div class="form-group mb-0">
+                        <label class="auth-label" for="incHabitacion">Habitación</label>
+                        <select id="incHabitacion" class="form-select input-field" formControlName="habitacionId">
+                            @for (hab of habitaciones; track hab.id) {
+                                <option [value]="hab.id">{{ hab.numero }} - {{ hab.tipo }}</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="form-group mb-0">
+                        <label class="auth-label" for="incSeveridad">Severidad</label>
+                        <select id="incSeveridad" class="form-select input-field" formControlName="severidad">
+                            <option value="baja">Baja</option>
+                            <option value="media">Media</option>
+                            <option value="alta">Alta</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group mb-0">
+                        <label class="auth-label" for="incDescripcion">Descripción</label>
+                        <textarea id="incDescripcion" rows="3" class="input-field" formControlName="descripcion"></textarea>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-premium mt-32 w-full">Registrar Incidencia</button>
+            </form>
+        </div>
+    </div>
+}
+
+<!-- Toast Notificación -->
+@if (toastMessage) {
+    <div class="toast-fixed-stack">
+        <div class="toast-item-premium" [class.border-danger]="toastType === 'danger'">
+            <div 
+                class="rounded-circle d-flex align-items-center justify-content-center text-white" 
+                [class.bg-success]="toastType === 'success'"
+                [class.bg-danger]="toastType === 'danger'"
+                [class.bg-primary]="toastType === 'info'"
+                style="width:28px;height:28px;">
+                @if (toastType === 'danger') {
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                        <path d="M18 6L6 18M6 6l12 12"></path>
+                    </svg>
+                } @else {
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                        <path d="M20 6L9 17L4 12"></path>
+                    </svg>
+                }
+            </div>
+            <span>{{ toastMessage }}</span>
+        </div>
+    </div>
+}

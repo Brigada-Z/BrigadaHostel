@@ -13,7 +13,8 @@ from .models import (
     Usuario,
     Habitacion,
     Reserva,
-    LogAuditoria
+    LogAuditoria,
+    Incidencia
 )
 from .selectors import ReservaSelector, HabitacionSelector
 
@@ -271,3 +272,13 @@ class AuthService:
                 'rol': usuario.rol,
             }
         }
+
+
+class IncidenciaService:
+    """Servicio de negocio para el registro de incidencias operativas del hostel."""
+
+    @staticmethod
+    def crear_incidencia(validated_data: Dict[str, Any]) -> Incidencia:
+        """Registra una nueva incidencia (falla, mantenimiento o stock) y la persiste."""
+        incidencia = Incidencia.objects.create(**validated_data)
+        return incidencia

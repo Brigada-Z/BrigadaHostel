@@ -13,6 +13,7 @@ from .views import (
     IntegranteListCreateAPIView,
     MensajeContactoListCreateAPIView,
     DashboardMetricasAPIView,
+    IncidenciaListCreateAPIView,
 )
 
 urlpatterns = [
@@ -52,6 +53,10 @@ urlpatterns = [
     # Endpoints de Contacto (formulario de Quiénes Somos)
     path('contacto/', MensajeContactoListCreateAPIView.as_view(), name='contacto-list-create'),
     path('contacto', MensajeContactoListCreateAPIView.as_view(), name='contacto-list-create-alt'),
+
+    # Endpoints de Incidencias (Operaciones)
+    path('incidencias/', IncidenciaListCreateAPIView.as_view(), name='incidencias-list-create'),
+    path('incidencias', IncidenciaListCreateAPIView.as_view(), name='incidencias-list-create-alt'),
 
     # Métricas y Resumen del Dashboard
     path('dashboard/metricas/', DashboardMetricasAPIView.as_view(), name='dashboard-metricas'),
