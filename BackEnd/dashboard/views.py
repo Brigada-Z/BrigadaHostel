@@ -17,7 +17,8 @@ from .serializers import (
     ServicioSerializer,
     ReservaSerializer,
     IntegranteSerializer,
-    MensajeContactoSerializer
+    MensajeContactoSerializer,
+    IncidenciaSerializer
 )
 from .selectors import (
     ReservaSelector,
@@ -25,13 +26,15 @@ from .selectors import (
     UsuarioSelector,
     ServicioSelector,
     IntegranteSelector,
-    MensajeContactoSelector
+    MensajeContactoSelector,
+    IncidenciaSelector
 )
 from .services import (
     ReservaService,
     DisponibilidadService,
     DashboardMetricasService,
-    AuthService
+    AuthService,
+    IncidenciaService
 )
 
 
@@ -396,6 +399,38 @@ class UsuarioLoginAPIView(APIView):
 
         status_code, payload = AuthService.autenticar_usuario(username, password)
         return Response(payload, status=status_code)
+
+
+# ==============================================================================
+# VISTAS DE INCIDENCIAS (OPERACIONES - FALLAS / MANTENIMIENTO / STOCK)
+# ==============================================================================
+
+class IncidenciaListCreateAPIView(APIView):
+    """
+    Registro y listado de incidencias operativas del hostel.
+    - GET: 200 OK
+    - POST: 201 CREATED | 400 BAD REQUEST
+    """
+
+    def get(self, request):
+        incidencias = IncidenciaSelector.get_all()
+        serializer = IncidenciaSerializer(incidencias, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request):
+        serializer = IncidenciaSerializer(data=request.data)
+        if serializer.is_valid():
+            incidencia = IncidenciaService.crear_incidencia(serializer.validated_data)
+            output_serializer = IncidenciaSerializer(incidencia)
+            return Response(output_serializer.data, status=status.HTTP_201_CREATED)
+
+        return Response(
+            {
+                'mensaje': 'Error de validación al registrar la incidencia.',
+                'errores': serializer.errors
+            },
+            status=status.HTTP_400_BAD_REQUEST
+        )
 
 
 # ==============================================================================

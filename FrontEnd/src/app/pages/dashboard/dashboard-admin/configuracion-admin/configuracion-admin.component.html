@@ -6,12 +6,17 @@
         <h3 class="form-section-title mb-24 h5">Perfil de Administrador</h3>
         <div class="flex-center flex-column mb-32">
           <div class="user-avatar-small mb-3" style="width: 70px; height: 70px;">
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-              <circle cx="12" cy="7" r="4"></circle>
-            </svg>
+            @if (fotoPreview) {
+              <img [src]="fotoPreview" alt="Foto de perfil" class="user-avatar-preview">
+            } @else {
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+            }
           </div>
-          <button type="button" class="btn-outline btn-small" (click)="notify('Foto actualizada')">Cambiar Foto</button>
+          <label class="btn-outline btn-small" for="fotoPerfil">Cambiar Foto</label>
+          <input id="fotoPerfil" type="file" accept="image/*" class="d-none" (change)="onFotoSeleccionada($event)">
         </div>
 
         <form [formGroup]="profileForm" (ngSubmit)="onSaveProfile()" novalidate>
@@ -149,7 +154,7 @@
 
   <!-- PREFERENCIAS DEL SISTEMA -->
   <section class="content-section mt-32">
-    <h3 class="form-section-title mb-24 h5">Preferencias del Panel</h3>
+    <h3 class="form-section-title mb-24 h5">{{ preferencesService.t('preferenciasPanel') }}</h3>
     <form [formGroup]="preferencesForm" (ngSubmit)="onSavePreferences()">
       <div class="row g-3">
         <div class="col-md-4">
@@ -173,7 +178,7 @@
         </div>
         <div class="col-md-4 d-flex align-items-end">
           <button type="submit" class="btn-premium w-full">
-            Guardar Preferencias
+            {{ preferencesService.t('guardar') }} Preferencias
           </button>
         </div>
       </div>

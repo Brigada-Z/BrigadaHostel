@@ -1,6 +1,7 @@
 import { Component, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { PreferencesService, Language, Theme } from '../../../../services/preferences.service';
 import {
   noWhitespaceValidator,
   customEmailValidator,
@@ -18,10 +19,12 @@ import {
 export class ConfiguracionAdminComponent {
   private fb = inject(FormBuilder);
   private cdr = inject(ChangeDetectorRef);
+  public readonly preferencesService = inject(PreferencesService);
 
   toastMessage: string | null = null;
   profileSubmitted = false;
   securitySubmitted = false;
+  fotoPreview: string | null = null;
 
   // Formulario Reactivo de Perfil
   profileForm: FormGroup = this.fb.group({
@@ -44,8 +47,8 @@ export class ConfiguracionAdminComponent {
 
   // Formulario Reactivo de Preferencias del Panel
   preferencesForm: FormGroup = this.fb.group({
-    language: ['es'],
-    theme: ['light']
+    language: ['es', Validators.required],
+    theme: ['light', Validators.required]
   });
 
   get pf() {
@@ -54,6 +57,19 @@ export class ConfiguracionAdminComponent {
 
   get sf() {
     return this.securityForm.controls;
+  }
+
+  get preferences() {
+    return this.preferencesForm.controls;
+  }
+
+  ngOnInit(): void {
+    // Sincronizar el formulario con las preferencias persistidas de la sesión
+    this.preferencesForm.patchValue({
+      language: this.preferencesService.language(),
+      theme: this.preferencesService.theme()
+    });
+    this.fotoPreview = this.preferencesService.photoDataUrl();
   }
 
   onSaveProfile(): void {
@@ -83,7 +99,38 @@ export class ConfiguracionAdminComponent {
   }
 
   onSavePreferences(): void {
-    this.notify('Preferencias aplicadas correctamente');
+    if (this.preferencesForm.invalid) {
+      this.preferencesForm.markAllAsTouched();
+      return;
+    }
+
+    const language = this.preferencesForm.get('language')?.value as Language;
+    const theme = this.preferencesForm.get('theme')?.value as Theme;
+
+    // Aplicar idioma y tema al sitio completo
+    this.preferencesService.setLanguage(language);
+    this.preferencesService.setTheme(theme);
+    this.notify(this.preferencesService.t('preferenciasAplicadas'));
+
+    // Forzar re-renderizado del panel con los nuevos valores
+    this.cdr.markForCheck();
+  }
+
+  onFotoSeleccionada(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const archivo = input.files?.[0];
+    if (!archivo) {
+      return;
+    }
+
+    const lector = new FileReader();
+    lector.onload = () => {
+      const dataUrl = lector.result as string;
+      this.preferencesService.setPhoto(dataUrl);
+      this.fotoPreview = dataUrl;
+      this.cdr.markForCheck();
+    };
+    lector.readAsDataURL(archivo);
   }
 
   notify(msg: string): void {
